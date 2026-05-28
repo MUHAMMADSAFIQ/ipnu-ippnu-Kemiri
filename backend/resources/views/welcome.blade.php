@@ -6047,7 +6047,7 @@
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31630.0!2d109.91!3d-7.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a8ca16f5c862d%3A0x4027a765a3717a0!2sKemiri%2C%20Kec.%20Kemiri%2C%20Kabupaten%20Purworejo%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1714630000000!5m2!1sid!2sid"
                                 allowfullscreen="" loading="lazy"></iframe>
-                            <a href="https://www.google.com/maps/search/Kemiri+Purworejo" target="_blank"
+                            <a href="https://maps.app.goo.gl/qJdrVL3cghZddma99" target="_blank"
                                 class="map-btn-float">
                                 <i class="fa-solid fa-up-right-from-square"></i> Buka Peta Besar
                             </a>
@@ -6080,7 +6080,7 @@
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15814.734842542488!2d109.9042567890!3d-7.632156890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a8ca16f5c862d%3A0x4027a765a3717a0!2sKemiri%2C%20Kec.%20Kemiri%2C%20Kabupaten%20Purworejo%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1714630000000!5m2!1sid!2sid"
                                 allowfullscreen="" loading="lazy"></iframe>
-                            <a href="https://maps.app.goo.gl/YourGoogleMapsLink" target="_blank" class="map-btn-float">
+                            <a href="https://maps.app.goo.gl/qJdrVL3cghZddma99" target="_blank" class="map-btn-float">
                                 <i class="fa-solid fa-route"></i> Petunjuk Arah
                             </a>
                         </div>
@@ -7457,7 +7457,7 @@
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15814.734842542488!2d109.9042567890!3d-7.632156890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a8ca16f5c862d%3A0x4027a765a3717a0!2sKemiri%2C%20Kec.%20Kemiri%2C%20Kabupaten%20Purworejo%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1714630000000!5m2!1sid!2sid"
                         allowfullscreen="" loading="lazy"></iframe>
-                    <a href="https://maps.app.goo.gl/YourGoogleMapsLink" target="_blank" class="map-btn-float">
+                    <a href="https://maps.app.goo.gl/qJdrVL3cghZddma99" target="_blank" class="map-btn-float">
                         <i class="fa-solid fa-location-arrow"></i> Rute
                     </a>
                 </div>
