@@ -69,6 +69,9 @@ Route::post('/ruang-lapor', function (\Illuminate\Http\Request $request) {
         'contact' => $request->contact,
         'message' => $request->message,
     ]);
+    if ($request->ajax() || $request->wantsJson()) {
+        return response()->json(['success' => true]);
+    }
     return back()->with('success', 'Laporan berhasil dikirim! Terima kasih.');
 })->name('ruang-lapor.store');
 

@@ -6440,6 +6440,10 @@
 
                         fetch('{{ route("ruang-lapor.store") }}', {
                             method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
                             body: formData
                         }).then(res => {
                             if (res.ok) {
