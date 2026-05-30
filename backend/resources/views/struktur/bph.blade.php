@@ -204,7 +204,7 @@
         <div class="sp-header-inner">
             <div class="sp-badge">🏛️ Struktur Kepengurusan</div>
             <h1>SUSUNAN PENGURUS</h1>
-            <p>Pimpinan Anak Cabang IPNU &amp; IPPNU Kecamatan Kemiri — Masa Khidmat 2025-2027</p>
+            <p>Pimpinan Anak Cabang IPNU &amp; IPPNU Kecamatan Kemiri — {{ $settings['structure_service_period'] ?? 'Masa Khidmat 2025-2027' }}</p>
         </div>
     </div>
 

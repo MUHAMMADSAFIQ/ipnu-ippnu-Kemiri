@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin — PAC IPNU IPPNU Kemiri</title>
-    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=2">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1492,6 +1492,10 @@
                             @csrf
                             <div class="form-grid">
                                 <div class="form-group full">
+                                    <label class="form-label">Teks Masa Khidmat Struktur</label>
+                                    <input type="text" name="structure_service_period" value="{{ $settings['structure_service_period'] ?? 'Masa Khidmat 2025-2027' }}" placeholder="cth: Masa Khidmat 2025-2027">
+                                </div>
+                                <div class="form-group full">
                                     <label class="form-label">Foto Struktur IPNU</label>
                                     <input type="file" name="structure_ipnu_photo" accept="image/*">
                                     @if(!empty($settings['structure_ipnu_photo'])) 
@@ -1515,6 +1519,31 @@
                  SECTION: STATISTIK ANGGOTA
             ══════════════════════════════════════════════ --}}
             <div id="section-stats" class="admin-section">
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header"><div class="card-header-title"><i class="fa-solid fa-chart-line"></i> Pengaturan Statistik Utama &amp; Grid</div></div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.settings.update') }}" method="POST">
+                            @csrf
+                            <div style="font-weight:700; color:var(--primary-dark); margin-bottom:12px; font-size:0.95rem; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">Total Anggota (Terverifikasi)</div>
+                            <div class="form-grid">
+                                <div class="form-group"><label class="form-label">Total Anggota IPNU</label><input type="number" name="total_anggota_ipnu" value="{{ $settings['total_anggota_ipnu'] ?? 31340 }}" required></div>
+                                <div class="form-group"><label class="form-label">Total Anggota IPPNU</label><input type="number" name="total_anggota_ippnu" value="{{ $settings['total_anggota_ippnu'] ?? 37197 }}" required></div>
+                            </div>
+                            <div style="font-weight:700; color:var(--primary-dark); margin:20px 0 12px; font-size:0.95rem; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">Statistik Grid Anggota</div>
+                            <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);">
+                                <div class="form-group" style="grid-column: span 2;"><label class="form-label">Anak Cabang IPNU</label><input type="text" name="stats_ipnu_ac" value="{{ $settings['stats_ipnu_ac'] ?? '482' }}" required></div>
+                                <div class="form-group" style="grid-column: span 2;"><label class="form-label">Anak Cabang IPPNU</label><input type="text" name="stats_ippnu_ac" value="{{ $settings['stats_ippnu_ac'] ?? '510' }}" required></div>
+                                <div class="form-group" style="grid-column: span 2;"><label class="form-label">Ranting (Desa) IPNU</label><input type="text" name="stats_ipnu_ranting" value="{{ $settings['stats_ipnu_ranting'] ?? '2,750' }}" required></div>
+                                <div class="form-group" style="grid-column: span 2;"><label class="form-label">Ranting (Desa) IPPNU</label><input type="text" name="stats_ippnu_ranting" value="{{ $settings['stats_ippnu_ranting'] ?? '2,566' }}" required></div>
+                                <div class="form-group" style="grid-column: span 2;"><label class="form-label">Komisariat Sekolah IPNU</label><input type="text" name="stats_ipnu_sekolah" value="{{ $settings['stats_ipnu_sekolah'] ?? '880' }}" required></div>
+                                <div class="form-group" style="grid-column: span 2;"><label class="form-label">Komisariat Sekolah IPPNU</label><input type="text" name="stats_ippnu_sekolah" value="{{ $settings['stats_ippnu_sekolah'] ?? '804' }}" required></div>
+                                <div class="form-group" style="grid-column: span 2;"><label class="form-label">Komisariat Pondok Pesantren IPNU</label><input type="text" name="stats_ipnu_pesantren" value="{{ $settings['stats_ipnu_pesantren'] ?? '450' }}" required></div>
+                                <div class="form-group" style="grid-column: span 2;"><label class="form-label">Komisariat Pondok Pesantren IPPNU</label><input type="text" name="stats_ippnu_pesantren" value="{{ $settings['stats_ippnu_pesantren'] ?? '420' }}" required></div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="margin-top:16px; max-width:250px;"><i class="fa-solid fa-floppy-disk"></i> Simpan Statistik Utama</button>
+                        </form>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header"><div class="card-header-title"><i class="fa-solid fa-chart-simple"></i> Tambah Statistik</div></div>
                     <div class="card-body">
@@ -1889,6 +1918,14 @@
                                 <div class="form-group"><label class="form-label">Total Anggota IPPNU (Statistik)</label><input type="number" name="total_anggota_ippnu" value="{{ $settings['total_anggota_ippnu'] ?? '37197' }}" placeholder="37197"></div>
                                 <div class="form-group full"><label class="form-label">Alamat Sekretariat</label><textarea name="address" rows="2" placeholder="Alamat lengkap...">{{ $settings['address'] ?? '' }}</textarea></div>
                                 
+                                <div class="form-group full"><label class="form-label" style="margin-top:16px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">Pelayanan Sekretariat (Hari &amp; Jam Buka)</label></div>
+                                <div class="form-group"><label class="form-label">Hari Kerja (Weekday)</label><input type="text" name="sekre_weekday_days" value="{{ $settings['sekre_weekday_days'] ?? 'Senin - Jumat' }}"></div>
+                                <div class="form-group"><label class="form-label">Jam Kerja (Weekday)</label><input type="text" name="sekre_weekday_hours" value="{{ $settings['sekre_weekday_hours'] ?? '09:00 - 16:00' }}"></div>
+                                <div class="form-group"><label class="form-label">Hari Sabtu</label><input type="text" name="sekre_sat_days" value="{{ $settings['sekre_sat_days'] ?? 'Sabtu' }}"></div>
+                                <div class="form-group"><label class="form-label">Jam Sabtu</label><input type="text" name="sekre_sat_hours" value="{{ $settings['sekre_sat_hours'] ?? '09:00 - 13:00' }}"></div>
+                                <div class="form-group"><label class="form-label">Hari Libur</label><input type="text" name="sekre_sun_days" value="{{ $settings['sekre_sun_days'] ?? 'Minggu / Libur' }}"></div>
+                                <div class="form-group"><label class="form-label">Jam Libur</label><input type="text" name="sekre_sun_hours" value="{{ $settings['sekre_sun_hours'] ?? 'Sesuai Janji' }}"></div>
+
                                 <div class="form-group full"><label class="form-label" style="margin-top:16px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">Pengaturan Beranda Utama (Top Hero)</label></div>
                                 <div class="form-group"><label class="form-label">Teks Beranda (Judul)</label><input type="text" name="hero_title" value="{{ $settings['hero_title'] ?? '' }}" placeholder="Teks besar di atas..."></div>
                                 <div class="form-group"><label class="form-label">Teks Beranda (Subjudul)</label><input type="text" name="hero_subtitle" value="{{ $settings['hero_subtitle'] ?? '' }}" placeholder="Deskripsi di bawah judul..."></div>
@@ -2149,6 +2186,8 @@
                     <div class="form-group"><label class="form-label">Nama *</label><input type="text" name="name" id="eo-name" required></div>
                     <div class="form-group"><label class="form-label">Jabatan *</label><input type="text" name="position" id="eo-position" required></div>
                     <div class="form-group"><label class="form-label">Kategori</label><select name="type" id="eo-type"><option value="pimpinan">Pimpinan</option><option value="bph">BPH</option></select></div>
+                    <div class="form-group"><label class="form-label">Organisasi</label><select name="organization" id="eo-organization"><option value="IPNU">IPNU</option><option value="IPPNU">IPPNU</option></select></div>
+                    <div class="form-group"><label class="form-label">Seksi / Bagian</label><input type="text" name="section" id="eo-section" placeholder="cth: Pengurus Harian"></div>
                     <div class="form-group"><label class="form-label">Ganti Foto</label><input type="file" name="photo" accept="image/*"></div>
                     <div class="form-group"><label class="form-label">Tempat, Tanggal Lahir</label><input type="text" name="birth_place_date" id="eo-birth_place_date"></div>
                     <div class="form-group"><label class="form-label">Fokus Gerakan</label><input type="text" name="movement_focus" id="eo-movement_focus"></div>
@@ -2433,6 +2472,8 @@
         document.getElementById('eo-movement_focus').value = o.movement_focus||'';
         document.getElementById('eo-service_period').value = o.service_period||'';
         document.getElementById('eo-motto').value = o.motto||'';
+        document.getElementById('eo-organization').value = o.organization||'IPNU';
+        document.getElementById('eo-section').value = o.section||'';
         document.getElementById('edit-official-form').action = `/admin/officials/${o.id}`;
         openModal('modal-edit-official');
     }

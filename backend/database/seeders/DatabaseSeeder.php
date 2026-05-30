@@ -48,14 +48,37 @@ class DatabaseSeeder extends Seeder
 
         // Site Settings / Profiles & Member Stats Seed
         $settings = [
-            'total_anggota_ipnu' => '31340',
+            'total_anggota_ipnu'  => '31340',
             'total_anggota_ippnu' => '37197',
+
+            // Susunan Pengurus - Masa Khidmat
+            'structure_service_period' => 'Masa Khidmat 2025-2027',
+
+            // Statistik Grid (Anak Cabang, Ranting, Komisariat)
+            'stats_ipnu_ac'        => '482',
+            'stats_ippnu_ac'       => '510',
+            'stats_ipnu_ranting'   => '2,750',
+            'stats_ippnu_ranting'  => '2,566',
+            'stats_ipnu_sekolah'   => '880',
+            'stats_ippnu_sekolah'  => '804',
+            'stats_ipnu_pesantren' => '450',
+            'stats_ippnu_pesantren'=> '420',
+
+            // Pelayanan Sekretariat
+            'sekre_weekday_days'  => 'Senin - Jumat',
+            'sekre_weekday_hours' => '09:00 - 16:00',
+            'sekre_sat_days'      => 'Sabtu',
+            'sekre_sat_hours'     => '09:00 - 13:00',
+            'sekre_sun_days'      => 'Minggu / Libur',
+            'sekre_sun_hours'     => 'Sesuai Janji',
+
+            // Profil sejarah, visi & misi
             'sejarah_ipnu_title' => 'Prof. Dr. KH. Tolchah Mansoer',
             'sejarah_ippnu_title' => 'Ny. Hj. Umroh Mahfudzah',
             
-            'sejarah_ipnu' => "Ikatan Pelajar Nahdlatul Ulama (IPNU) didirikan pada tanggal 20 Jumadil Akhir 1373 H, bertepatan dengan 24 Februari 1954 M ketika diselenggarakan Kongres LP Ma’arif di Semarang. Sejak berdirinya, IPNU menjadi bagian dari LP Ma’arif. Namun pada tahun 1966 ketika diselenggarakan Kongres IPNU di Surabaya, IPNU resmi melepaskan diri dari LP Ma’arif dan menjadi badan otonom (banom) NU. Salah seorang pendiri IPNU adalah Prof. Dr. KH. Tolchah Mansyur.\n\nSejak berdirinya, IPNu merupakan kepanjangan dari Ikatan Pelajar Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-10 di Jombang yang dikenal dengan istilah Deklarasi Jombang, kepanjangan IPNU berganti menjadi Ikatan Putera nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.\n\nNamun setelah orde baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah, kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya. Melalui kongresnya yang ke-14 di Surabaya (18-22 juni 2003), kepanjangan IPNU kembali seperti semula yaitu Ikatan Pelajar Nahdlatul Ulama.",
+            'sejarah_ipnu' => "Ikatan Pelajar Nahdlatul Ulama (IPNU) didirikan pada tanggal 20 Jumadil Akhir 1373 H, bertepatan dengan 24 Februari 1954 M ketika diselenggarakan Kongres LP Ma'arif di Semarang. Sejak berdirinya, IPNU menjadi bagian dari LP Ma'arif. Namun pada tahun 1966 ketika diselenggarakan Kongres IPNU di Surabaya, IPNU resmi melepaskan diri dari LP Ma'arif dan menjadi badan otonom (banom) NU. Salah seorang pendiri IPNU adalah Prof. Dr. KH. Tolchah Mansyur.\n\nSejak berdirinya, IPNu merupakan kepanjangan dari Ikatan Pelajar Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-10 di Jombang yang dikenal dengan istilah Deklarasi Jombang, kepanjangan IPNU berganti menjadi Ikatan Putera nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.\n\nNamun setelah orde baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah, kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya. Melalui kongresnya yang ke-14 di Surabaya (18-22 juni 2003), kepanjangan IPNU kembali seperti semula yaitu Ikatan Pelajar Nahdlatul Ulama.",
             
-            'sejarah_ippnu' => "Sedangkan Ikatan Pelajar Putri Nahdlatul Ulama (IPPNU) didirikan pada tanggal 8 Rajab 1374 H bertepatan dengan tanggal 2 maret 1955 M di Solo Jawa Tengah. Salah seorang pendirinya adalah Ny. Umroh Mahfudzah. Sejak berdirinya, IPPNU bernaung di bawah LP Ma’arif. Namun sejak tahun 1966 melalui kongresnya di Surabaya, IPPNU berdiri sendiri sebagai salah satu badan otonom (banom) NU.\n\nSejak berdirinya, IPPNU merupakan kepanjangan dari Ikatan pelajar Putri Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-9 di Jombang (29-31 januari 1988), kepanjangan IPPNU berganti menjadi Ikatan Putri-putri Nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.\n\nNamun setelah Orde Baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya, melalui kongresnya yang ke-13 di Surabaya (18-22 Juni 2003), kepanjangan IPPNU kembali seperti semula yaitu Ikatan Pelajar Putri Nahdlatul Ulama.",
+            'sejarah_ippnu' => "Sedangkan Ikatan Pelajar Putri Nahdlatul Ulama (IPPNU) didirikan pada tanggal 8 Rajab 1374 H bertepatan dengan tanggal 2 maret 1955 M di Solo Jawa Tengah. Salah seorang pendirinya adalah Ny. Umroh Mahfudzah. Sejak berdirinya, IPPNU bernaung di bawah LP Ma'arif. Namun sejak tahun 1966 melalui kongresnya di Surabaya, IPPNU berdiri sendiri sebagai salah satu badan otonom (banom) NU.\n\nSejak berdirinya, IPPNU merupakan kepanjangan dari Ikatan pelajar Putri Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-9 di Jombang (29-31 januari 1988), kepanjangan IPPNU berganti menjadi Ikatan Putri-putri Nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.\n\nNamun setelah Orde Baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya, melalui kongresnya yang ke-13 di Surabaya (18-22 Juni 2003), kepanjangan IPPNU kembali seperti semula yaitu Ikatan Pelajar Putri Nahdlatul Ulama.",
             
             'visi_ipnu' => "Terwujudnya pelajar-pelajar bangsa yang bertaqwa kepada Allah SWT, berahlakul karimah, menguasai ilmu pengetahuan dan teknologi, memiliki kesadaran dan tanggungjawab terhada tatanan masyarakat yang berkeadilan dan demokratis atas dasar ajaran Islam ahlusunnah wal jamaah.",
             
@@ -67,7 +90,7 @@ class DatabaseSeeder extends Seeder
             
             'visi_pac' => "Terwujudnya organisasi IPNU-IPPNU yang solid, bersinergi, dan progresif dalam membangun pelajar Nahdlatul Ulama yang berkualitas, berakhlakul karimah, berwawasan luas, serta mampu berkontribusi bagi agama, bangsa, dan masyarakat.",
             
-            'misi_pac' => "Meningkatkan solidaritas dan sinergi antar pengurus serta anggota IPNU-IPPNU dalam menjalankan organisasi.\nMengembangkan kualitas pelajar NU melalui kegiatan pendidikan, keagamaan, dan pengembangan keterampilan.\nMenanamkan nilai-nilai Ahlussunnah wal Jama’ah An-Nahdliyah dalam kehidupan sehari-hari.\nMendorong budaya organisasi yang aktif, inovatif, dan progresif sesuai perkembangan zaman.\nMembentuk generasi pelajar NU yang berkarakter, bertanggung jawab, dan mampu menjadi teladan di lingkungan masyarakat.\nMemperkuat kerja sama dengan berbagai pihak demi mendukung kemajuan organisasi dan pengembangan potensi pelajar NU."
+            'misi_pac' => "Meningkatkan solidaritas dan sinergi antar pengurus serta anggota IPNU-IPPNU dalam menjalankan organisasi.\nMengembangkan kualitas pelajar NU melalui kegiatan pendidikan, keagamaan, dan pengembangan keterampilan.\nMenanamkan nilai-nilai Ahlussunnah wal Jama'ah An-Nahdliyah dalam kehidupan sehari-hari.\nMendorong budaya organisasi yang aktif, inovatif, dan progresif sesuai perkembangan zaman.\nMembentuk generasi pelajar NU yang berkarakter, bertanggung jawab, dan mampu menjadi teladan di lingkungan masyarakat.\nMemperkuat kerja sama dengan berbagai pihak demi mendukung kemajuan organisasi dan pengembangan potensi pelajar NU."
         ];
 
         foreach ($settings as $key => $val) {

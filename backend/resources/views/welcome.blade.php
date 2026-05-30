@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Resmi IPNU-IPPNU Kemiri</title>
-    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=2">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5913,7 +5913,7 @@
                                 <img src="{{ asset('images/HEADLINE.jpeg') }}" alt="Foto Bersama PAC IPNU IPPNU Kemiri" style="width:100%;display:block;object-fit:cover;max-height:400px;" onerror="this.parentElement.innerHTML='<div style=\'background:#f1f5f9;height:200px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:0.85rem;\'><div style=\'text-align:center\'><i class=\'fa-solid fa-image\' style=\'font-size:2rem;display:block;margin-bottom:6px;\'></i>Foto Bersama IPNU IPPNU<br><small>(Upload via Admin)</small></div></div>'">
                             @endif
                         </div>
-                        <p style="text-align:center;color:#64748b;font-size:0.88rem;margin-bottom:24px;">Pimpinan Anak Cabang IPNU & IPPNU Kecamatan Kemiri — Masa Khidmat 2025-2027</p>
+                        <p style="text-align:center;color:#64748b;font-size:0.88rem;margin-bottom:24px;">Pimpinan Anak Cabang IPNU &amp; IPPNU Kecamatan Kemiri — {{ $settings['structure_service_period'] ?? 'Masa Khidmat 2025-2027' }}</p>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
                             {{-- IPNU --}}
                             <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
@@ -6723,7 +6723,7 @@
                         <div class="officials-header">
                             <i class="fa-solid fa-users-gear"></i> SUSUNAN PENGURUS
                         </div>
-                        <p style="text-align:center;color:#64748b;font-size:0.85rem;margin-bottom:20px;">Pimpinan Anak Cabang IPNU &amp; IPPNU Kecamatan Kemiri — Masa Khidmat 2025-2027</p>
+                        <p style="text-align:center;color:#64748b;font-size:0.85rem;margin-bottom:20px;">Pimpinan Anak Cabang IPNU &amp; IPPNU Kecamatan Kemiri — {{ $settings['structure_service_period'] ?? 'Masa Khidmat 2025-2027' }}</p>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
                             {{-- IPNU --}}
                             <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
@@ -7021,19 +7021,16 @@
                     <div style="padding: 0;">
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
                             <tr style="border-bottom: 1px solid #f3f4f6;">
-                                <td style="padding: 10px 16px; color: #4b5563; font-weight: 600;">Senin - Jumat</td>
-                                <td style="padding: 10px 16px; text-align: right; font-weight: 700; color: #111;">09:00
-                                    - 16:00</td>
+                                <td style="padding: 10px 16px; color: #4b5563; font-weight: 600;">{{ $settings['sekre_weekday_days'] ?? 'Senin - Jumat' }}</td>
+                                <td style="padding: 10px 16px; text-align: right; font-weight: 700; color: #111;">{{ $settings['sekre_weekday_hours'] ?? '09:00 - 16:00' }}</td>
                             </tr>
                             <tr style="border-bottom: 1px solid #f3f4f6;">
-                                <td style="padding: 10px 16px; color: #4b5563; font-weight: 600;">Sabtu</td>
-                                <td style="padding: 10px 16px; text-align: right; font-weight: 700; color: #111;">09:00
-                                    - 13:00</td>
+                                <td style="padding: 10px 16px; color: #4b5563; font-weight: 600;">{{ $settings['sekre_sat_days'] ?? 'Sabtu' }}</td>
+                                <td style="padding: 10px 16px; text-align: right; font-weight: 700; color: #111;">{{ $settings['sekre_sat_hours'] ?? '09:00 - 13:00' }}</td>
                             </tr>
                             <tr style="background: rgba(255,0,0,0.05);">
-                                <td style="padding: 10px 16px; color: #ef4444; font-weight: 600;">Minggu / Libur</td>
-                                <td style="padding: 10px 16px; text-align: right; font-weight: 800; color: #ef4444;">
-                                    Sesuai Janji</td>
+                                <td style="padding: 10px 16px; color: #ef4444; font-weight: 600;">{{ $settings['sekre_sun_days'] ?? 'Minggu / Libur' }}</td>
+                                <td style="padding: 10px 16px; text-align: right; font-weight: 800; color: #ef4444;">{{ $settings['sekre_sun_hours'] ?? 'Sesuai Janji' }}</td>
                             </tr>
                         </table>
                     </div>
@@ -7474,12 +7471,12 @@
                         <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Anak Cabang</div>
                         <div style="display:flex;justify-content:center;gap:16px;">
                             <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#1e3a8a;line-height:1;">482</div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#1e3a8a;line-height:1;">{{ $settings['stats_ipnu_ac'] ?? '482' }}</div>
                                 <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
                             </div>
                             <div style="width:1px;background:#e2e8f0;"></div>
                             <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">510</div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">{{ $settings['stats_ippnu_ac'] ?? '510' }}</div>
                                 <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
                             </div>
                         </div>
@@ -7492,12 +7489,12 @@
                         <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Ranting (Desa)</div>
                         <div style="display:flex;justify-content:center;gap:16px;">
                             <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#065f46;line-height:1;">2,750</div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#065f46;line-height:1;">{{ $settings['stats_ipnu_ranting'] ?? '2,750' }}</div>
                                 <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
                             </div>
                             <div style="width:1px;background:#e2e8f0;"></div>
                             <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">2,566</div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">{{ $settings['stats_ippnu_ranting'] ?? '2,566' }}</div>
                                 <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
                             </div>
                         </div>
@@ -7510,12 +7507,12 @@
                         <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Komisariat Sekolah</div>
                         <div style="display:flex;justify-content:center;gap:16px;">
                             <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#5b21b6;line-height:1;">880</div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#5b21b6;line-height:1;">{{ $settings['stats_ipnu_sekolah'] ?? '880' }}</div>
                                 <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
                             </div>
                             <div style="width:1px;background:#e2e8f0;"></div>
                             <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">804</div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">{{ $settings['stats_ippnu_sekolah'] ?? '804' }}</div>
                                 <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
                             </div>
                         </div>
@@ -7528,12 +7525,12 @@
                         <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Komisariat Pondok Pesantren</div>
                         <div style="display:flex;justify-content:center;gap:16px;">
                             <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#b45309;line-height:1;">450</div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#b45309;line-height:1;">{{ $settings['stats_ipnu_pesantren'] ?? '450' }}</div>
                                 <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
                             </div>
                             <div style="width:1px;background:#e2e8f0;"></div>
                             <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">420</div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">{{ $settings['stats_ippnu_pesantren'] ?? '420' }}</div>
                                 <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
                             </div>
                         </div>
