@@ -7362,18 +7362,17 @@
                 }
             </style>
 
-
             <div class="desa-stat-container">
                 <div class="desa-stat-header-pill">STATISTIK ANGGOTA</div>
 
                 <div class="stat-grid-top">
                     {{-- IPNU --}}
                     <div style="background:linear-gradient(135deg,#e8f0fe 0%,#f8faff 100%);border-radius:12px;padding:20px;border:1px solid #c7d9fb;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
-                        <div style="width:56px;height:56px;overflow:hidden;flex-shrink:0;display:flex;justify-content:center;">
-                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="height:56px;width:auto;max-width:none;object-fit:contain;" alt="Logo IPNU">
+                        <div style="width:56px;height:56px;overflow:hidden;flex-shrink:0;display:flex;justify-content:center;border-radius:50%;">
+                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="height:100%;width:200%;max-width:none;object-fit:cover;object-position:left;" alt="Logo IPNU">
                         </div>
                         <div>
-                            <div style="font-size:0.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">⬤ TOTAL ANGGOTA IPNU</div>
+                            <div style="font-size:0.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPNU</div>
                             <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">31,340</div>
                             <div style="font-size:0.78rem;color:#64748b;font-weight:600;">Rekan IPNU Terverifikasi</div>
                             <div style="margin-top:8px;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:4px;width:80%;margin-left:auto;margin-right:auto;"></div>
@@ -7382,10 +7381,10 @@
                     {{-- IPPNU --}}
                     <div style="background:linear-gradient(135deg,#fef3e8 0%,#fffaf5 100%);border-radius:12px;padding:20px;border:1px solid #fbd8a8;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
                         <div style="width:56px;height:56px;overflow:hidden;flex-shrink:0;display:flex;justify-content:center;">
-                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="height:56px;width:auto;max-width:none;object-fit:contain;" alt="Logo IPPNU">
+                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="height:100%;width:200%;max-width:none;object-fit:cover;object-position:right;" alt="Logo IPPNU">
                         </div>
                         <div>
-                            <div style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">⬤ TOTAL ANGGOTA IPPNU</div>
+                            <div style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPPNU</div>
                             <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">37,197</div>
                             <div style="font-size:0.78rem;color:#64748b;font-weight:600;">Rekanita IPPNU Terverifikasi</div>
                             <div style="margin-top:8px;height:4px;background:linear-gradient(90deg,#c2410c,#f97316);border-radius:4px;width:80%;margin-left:auto;margin-right:auto;"></div>
