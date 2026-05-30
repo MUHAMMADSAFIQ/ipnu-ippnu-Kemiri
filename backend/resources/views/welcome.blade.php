@@ -6471,7 +6471,7 @@
                         formData.append('subject', topik);
                         formData.append('message', pesan);
 
-                        fetch('{{ route("ruang-lapor.store") }}', {
+                        fetch('/ruang-lapor', {
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json',
