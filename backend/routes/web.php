@@ -7,7 +7,53 @@ use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $articles = Article::where('status', 'published')->orderBy('published_at', 'desc')->paginate(6);
+    // Visitor tracking
+    $ip = request()->ip();
+    $date = date('Y-m-d');
+    if (!session()->has("visited_{$date}")) {
+        // Track unique visit per session per day
+        $os = 'Unknown';
+        $browser = 'Unknown';
+        $userAgent = request()->header('User-Agent');
+        if (preg_match('/windows/i', $userAgent)) $os = 'Windows';
+        elseif (preg_match('/mac/i', $userAgent)) $os = 'Mac OS';
+        elseif (preg_match('/linux/i', $userAgent)) $os = 'Linux';
+        elseif (preg_match('/android/i', $userAgent)) $os = 'Android';
+        elseif (preg_match('/iphone|ipad/i', $userAgent)) $os = 'iOS';
+        
+        if (preg_match('/chrome/i', $userAgent)) $browser = 'Chrome';
+        elseif (preg_match('/firefox/i', $userAgent)) $browser = 'Firefox';
+        elseif (preg_match('/safari/i', $userAgent)) $browser = 'Safari';
+        elseif (preg_match('/edge/i', $userAgent)) $browser = 'Edge';
+        
+        \App\Models\Visitor::create([
+            'ip_address' => $ip,
+            'os' => $os,
+            'browser' => $browser,
+            'visit_date' => $date
+        ]);
+        session()->put("visited_{$date}", true);
+    }
+
+    $visitorStats = [
+        'today' => \App\Models\Visitor::where('visit_date', $date)->count(),
+        'yesterday' => \App\Models\Visitor::where('visit_date', date('Y-m-d', strtotime('-1 day')))->count(),
+        'total' => \App\Models\Visitor::count(),
+        'os' => \App\Models\Visitor::latest()->first()->os ?? 'Unknown',
+        'browser' => \App\Models\Visitor::latest()->first()->browser ?? 'Unknown',
+        'ip' => $ip
+    ];
+
+    $query = Article::where('status', 'published');
+    if (request('search')) {
+        $search = request('search');
+        $query->where(function($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+              ->orWhere('content', 'like', "%{$search}%")
+              ->orWhere('excerpt', 'like', "%{$search}%");
+        });
+    }
+    $articles = $query->orderBy('published_at', 'desc')->paginate(6);
     $popularArticles = Article::where('status', 'published')->orderBy('views_count', 'desc')->take(5)->get();
     $latestArticles = Article::where('status', 'published')->orderBy('published_at', 'desc')->take(5)->get();
     $recentComments = \App\Models\Feedback::latest()->take(3)->get();
@@ -21,7 +67,7 @@ Route::get('/', function () {
     $chatMessages = \App\Models\ChatMessage::orderBy('created_at', 'desc')->take(50)->get()->reverse();
     $agendas = \App\Models\Agenda::orderBy('date', 'asc')->get();
     $programs = \App\Models\Program::all();
-    return view('welcome', compact('articles', 'popularArticles', 'latestArticles', 'recentComments', 'galleries', 'allGalleries', 'officials', 'stats', 'products', 'settings', 'ads', 'chatMessages', 'agendas', 'programs'));
+    return view('welcome', compact('articles', 'popularArticles', 'latestArticles', 'recentComments', 'galleries', 'allGalleries', 'officials', 'stats', 'products', 'settings', 'ads', 'chatMessages', 'agendas', 'programs', 'visitorStats'));
 });
 
 Route::get('/artikel/{slug}', function ($slug) {

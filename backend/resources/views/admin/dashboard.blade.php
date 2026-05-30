@@ -1787,12 +1787,14 @@
                                 <div class="form-group"><label class="form-label">No. WhatsApp</label><input type="text" name="whatsapp" value="{{ $settings['whatsapp'] ?? '' }}" placeholder="628xxx"></div>
                                 <div class="form-group full"><label class="form-label">Alamat Sekretariat</label><textarea name="address" rows="2" placeholder="Alamat lengkap...">{{ $settings['address'] ?? '' }}</textarea></div>
                                 
-                                <div class="form-group full"><label class="form-label" style="margin-top:16px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">Pengaturan Halaman Depan (Headline & Banner)</label></div>
+                                <div class="form-group full"><label class="form-label" style="margin-top:16px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">Pengaturan Headline</label></div>
                                 <div class="form-group"><label class="form-label">Teks Headline (Judul)</label><input type="text" name="hero_title" value="{{ $settings['hero_title'] ?? '' }}" placeholder="Teks besar di atas..."></div>
                                 <div class="form-group"><label class="form-label">Teks Headline (Subjudul)</label><input type="text" name="hero_subtitle" value="{{ $settings['hero_subtitle'] ?? '' }}" placeholder="Deskripsi di bawah judul..."></div>
                                 <div class="form-group"><label class="form-label">Foto Latar Headline</label><input type="file" name="hero_image" accept="image/*"><small>Biarkan kosong jika tidak ingin mengubah</small></div>
-                                <div class="form-group"><label class="form-label">Judul Banner (Terima Kasih)</label><input type="text" name="banner_thanks_title" value="{{ $settings['banner_thanks_title'] ?? '' }}" placeholder="Terima Kasih..."></div>
-                                <div class="form-group"><label class="form-label">Teks Banner (Terima Kasih)</label><input type="text" name="banner_thanks" value="{{ $settings['banner_thanks'] ?? '' }}" placeholder="Deskripsi lengkap..."></div>
+                                
+                                <div class="form-group full"><label class="form-label" style="margin-top:16px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">Pengaturan Banner (Terima Kasih)</label></div>
+                                <div class="form-group"><label class="form-label">Judul Banner</label><input type="text" name="banner_thanks_title" value="{{ $settings['banner_thanks_title'] ?? '' }}" placeholder="Terima Kasih..."></div>
+                                <div class="form-group full"><label class="form-label">Teks Banner</label><input type="text" name="banner_thanks" value="{{ $settings['banner_thanks'] ?? '' }}" placeholder="Deskripsi lengkap..."></div>
                             </div>
                             <button type="submit" class="btn btn-primary btn-submit" style="margin-top:16px;"><i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan</button>
                         </form>

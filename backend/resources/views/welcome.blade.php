@@ -1826,6 +1826,8 @@
             margin-right: -40px;
         }
 
+
+
         .dc-banner-left::before {
             content: '';
             position: absolute;
@@ -1895,34 +1897,30 @@
             right: 20px;
             color: var(--primary);
             font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: -5px;
-            z-index: 20;
-            font-style: italic;
-            opacity: 0.8;
+            display: none;
         }
 
         .dc-banner-slide {
             position: absolute;
             inset: 0;
             opacity: 0;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 1.5s ease-in-out, transform 8s linear;
+            transform: scale(1.05);
         }
 
         .dc-banner-slide.active {
             opacity: 1;
+            transform: scale(1);
         }
 
         .dc-banner-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 0;
-            /* Sharp edges for flush fit */
+            display: block;
         }
 
-
-        /* Refined Tape Effect - Use Variables for Theme Reactivity */
+        /* Decorative Elements - Hidden as requested by user */
         .dc-banner-decor {
             position: absolute;
             bottom: 20px;
@@ -4559,9 +4557,9 @@
     
     <!-- Search Bar Overlay -->
     <div id="search-overlay" style="display:none; position:absolute; top:42px; left:0; width:100%; background:white; padding:10px 20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1000; border-bottom:1px solid #e2e8f0;">
-        <form action="#artikel" method="GET" style="display:flex; gap:10px; max-width:800px; margin:0 auto; align-items:center;" onsubmit="event.preventDefault(); executeSearch();">
-            <input type="text" id="search-input" placeholder="Cari artikel (ketik lalu tekan enter)..." style="flex:1; padding:8px 16px; border:1px solid #cbd5e1; border-radius:50px; font-size:0.9rem; outline:none; color:#333;">
-            <button type="button" onclick="executeSearch()" style="background:var(--primary); color:white; border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <form action="{{ url('/') }}" method="GET" style="display:flex; gap:10px; max-width:800px; margin:0 auto; align-items:center;">
+            <input type="text" name="search" id="search-input" value="{{ request('search') }}" placeholder="Cari artikel (ketik lalu tekan enter)..." style="flex:1; padding:8px 16px; border:1px solid #cbd5e1; border-radius:50px; font-size:0.9rem; outline:none; color:#333;">
+            <button type="submit" style="background:var(--primary); color:white; border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
     
@@ -4576,30 +4574,16 @@
             }
         }
         
-        function executeSearch() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const articles = document.querySelectorAll('.artikel-card');
-            let found = false;
-            
-            articles.forEach(card => {
-                const title = card.querySelector('.artikel-title') ? card.querySelector('.artikel-title').innerText.toLowerCase() : '';
-                const desc = card.querySelector('.artikel-desc') ? card.querySelector('.artikel-desc').innerText.toLowerCase() : '';
-                
-                if (title.includes(query) || desc.includes(query)) {
-                    card.style.display = 'flex';
-                    found = true;
-                } else {
-                    card.style.display = 'none';
+        // Ensure scroll to artikel if searched
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('search')) {
+                const artikelSection = document.getElementById('artikel');
+                if(artikelSection) {
+                    artikelSection.scrollIntoView({ behavior: 'smooth' });
                 }
-            });
-            
-            // Scroll to artikel section
-            const artikelSection = document.getElementById('artikel');
-            if(artikelSection) {
-                artikelSection.scrollIntoView({ behavior: 'smooth' });
             }
-            toggleSearch();
-        }
+        });
     </script>
 
     <!-- Dashboard Top Section -->
@@ -7054,34 +7038,27 @@
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
                             <tr style="border-bottom: 1px solid #f3f4f6;">
                                 <td style="padding: 10px 16px; color: #4b5563;">Hari Ini</td>
-                                <td style="padding: 10px 16px; text-align: right; font-weight: 700; color: #111;">124
-                                </td>
+                                <td style="padding: 10px 16px; text-align: right; font-weight: 700; color: #111;">{{ number_format($visitorStats['today']) }}</td>
                             </tr>
                             <tr style="border-bottom: 1px solid #f3f4f6;">
                                 <td style="padding: 10px 16px; color: #4b5563;">Kemarin</td>
-                                <td style="padding: 10px 16px; text-align: right; font-weight: 700; color: #111;">452
-                                </td>
+                                <td style="padding: 10px 16px; text-align: right; font-weight: 700; color: #111;">{{ number_format($visitorStats['yesterday']) }}</td>
                             </tr>
                             <tr style="border-bottom: 1px solid #f3f4f6; background: rgba(0,0,0,0.03);">
-                                <td style="padding: 10px 16px; color: var(--primary); font-weight: 700;">Total
-                                    Pengunjung</td>
-                                <td
-                                    style="padding: 10px 16px; text-align: right; font-weight: 800; color: var(--primary);">
-                                    15.890</td>
+                                <td style="padding: 10px 16px; color: var(--primary); font-weight: 700;">Total Pengunjung</td>
+                                <td style="padding: 10px 16px; text-align: right; font-weight: 800; color: var(--primary);">{{ number_format($visitorStats['total']) }}</td>
                             </tr>
                         </table>
-                        <div
-                            style="background: #f9fafb; padding: 12px 16px; border-top: 1px solid #e5e7eb; font-size: 0.8rem; color: #4b5563; line-height: 1.6;">
-                            <div
-                                style="display: flex; justify-content: space-between; border-bottom: 1px dashed #e5e7eb; padding-bottom: 4px; margin-bottom: 4px;">
-                                <span>OS:</span> <strong style="color: #111;">Windows 10</strong>
+                        <div style="background: #f9fafb; padding: 12px 16px; border-top: 1px solid #e5e7eb; font-size: 0.8rem; color: #4b5563; line-height: 1.6;">
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #e5e7eb; padding-bottom: 4px; margin-bottom: 4px;">
+                                <span>OS:</span> <strong style="color: #111;">{{ $visitorStats['os'] }}</strong>
                             </div>
-                            <div
-                                style="display: flex; justify-content: space-between; border-bottom: 1px dashed #e5e7eb; padding-bottom: 4px; margin-bottom: 4px;">
-                                <span>Browser:</span> <strong style="color: #111;">Chrome 124.0</strong>
+                            <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #e5e7eb; padding-bottom: 4px; margin-bottom: 4px;">
+                                <span>Browser:</span> <strong style="color: #111;">{{ $visitorStats['browser'] }}</strong>
                             </div>
-                            <div style="display: flex; justify-content: space-between;"><span>IP Address:</span> <strong
-                                    style="color: #111;">192.168.1.105</strong></div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>IP Address:</span> <strong style="color: #111;">{{ $visitorStats['ip'] }}</strong>
+                            </div>
                         </div>
                     </div>
                 </div><!-- /.dr-widget (statistik pengunjung) -->
@@ -7389,32 +7366,110 @@
             <div class="desa-stat-container">
                 <div class="desa-stat-header-pill">STATISTIK ANGGOTA</div>
 
-                <style>
-                    .dynamic-stat-grid {
-                        display: grid;
-                        grid-template-columns: repeat(4, 1fr);
-                        gap: 16px;
-                        margin-top: 20px;
-                    }
-                    @media(max-width: 900px) {
-                        .dynamic-stat-grid {
-                            grid-template-columns: repeat(2, 1fr);
-                        }
-                    }
-                    @media(max-width: 500px) {
-                        .dynamic-stat-grid {
-                            grid-template-columns: 1fr;
-                        }
-                    }
-                </style>
-                <div class="dynamic-stat-grid">
-                    @foreach($stats as $stat)
-                    <div style="background:#f8faff;border-radius:12px;padding:20px;border:1px solid #e2e8f0;text-align:center;transition:transform 0.2s;box-shadow:0 4px 10px rgba(0,0,0,0.02);">
-                        <div style="font-size: 2.5rem; margin-bottom: 12px;">{{ $stat->icon ?? '📊' }}</div>
-                        <div style="font-size: 2rem; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 6px;">{{ number_format($stat->value) }}</div>
-                        <div style="font-size: 0.85rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">{{ $stat->label }}</div>
+                <div class="stat-grid-top">
+                    {{-- IPNU --}}
+                    <div style="background:linear-gradient(135deg,#e8f0fe 0%,#f8faff 100%);border-radius:12px;padding:20px;border:1px solid #c7d9fb;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
+                        <div style="width:56px;height:56px;overflow:hidden;flex-shrink:0;display:flex;justify-content:center;">
+                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="height:56px;width:auto;max-width:none;object-fit:contain;" alt="Logo IPNU">
+                        </div>
+                        <div>
+                            <div style="font-size:0.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">⬤ TOTAL ANGGOTA IPNU</div>
+                            <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">31,340</div>
+                            <div style="font-size:0.78rem;color:#64748b;font-weight:600;">Rekan IPNU Terverifikasi</div>
+                            <div style="margin-top:8px;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:4px;width:80%;margin-left:auto;margin-right:auto;"></div>
+                        </div>
                     </div>
-                    @endforeach
+                    {{-- IPPNU --}}
+                    <div style="background:linear-gradient(135deg,#fef3e8 0%,#fffaf5 100%);border-radius:12px;padding:20px;border:1px solid #fbd8a8;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
+                        <div style="width:56px;height:56px;overflow:hidden;flex-shrink:0;display:flex;justify-content:center;">
+                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="height:56px;width:auto;max-width:none;object-fit:contain;" alt="Logo IPPNU">
+                        </div>
+                        <div>
+                            <div style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">⬤ TOTAL ANGGOTA IPPNU</div>
+                            <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">37,197</div>
+                            <div style="font-size:0.78rem;color:#64748b;font-weight:600;">Rekanita IPPNU Terverifikasi</div>
+                            <div style="margin-top:8px;height:4px;background:linear-gradient(90deg,#c2410c,#f97316);border-radius:4px;width:80%;margin-left:auto;margin-right:auto;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Divider --}}
+                <div class="desa-stat-divider"></div>
+
+                {{-- Grid Stats: Anak Cabang, Ranting, Komisariat --}}
+                <div class="stat-grid-bottom">
+                    {{-- Anak Cabang --}}
+                    <div style="background:#f8faff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center;">
+                        <div style="width:44px;height:44px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 10px rgba(30,58,138,0.3);">
+                            <i class="fa-solid fa-building" style="color:white;font-size:1.1rem;"></i>
+                        </div>
+                        <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Anak Cabang</div>
+                        <div style="display:flex;justify-content:center;gap:16px;">
+                            <div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#1e3a8a;line-height:1;">482</div>
+                                <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
+                            </div>
+                            <div style="width:1px;background:#e2e8f0;"></div>
+                            <div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">510</div>
+                                <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Ranting (Desa) --}}
+                    <div style="background:#f8faff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center;">
+                        <div style="width:44px;height:44px;background:linear-gradient(135deg,#065f46,#10b981);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 10px rgba(6,95,70,0.3);">
+                            <i class="fa-solid fa-tree-city" style="color:white;font-size:1.1rem;"></i>
+                        </div>
+                        <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Ranting (Desa)</div>
+                        <div style="display:flex;justify-content:center;gap:16px;">
+                            <div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#065f46;line-height:1;">2,750</div>
+                                <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
+                            </div>
+                            <div style="width:1px;background:#e2e8f0;"></div>
+                            <div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">2,566</div>
+                                <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Komisariat Sekolah --}}
+                    <div style="background:#f8faff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center;">
+                        <div style="width:44px;height:44px;background:linear-gradient(135deg,#5b21b6,#8b5cf6);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 10px rgba(91,33,182,0.3);">
+                            <i class="fa-solid fa-school" style="color:white;font-size:1.1rem;"></i>
+                        </div>
+                        <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Komisariat Sekolah</div>
+                        <div style="display:flex;justify-content:center;gap:16px;">
+                            <div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#5b21b6;line-height:1;">880</div>
+                                <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
+                            </div>
+                            <div style="width:1px;background:#e2e8f0;"></div>
+                            <div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">804</div>
+                                <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Komisariat Pondok Pesantren --}}
+                    <div style="background:#f8faff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center;">
+                        <div style="width:44px;height:44px;background:linear-gradient(135deg,#b45309,#d97706);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 10px rgba(180,83,9,0.3);">
+                            <i class="fa-solid fa-mosque" style="color:white;font-size:1.1rem;"></i>
+                        </div>
+                        <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Komisariat Pondok Pesantren</div>
+                        <div style="display:flex;justify-content:center;gap:16px;">
+                            <div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#b45309;line-height:1;">450</div>
+                                <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
+                            </div>
+                            <div style="width:1px;background:#e2e8f0;"></div>
+                            <div>
+                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">420</div>
+                                <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Sumber data --}}
