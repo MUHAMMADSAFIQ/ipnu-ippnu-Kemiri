@@ -7429,8 +7429,8 @@
                 <div class="stat-grid-top">
                     {{-- IPNU --}}
                     <div style="background:linear-gradient(135deg,#e8f0fe 0%,#f8faff 100%);border-radius:12px;padding:20px;border:1px solid #c7d9fb;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
-                        <div style="width: 50px; height: 50px; overflow: hidden; border-radius: 50%; background: #fff; flex-shrink: 0; position: relative;">
-                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="position: absolute; top: 0; left: 0; width: 200%; height: 100%; object-fit: cover; object-position: left;" alt="IPNU">
+                        <div style="width: 50px; height: 50px; overflow: hidden; border-radius: 50%; background: #fff; flex-shrink: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                            <img src="{{ asset('images/ipnu-logo.png') }}" style="width: 100%; height: 100%; object-fit: contain;" alt="IPNU">
                         </div>
                         <div>
                             <div style="font-size:0.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPNU</div>
@@ -7441,8 +7441,8 @@
                     </div>
                     {{-- IPPNU --}}
                     <div style="background:linear-gradient(135deg,#fef3e8 0%,#fffaf5 100%);border-radius:12px;padding:20px;border:1px solid #fbd8a8;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
-                        <div style="width: 50px; height: 50px; overflow: hidden; border-radius: 50%; background: #fff; flex-shrink: 0; position: relative;">
-                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="position: absolute; top: 0; left: 0; width: 200%; height: 100%; object-fit: cover; object-position: right;" alt="IPPNU">
+                        <div style="width: 50px; height: 50px; overflow: hidden; border-radius: 50%; background: #fff; flex-shrink: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                            <img src="{{ asset('images/ippnu-logo.png') }}" style="width: 100%; height: 100%; object-fit: contain;" alt="IPPNU">
                         </div>
                         <div>
                             <div style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPPNU</div>
@@ -7993,8 +7993,8 @@
         <div class="mobile-nav-content">
             <div class="mobile-nav-header">
                 <span>
-                    <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}"
-                        style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);vertical-align:middle;margin-right:8px;">
+                    <img src="{{ asset('favicon.png') }}"
+                        style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);vertical-align:middle;margin-right:8px;object-fit:contain;background:#fff;">
                     PAC IPNU IPPNU Kemiri
                 </span>
                 <button onclick="toggleMobileMenu()">✕</button>
