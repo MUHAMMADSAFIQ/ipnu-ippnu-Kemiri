@@ -1257,14 +1257,105 @@
             ══════════════════════════════════════════════ --}}
             <div id="section-history" class="admin-section">
                 <div class="card">
-                    <div class="card-header"><div class="card-header-title"><i class="fa-solid fa-scroll"></i> Kelola Profil Organisasi</div></div>
+                    <div class="card-header"><div class="card-header-title"><i class="fa-solid fa-scroll"></i> Kelola Profil &amp; Sejarah Organisasi</div></div>
                     <div class="card-body">
-                        <form action="{{ route('admin.settings.update') }}" method="POST">
+                        <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Sejarah Singkat</label><textarea name="history" rows="5" placeholder="Sejarah singkat organisasi...">{{ $settings['history'] ?? '' }}</textarea></div>
-                            <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Visi Organisasi</label><textarea name="vision" rows="3" placeholder="Visi...">{{ $settings['vision'] ?? '' }}</textarea></div>
-                            <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Misi Organisasi</label><textarea name="mission" rows="5" placeholder="1. Misi pertama...">{{ $settings['mission'] ?? '' }}</textarea></div>
-                            <button type="submit" class="btn btn-primary btn-submit"><i class="fa-solid fa-floppy-disk"></i> Simpan Profil</button>
+                            
+                            {{-- SEJARAH IPNU --}}
+                            <h3 style="border-bottom:2px solid var(--primary); padding-bottom:6px; margin-bottom:14px; color:var(--primary-dark); font-family:'Outfit'; font-weight:800; font-size:1.15rem; font-style:italic;">📖 SEJARAH IPNU</h3>
+                            <div class="form-grid">
+                                <div class="form-group full">
+                                    <label class="form-label">Sejarah IPNU (Paragraf)</label>
+                                    <textarea name="sejarah_ipnu" rows="6" placeholder="Ikatan Pelajar Nahdlatul Ulama (IPNU) didirikan pada tanggal...">{{ $settings['sejarah_ipnu'] ?? '' }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nama Pendiri IPNU</label>
+                                    <input type="text" name="sejarah_ipnu_title" value="{{ $settings['sejarah_ipnu_title'] ?? '' }}" placeholder="Prof. Dr. KH. Tolchah Mansoer">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Foto Portrait Pendiri</label>
+                                    <input type="file" name="sejarah_ipnu_photo_portrait" accept="image/*">
+                                    @if(!empty($settings['sejarah_ipnu_photo_portrait']))
+                                        <div style="margin-top:8px;"><img src="{{ Storage::url($settings['sejarah_ipnu_photo_portrait']) }}" style="height:60px; border-radius:4px; border:1px solid #cbd5e1;"></div>
+                                    @endif
+                                </div>
+                                <div class="form-group full">
+                                    <label class="form-label">Foto Spanduk/Banner Sejarah IPNU</label>
+                                    <input type="file" name="sejarah_ipnu_photo_banner" accept="image/*">
+                                    @if(!empty($settings['sejarah_ipnu_photo_banner']))
+                                        <div style="margin-top:8px;"><img src="{{ Storage::url($settings['sejarah_ipnu_photo_banner']) }}" style="max-height:100px; border-radius:6px; border:1px solid #cbd5e1;"></div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            {{-- SEJARAH IPPNU --}}
+                            <h3 style="border-bottom:2px solid #c2410c; padding-bottom:6px; margin-top:28px; margin-bottom:14px; color:#c2410c; font-family:'Outfit'; font-weight:800; font-size:1.15rem; font-style:italic;">📖 SEJARAH IPPNU</h3>
+                            <div class="form-grid">
+                                <div class="form-group full">
+                                    <label class="form-label">Sejarah IPPNU (Paragraf)</label>
+                                    <textarea name="sejarah_ippnu" rows="6" placeholder="Sedangkan Ikatan Pelajar Putri Nahdlatul Ulama (IPPNU) didirikan pada tanggal...">{{ $settings['sejarah_ippnu'] ?? '' }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nama Pendiri IPPNU</label>
+                                    <input type="text" name="sejarah_ippnu_title" value="{{ $settings['sejarah_ippnu_title'] ?? '' }}" placeholder="Ny. Hj. Umroh Mahfudzah">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Foto Portrait Pendiri</label>
+                                    <input type="file" name="sejarah_ippnu_photo_portrait" accept="image/*">
+                                    @if(!empty($settings['sejarah_ippnu_photo_portrait']))
+                                        <div style="margin-top:8px;"><img src="{{ Storage::url($settings['sejarah_ippnu_photo_portrait']) }}" style="height:60px; border-radius:4px; border:1px solid #cbd5e1;"></div>
+                                    @endif
+                                </div>
+                                <div class="form-group full">
+                                    <label class="form-label">Foto Spanduk/Banner Sejarah IPPNU</label>
+                                    <input type="file" name="sejarah_ippnu_photo_banner" accept="image/*">
+                                    @if(!empty($settings['sejarah_ippnu_photo_banner']))
+                                        <div style="margin-top:8px;"><img src="{{ Storage::url($settings['sejarah_ippnu_photo_banner']) }}" style="max-height:100px; border-radius:6px; border:1px solid #cbd5e1;"></div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            {{-- VISI MISI IPNU --}}
+                            <h3 style="border-bottom:2px solid var(--primary); padding-bottom:6px; margin-top:28px; margin-bottom:14px; color:var(--primary-dark); font-family:'Outfit'; font-weight:800; font-size:1.15rem; font-style:italic;">🎯 VISI &amp; MISI IPNU</h3>
+                            <div class="form-grid">
+                                <div class="form-group full">
+                                    <label class="form-label">Visi IPNU</label>
+                                    <textarea name="visi_ipnu" rows="3" placeholder="Terwujudnya pelajar-pelajar bangsa yang bertaqwa...">{{ $settings['visi_ipnu'] ?? '' }}</textarea>
+                                </div>
+                                <div class="form-group full">
+                                    <label class="form-label">Misi IPNU <span style="font-weight:normal;color:#64748b;font-size:0.75rem;">(Pisahkan setiap poin misi dengan baris baru / Enter)</span></label>
+                                    <textarea name="misi_ipnu" rows="6" placeholder="Mendorong para pelajar bangsa untuk taat...&#10;Membentuk karakter para pelajar bangsa...">{{ $settings['misi_ipnu'] ?? '' }}</textarea>
+                                </div>
+                            </div>
+
+                            {{-- VISI MISI IPPNU --}}
+                            <h3 style="border-bottom:2px solid #c2410c; padding-bottom:6px; margin-top:28px; margin-bottom:14px; color:#c2410c; font-family:'Outfit'; font-weight:800; font-size:1.15rem; font-style:italic;">🎯 VISI &amp; MISI IPPNU</h3>
+                            <div class="form-grid">
+                                <div class="form-group full">
+                                    <label class="form-label">Visi IPPNU</label>
+                                    <textarea name="visi_ippnu" rows="3" placeholder="Terbentuknya kesempurnaan Pelajar Putri Indonesia...">{{ $settings['visi_ippnu'] ?? '' }}</textarea>
+                                </div>
+                                <div class="form-group full">
+                                    <label class="form-label">Misi IPPNU <span style="font-weight:normal;color:#64748b;font-size:0.75rem;">(Pisahkan setiap poin misi dengan baris baru / Enter)</span></label>
+                                    <textarea name="misi_ippnu" rows="5" placeholder="Membangun kader NU yang berkualitas...&#10;Mengembangkan wacana dan kualitas...">{{ $settings['misi_ippnu'] ?? '' }}</textarea>
+                                </div>
+                            </div>
+
+                            {{-- VISI MISI PAC KEMIRI --}}
+                            <h3 style="border-bottom:2px solid var(--accent); padding-bottom:6px; margin-top:28px; margin-bottom:14px; color:var(--text-dark); font-family:'Outfit'; font-weight:800; font-size:1.15rem; font-style:italic;">🌟 VISI &amp; MISI PAC KEMIRI</h3>
+                            <div class="form-grid">
+                                <div class="form-group full">
+                                    <label class="form-label">Visi PAC Kemiri</label>
+                                    <textarea name="visi_pac" rows="3" placeholder="Terwujudnya organisasi IPNU-IPPNU yang solid...">{{ $settings['visi_pac'] ?? '' }}</textarea>
+                                </div>
+                                <div class="form-group full">
+                                    <label class="form-label">Misi PAC Kemiri <span style="font-weight:normal;color:#64748b;font-size:0.75rem;">(Pisahkan setiap poin misi dengan baris baru / Enter)</span></label>
+                                    <textarea name="misi_pac" rows="6" placeholder="Meningkatkan solidaritas dan sinergi...&#10;Mengembangkan kualitas pelajar NU...">{{ $settings['misi_pac'] ?? '' }}</textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-submit" style="margin-top:24px; max-width:300px;"><i class="fa-solid fa-floppy-disk"></i> Simpan Profil Lengkap</button>
                         </form>
                     </div>
                 </div>
@@ -1794,6 +1885,8 @@
                                 <div class="form-group"><label class="form-label">Tahun Kepengurusan</label><input type="text" name="year" value="{{ $settings['year'] ?? '2024-2026' }}"></div>
                                 <div class="form-group"><label class="form-label">Email Kontak</label><input type="email" name="email" value="{{ $settings['email'] ?? '' }}" placeholder="email@org.com"></div>
                                 <div class="form-group"><label class="form-label">No. WhatsApp</label><input type="text" name="whatsapp" value="{{ $settings['whatsapp'] ?? '' }}" placeholder="628xxx"></div>
+                                <div class="form-group"><label class="form-label">Total Anggota IPNU (Statistik)</label><input type="number" name="total_anggota_ipnu" value="{{ $settings['total_anggota_ipnu'] ?? '31340' }}" placeholder="31340"></div>
+                                <div class="form-group"><label class="form-label">Total Anggota IPPNU (Statistik)</label><input type="number" name="total_anggota_ippnu" value="{{ $settings['total_anggota_ippnu'] ?? '37197' }}" placeholder="37197"></div>
                                 <div class="form-group full"><label class="form-label">Alamat Sekretariat</label><textarea name="address" rows="2" placeholder="Alamat lengkap...">{{ $settings['address'] ?? '' }}</textarea></div>
                                 
                                 <div class="form-group full"><label class="form-label" style="margin-top:16px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">Pengaturan Beranda Utama (Top Hero)</label></div>

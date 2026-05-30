@@ -325,9 +325,10 @@ Route::post('/chat/send-public', function (\Illuminate\Http\Request $request) {
 Route::get('/migrate-db', function() {
     try {
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
         \Illuminate\Support\Facades\Artisan::call('storage:link');
-        return "Database & Storage Link success! <br><pre>" . \Illuminate\Support\Facades\Artisan::output() . "</pre><a href='/admin/dashboard'>Back to Dashboard</a>";
+        return "Database migration, seeding, & Storage Link success! <br><pre>" . \Illuminate\Support\Facades\Artisan::output() . "</pre><a href='/admin/dashboard'>Back to Dashboard</a>";
     } catch (\Exception $e) {
-        return "Migration failed: " . $e->getMessage() . "<br><a href='/admin/dashboard'>Go to Dashboard anyway</a>";
+        return "Migration/Seeding failed: " . $e->getMessage() . "<br><a href='/admin/dashboard'>Go to Dashboard anyway</a>";
     }
 });

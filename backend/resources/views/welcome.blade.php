@@ -4652,12 +4652,6 @@
                                 </div>
                                 <div class="h-feature-text">Galeri<br>Foto</div>
                             </a>
-                            <a href="#agenda" class="h-feature-card">
-                                <div class="h-feature-icon-wrap">
-                                    <i class="fa-solid fa-calendar-check h-feature-icon"></i>
-                                </div>
-                                <div class="h-feature-text">Program<br>Kerja</div>
-                            </a>
                             <a href="javascript:void(0)" onclick="showSection('usaha')" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
                                     <i class="fa-solid fa-shop h-feature-icon"></i>
@@ -5321,21 +5315,26 @@
                             
                             <div style="border-radius:12px; overflow:hidden; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
                                 <!-- Banner -->
-                                <img src="{{ asset('images/KH Tolchah Mansoer Pendiri IPNU.jpg') }}" style="width:100%; height:auto; display:block;" alt="Banner Pendiri IPNU">
+                                <img src="{{ isset($settings['sejarah_ipnu_photo_banner']) ? Storage::url($settings['sejarah_ipnu_photo_banner']) : asset('images/KH Tolchah Mansoer Pendiri IPNU.jpg') }}" style="width:100%; height:auto; display:block;" alt="Banner Pendiri IPNU">
                                 
                                 <!-- Info with Portrait -->
                                 <div style="display:flex; flex-wrap:wrap; align-items:center; gap:20px; padding:20px; background:white; border-left: 4px solid var(--primary);">
-                                    <img src="{{ asset('images/PENDIRI IPNU.jpg') }}" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border: 3px solid #bbf7d0; box-shadow:0 4px 10px rgba(0,0,0,0.1);" alt="KH. Tolchah Mansoer">
+                                    <img src="{{ isset($settings['sejarah_ipnu_photo_portrait']) ? Storage::url($settings['sejarah_ipnu_photo_portrait']) : asset('images/PENDIRI IPNU.jpg') }}" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border: 3px solid #bbf7d0; box-shadow:0 4px 10px rgba(0,0,0,0.1);" alt="KH. Tolchah Mansoer">
                                     <div style="flex:1; min-width:200px;">
-                                        <h4 style="margin:0 0 5px 0; color:var(--primary-dark); font-weight:800; font-size:1.2rem;">Prof. Dr. KH. Tolchah Mansoer</h4>
+                                        <h4 style="margin:0 0 5px 0; color:var(--primary-dark); font-weight:800; font-size:1.2rem;">{{ $settings['sejarah_ipnu_title'] ?? 'Prof. Dr. KH. Tolchah Mansoer' }}</h4>
                                         <p style="margin:0; color:#64748b; font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Pendiri IPNU</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <p style="margin-bottom: 12px;">Ikatan Pelajar Nahdlatul Ulama (IPNU) didirikan pada tanggal 20 Jumadil Akhir 1373 H, bertepatan dengan 24 Februari 1954 M ketika diselenggarakan Kongres LP Ma’arif di Semarang. Sejak berdirinya, IPNU menjadi bagian dari LP Ma’arif. Namun pada tahun 1966 ketika diselenggarakan Kongres IPNU di Surabaya, IPNU resmi melepaskan diri dari LP Ma’arif dan menjadi badan otonom (banom) NU. Salah seorang pendiri IPNU adalah Prof. Dr. KH. Tolchah Mansyur.</p>
-                            <p style="margin-bottom: 12px;">Sejak berdirinya, IPNu merupakan kepanjangan dari Ikatan Pelajar Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-10 di Jombang yang dikenal dengan istilah Deklarasi Jombang, kepanjangan IPNU berganti menjadi Ikatan Putera nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.</p>
-                            <p>Namun setelah orde baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah, kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya. Melalui kongresnya yang ke-14 di Surabaya (18-22 juni 2003), kepanjangan IPNU kembali seperti semula yaitu Ikatan Pelajar Nahdlatul Ulama.</p>
+                            @php
+                                $sejarahIpnuText = $settings['sejarah_ipnu'] ?? "Ikatan Pelajar Nahdlatul Ulama (IPNU) didirikan pada tanggal 20 Jumadil Akhir 1373 H, bertepatan dengan 24 Februari 1954 M ketika diselenggarakan Kongres LP Ma’arif di Semarang. Sejak berdirinya, IPNU menjadi bagian dari LP Ma’arif. Namun pada tahun 1966 ketika diselenggarakan Kongres IPNU di Surabaya, IPNU resmi melepaskan diri dari LP Ma’arif dan menjadi badan otonom (banom) NU. Salah seorang pendiri IPNU adalah Prof. Dr. KH. Tolchah Mansyur.\n\nSejak berdirinya, IPNu merupakan kepanjangan dari Ikatan Pelajar Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-10 di Jombang yang dikenal dengan istilah Deklarasi Jombang, kepanjangan IPNU berganti menjadi Ikatan Putera nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.\n\nNamun setelah orde baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah, kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya. Melalui kongresnya yang ke-14 di Surabaya (18-22 juni 2003), kepanjangan IPNU kembali seperti semula yaitu Ikatan Pelajar Nahdlatul Ulama.";
+                            @endphp
+                            @foreach(explode("\n", str_replace("\r", "", $sejarahIpnuText)) as $p)
+                                @if(trim($p))
+                                    <p style="margin-bottom: 12px;">{!! nl2br(e(trim($p))) !!}</p>
+                                @endif
+                            @endforeach
                         </div>
 
                         <div id="sejarah-ippnu" class="sejarah-content">
@@ -5343,21 +5342,26 @@
                             
                             <div style="border-radius:12px; overflow:hidden; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
                                 <!-- Banner -->
-                                <img src="{{ asset('images/Pendiri IPPNU (1).jpg') }}" style="width:100%; height:auto; display:block;" alt="Banner Pendiri IPPNU">
+                                <img src="{{ isset($settings['sejarah_ippnu_photo_banner']) ? Storage::url($settings['sejarah_ippnu_photo_banner']) : asset('images/Pendiri IPPNU (1).jpg') }}" style="width:100%; height:auto; display:block;" alt="Banner Pendiri IPPNU">
                                 
                                 <!-- Info with Portrait -->
                                 <div style="display:flex; flex-wrap:wrap; align-items:center; gap:20px; padding:20px; background:white; border-left: 4px solid #c2410c;">
-                                    <img src="{{ asset('images/PENDIRI IPPNU.jpg') }}" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border: 3px solid #fdba74; box-shadow:0 4px 10px rgba(0,0,0,0.1);" alt="Ny. Hj. Umroh Mahfudzah">
+                                    <img src="{{ isset($settings['sejarah_ippnu_photo_portrait']) ? Storage::url($settings['sejarah_ippnu_photo_portrait']) : asset('images/PENDIRI IPPNU.jpg') }}" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border: 3px solid #fdba74; box-shadow:0 4px 10px rgba(0,0,0,0.1);" alt="Ny. Hj. Umroh Mahfudzah">
                                     <div style="flex:1; min-width:200px;">
-                                        <h4 style="margin:0 0 5px 0; color:#c2410c; font-weight:800; font-size:1.2rem;">Ny. Hj. Umroh Mahfudzah</h4>
+                                        <h4 style="margin:0 0 5px 0; color:#c2410c; font-weight:800; font-size:1.2rem;">{{ $settings['sejarah_ippnu_title'] ?? 'Ny. Hj. Umroh Mahfudzah' }}</h4>
                                         <p style="margin:0; color:#64748b; font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Pendiri IPPNU</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <p style="margin-bottom: 12px;">Sedangkan Ikatan Pelajar Putri Nahdlatul Ulama (IPPNU) didirikan pada tanggal 8 Rajab 1374 H bertepatan dengan tanggal 2 maret 1955 M di Solo Jawa Tengah. Salah seorang pendirinya adalah Ny. Umroh Mahfudzah. Sejak berdirinya, IPPNU bernaung di bawah LP Ma’arif. Namun sejak tahun 1966 melalui kongresnya di Surabaya, IPPNU berdiri sendiri sebagai salah satu badan otonom (banom) NU.</p>
-                            <p style="margin-bottom: 12px;">Sejak berdirinya, IPPNU merupakan kepanjangan dari Ikatan pelajar Putri Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-9 di Jombang (29-31 januari 1988), kepanjangan IPPNU berganti menjadi Ikatan Putri-putri Nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.</p>
-                            <p>Namun setelah Orde Baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya, melalui kongresnya yang ke-13 di Surabaya (18-22 Juni 2003), kepanjangan IPPNU kembali seperti semula yaitu Ikatan Pelajar Putri Nahdlatul Ulama.</p>
+                            @php
+                                $sejarahIppnuText = $settings['sejarah_ippnu'] ?? "Sedangkan Ikatan Pelajar Putri Nahdlatul Ulama (IPPNU) didirikan pada tanggal 8 Rajab 1374 H bertepatan dengan tanggal 2 maret 1955 M di Solo Jawa Tengah. Salah seorang pendirinya adalah Ny. Umroh Mahfudzah. Sejak berdirinya, IPPNU bernaung di bawah LP Ma’arif. Namun sejak tahun 1966 melalui kongresnya di Surabaya, IPPNU berdiri sendiri sebagai salah satu badan otonom (banom) NU.\n\nSejak berdirinya, IPPNU merupakan kepanjangan dari Ikatan pelajar Putri Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-9 di Jombang (29-31 januari 1988), kepanjangan IPPNU berganti menjadi Ikatan Putri-putri Nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.\n\nNamun setelah Orde Baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya, melalui kongresnya yang ke-13 di Surabaya (18-22 Juni 2003), kepanjangan IPPNU kembali seperti semula yaitu Ikatan Pelajar Putri Nahdlatul Ulama.";
+                            @endphp
+                            @foreach(explode("\n", str_replace("\r", "", $sejarahIppnuText)) as $p)
+                                @if(trim($p))
+                                    <p style="margin-bottom: 12px;">{!! nl2br(e(trim($p))) !!}</p>
+                                @endif
+                            @endforeach
                         </div>
 
                         <script>
@@ -5442,27 +5446,36 @@
                         <!-- IPNU Visi Misi -->
                         <div id="vm-ipnu" class="vm-content active">
                             <h3 style="color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; text-align: center;">Visi IPNU</h3>
-                            <p style="margin-bottom: 20px; font-style: italic;">Terwujudnya pelajar-pelajar bangsa yang bertaqwa kepada Allah SWT, berahlakul karimah, menguasai ilmu pengetahuan dan teknologi, memiliki kesadaran dan tanggungjawab terhada tatanan masyarakat yang berkeadilan dan demokratis atas dasar ajaran Islam ahlusunnah wal jamaah.</p>
+                            <p style="margin-bottom: 20px; font-style: italic; text-align: center;">{{ $settings['visi_ipnu'] ?? 'Terwujudnya pelajar-pelajar bangsa yang bertaqwa kepada Allah SWT, berahlakul karimah, menguasai ilmu pengetahuan dan teknologi, memiliki kesadaran dan tanggungjawab terhada tatanan masyarakat yang berkeadilan dan demokratis atas dasar ajaran Islam ahlusunnah wal jamaah.' }}</p>
                             
                             <h3 style="color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; text-align: center;">Misi IPNU</h3>
+                            @php
+                                $misiIpnu = array_filter(explode("\n", str_replace("\r", "", $settings['misi_ipnu'] ?? "Mendorong para pelajar bangsa untuk taat (patuh) dalam menjalankan perintah dan menjauhi segala larangan yang termaktub dalam ajaran Islam.\nMembentuk karakter para pelajar bangsa yang santun dalam bertindak, jujur dalam berprilaku, jernih dan obyektif dalam berfikir, serta memiliki ide/gagasan yang inovatif.\nMendorong pemamfaatan dan pengembangan ilmu pengetahuan dan teknologi sebagai media pengembangan potensi dan peningkatan SDM belajar.\nMewujudkan kader pemimpin bangsa yang profesional, jujur dan bertanggung jawab yang dilandasi oleh spirit nilai ajaran Islam ahlusunnah wal jamaah.")));
+                            @endphp
                             <ol style="padding-left: 20px;">
-                                <li style="margin-bottom: 8px;">Mendorong para pelajar bangsa untuk taat (patuh) dalam menjalankan perintah dan menjauhi segala larangan yang termaktub dalam ajaran Islam.</li>
-                                <li style="margin-bottom: 8px;">Membentuk karakter para pelajar bangsa yang santun dalam bertindak, jujur dalam berprilaku, jernih dan obyektif dalam berfikir, serta memiliki ide/gagasan yang inovatif.</li>
-                                <li style="margin-bottom: 8px;">Mendorong pemamfaatan dan pengembangan ilmu pengetahuan dan teknologi sebagai media pengembangan potensi dan peningkatan SDM belajar.</li>
-                                <li style="margin-bottom: 8px;">Mewujudkan kader pemimpin bangsa yang profesional, jujur dan bertanggung jawab yang dilandasi oleh spirit nilai ajaran Islam ahlusunnah wal jamaah.</li>
+                                @foreach($misiIpnu as $m)
+                                    @if(trim($m))
+                                        <li style="margin-bottom: 8px;">{{ trim($m) }}</li>
+                                    @endif
+                                @endforeach
                             </ol>
                         </div>
 
                         <!-- IPPNU Visi Misi -->
                         <div id="vm-ippnu" class="vm-content">
                             <h3 style="color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; text-align: center;">Visi IPPNU</h3>
-                            <p style="margin-bottom: 20px; font-style: italic;">Terbentuknya kesempurnaan Pelajar Putri Indonesia yang bertakwa, berakhlaqul karimah, berilmu, dan berwawasan kebangsaan.</p>
+                            <p style="margin-bottom: 20px; font-style: italic; text-align: center;">{{ $settings['visi_ippnu'] ?? 'Terbentuknya kesempurnaan Pelajar Putri Indonesia yang bertakwa, berakhlaqul karimah, berilmu, dan berwawasan kebangsaan.' }}</p>
                             
                             <h3 style="color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; text-align: center;">Misi IPPNU</h3>
+                            @php
+                                $misiIppnu = array_filter(explode("\n", str_replace("\r", "", $settings['misi_ippnu'] ?? "Membangun kader NU yang berkualitas, berakhlaqul karimah, bersikap demokratis dalam kehidupan bermasyarakat, berbangsa dan bernegara.\nMengembangkan wacana dan kualitas sumber dya kader menuju terciptanya kesetaraan gender.\nMembentuk kader yang dinamis, kreatif, dan inovatif.")));
+                            @endphp
                             <ol style="padding-left: 20px;">
-                                <li style="margin-bottom: 8px;">Membangun kader NU yang berkualitas, berakhlaqul karimah, bersikap demokratis dalam kehidupan bermasyarakat, berbangsa dan bernegara.</li>
-                                <li style="margin-bottom: 8px;">Mengembangkan wacana dan kualitas sumber dya kader menuju terciptanya kesetaraan gender.</li>
-                                <li style="margin-bottom: 8px;">Membentuk kader yang dinamis, kreatif, dan inovatif.</li>
+                                @foreach($misiIppnu as $m)
+                                    @if(trim($m))
+                                        <li style="margin-bottom: 8px;">{{ trim($m) }}</li>
+                                    @endif
+                                @endforeach
                             </ol>
                         </div>
 
@@ -5490,18 +5503,20 @@
                         <h3 style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; margin-bottom: 10px; text-align: center;">Visi</h3>
                         <div style="background: #f0fdf4; padding: 20px; border-radius: 12px; border-left: 4px solid var(--primary); margin-bottom: 25px;">
                             <p style="font-style: italic; color: #166534; font-size: 1.05rem; text-align: center; margin: 0;">
-                                “Terwujudnya organisasi IPNU-IPPNU yang solid, bersinergi, dan progresif dalam membangun pelajar Nahdlatul Ulama yang berkualitas, berakhlakul karimah, berwawasan luas, serta mampu berkontribusi bagi agama, bangsa, dan masyarakat.”
+                                “{{ $settings['visi_pac'] ?? 'Terwujudnya organisasi IPNU-IPPNU yang solid, bersinergi, dan progresif dalam membangun pelajar Nahdlatul Ulama yang berkualitas, berakhlakul karimah, berwawasan luas, serta mampu berkontribusi bagi agama, bangsa, dan masyarakat.' }}”
                             </p>
                         </div>
 
                         <h3 style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; margin-bottom: 15px;">Misi</h3>
+                        @php
+                            $misiPac = array_filter(explode("\n", str_replace("\r", "", $settings['misi_pac'] ?? "Meningkatkan solidaritas dan sinergi antar pengurus serta anggota IPNU-IPPNU dalam menjalankan organisasi.\nMengembangkan kualitas pelajar NU melalui kegiatan pendidikan, keagamaan, dan pengembangan keterampilan.\nMenanamkan nilai-nilai Ahlussunnah wal Jama’ah An-Nahdliyah dalam kehidupan sehari-hari.\nMendorong budaya organisasi yang aktif, inovatif, dan progresif sesuai perkembangan zaman.\nMembentuk generasi pelajar NU yang berkarakter, bertanggung jawab, dan mampu menjadi teladan di lingkungan masyarakat.\nMemperkuat kerja sama dengan berbagai pihak demi mendukung kemajuan organisasi dan pengembangan potensi pelajar NU.")));
+                        @endphp
                         <ol style="padding-left: 20px; line-height: 1.8; color: var(--text-dark);">
-                            <li style="margin-bottom: 8px;">Meningkatkan solidaritas dan sinergi antar pengurus serta anggota IPNU-IPPNU dalam menjalankan organisasi.</li>
-                            <li style="margin-bottom: 8px;">Mengembangkan kualitas pelajar NU melalui kegiatan pendidikan, keagamaan, dan pengembangan keterampilan.</li>
-                            <li style="margin-bottom: 8px;">Menanamkan nilai-nilai Ahlussunnah wal Jama’ah An-Nahdliyah dalam kehidupan sehari-hari.</li>
-                            <li style="margin-bottom: 8px;">Mendorong budaya organisasi yang aktif, inovatif, dan progresif sesuai perkembangan zaman.</li>
-                            <li style="margin-bottom: 8px;">Membentuk generasi pelajar NU yang berkarakter, bertanggung jawab, dan mampu menjadi teladan di lingkungan masyarakat.</li>
-                            <li style="margin-bottom: 8px;">Memperkuat kerja sama dengan berbagai pihak demi mendukung kemajuan organisasi dan pengembangan potensi pelajar NU.</li>
+                            @foreach($misiPac as $m)
+                                @if(trim($m))
+                                    <li style="margin-bottom: 8px;">{{ trim($m) }}</li>
+                                @endif
+                            @endforeach
                         </ol>
                     </div>
                 </div>
@@ -5903,7 +5918,7 @@
                             {{-- IPNU --}}
                             <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
                                 <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:12px 16px;font-weight:800;font-size:0.95rem;font-style:italic;">Susunan Pengurus IPNU</div>
-                                <img src="{{ asset('images/STRUKTUR IPNU.jpg') }}" alt="Foto Bersama IPNU" style="width:100%;display:block;object-fit:cover;max-height:280px;border-bottom:3px solid var(--primary);">
+                                <img src="{{ isset($settings['structure_ipnu_photo']) ? Storage::url($settings['structure_ipnu_photo']) : asset('images/STRUKTUR IPNU.jpg') }}" alt="Foto Bersama IPNU" style="width:100%;display:block;object-fit:cover;max-height:280px;border-bottom:3px solid var(--primary);">
                                 <div style="padding:16px;">
                                     @php $ipnu = $officials->where('type','bph')->where('organization','IPNU'); @endphp
                                     @foreach($ipnu->groupBy('section') as $section => $members)
@@ -5930,7 +5945,7 @@
                             {{-- IPPNU --}}
                             <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
                                 <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:12px 16px;font-weight:800;font-size:0.95rem;font-style:italic;">Susunan Pengurus IPPNU</div>
-                                <img src="{{ asset('images/STRUKTUR IPPNU.jpeg') }}" alt="Foto Bersama IPPNU" style="width:100%;display:block;object-fit:cover;max-height:280px;border-bottom:3px solid var(--primary);">
+                                <img src="{{ isset($settings['structure_ippnu_photo']) ? Storage::url($settings['structure_ippnu_photo']) : asset('images/STRUKTUR IPPNU.jpeg') }}" alt="Foto Bersama IPPNU" style="width:100%;display:block;object-fit:cover;max-height:280px;border-bottom:3px solid var(--primary);">
                                 <div style="padding:16px;">
                                     @php $ippnu = $officials->where('type','bph')->where('organization','IPPNU'); @endphp
                                     @foreach($ippnu->groupBy('section') as $section => $members)
@@ -6830,14 +6845,7 @@
                                 $availableCategories = collect(['Kegiatan', 'Prestasi', 'Konferensi', 'Lainnya']);
                             }
 
-                            $displayGalleries = isset($allGalleries) && $allGalleries->count() > 0 ? $allGalleries : collect([
-                                (object) ['id' => 1, 'title' => 'Pelatihan Jurnalistik', 'category' => 'Kegiatan', 'image' => 'images/hero_bg.png'],
-                                (object) ['id' => 2, 'title' => 'Juara 1 Lomba Hadroh', 'category' => 'Prestasi', 'image' => 'images/students_study.png'],
-                                (object) ['id' => 3, 'title' => 'Konferensi Anak Cabang', 'category' => 'Konferensi', 'image' => 'images/alun_alun_kemiri.png'],
-                                (object) ['id' => 4, 'title' => 'Makesta Raya', 'category' => 'Kegiatan', 'image' => 'images/hero_bg.png'],
-                                (object) ['id' => 5, 'title' => 'Rapat Kerja PAC', 'category' => 'Konferensi', 'image' => 'images/students_study.png'],
-                                (object) ['id' => 6, 'title' => 'Kunjungan Tokoh', 'category' => 'Lainnya', 'image' => 'images/alun_alun_kemiri.png'],
-                            ]);
+                            $displayGalleries = $allGalleries;
                         @endphp
 
                         <div style="padding: 10px 16px 0 16px;">
@@ -7434,7 +7442,7 @@
                         </div>
                         <div>
                             <div style="font-size:0.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPNU</div>
-                            <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">31,340</div>
+                            <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">{{ number_format((int)($settings['total_anggota_ipnu'] ?? 31340)) }}</div>
                             <div style="font-size:0.78rem;color:#64748b;font-weight:600;">Rekan IPNU Terverifikasi</div>
                             <div style="margin-top:8px;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:4px;width:80%;margin-left:auto;margin-right:auto;"></div>
                         </div>
@@ -7446,7 +7454,7 @@
                         </div>
                         <div>
                             <div style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPPNU</div>
-                            <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">37,197</div>
+                            <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">{{ number_format((int)($settings['total_anggota_ippnu'] ?? 37197)) }}</div>
                             <div style="font-size:0.78rem;color:#64748b;font-weight:600;">Rekanita IPPNU Terverifikasi</div>
                             <div style="margin-top:8px;height:4px;background:linear-gradient(90deg,#c2410c,#f97316);border-radius:4px;width:80%;margin-left:auto;margin-right:auto;"></div>
                         </div>
