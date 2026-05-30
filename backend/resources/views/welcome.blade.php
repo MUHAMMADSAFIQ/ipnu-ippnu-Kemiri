@@ -4664,6 +4664,12 @@
                                 </div>
                                 <div class="h-feature-text">Lapak<br>Pelajar</div>
                             </a>
+                            <a href="javascript:void(0)" onclick="showSection('proker')" class="h-feature-card">
+                                <div class="h-feature-icon-wrap">
+                                    <i class="fa-solid fa-handshake h-feature-icon"></i>
+                                </div>
+                                <div class="h-feature-text">Program<br>Kerja</div>
+                            </a>
                             <a href="javascript:void(0)" onclick="showSection('peta')" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
                                     <i class="fa-solid fa-map-pin h-feature-icon"></i>
@@ -4721,6 +4727,8 @@
                                 <div class="ks-body">
                                     <a href="javascript:void(0)"
                                         onclick="showSection('susunan-pengurus'); event.stopPropagation();">Susunan Pengurus</a>
+                                    <a href="javascript:void(0)"
+                                        onclick="showSection('proker'); event.stopPropagation();">Program Kerja</a>
                                 </div>
                             </div>
 
@@ -4828,6 +4836,10 @@
             <a href="#agenda" class="h-feature-card">
                 <i class="fa-solid fa-clipboard-list h-feature-icon"></i>
                 <div class="h-feature-text">Agenda</div>
+            </a>
+            <a href="javascript:void(0)" onclick="showSection('proker')" class="h-feature-card">
+                <i class="fa-solid fa-handshake h-feature-icon"></i>
+                <div class="h-feature-text">Proker</div>
             </a>
             <a href="javascript:void(0)" onclick="showSection('usaha')" class="h-feature-card">
                 <i class="fa-solid fa-store h-feature-icon"></i>
@@ -7417,8 +7429,8 @@
                 <div class="stat-grid-top">
                     {{-- IPNU --}}
                     <div style="background:linear-gradient(135deg,#e8f0fe 0%,#f8faff 100%);border-radius:12px;padding:20px;border:1px solid #c7d9fb;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
-                        <div style="width:56px;height:56px;overflow:hidden;flex-shrink:0;display:flex;justify-content:center;border-radius:50%;">
-                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="height:100%;width:200%;max-width:none;object-fit:cover;object-position:left;" alt="Logo IPNU">
+                        <div style="width: 50px; height: 50px; overflow: hidden; border-radius: 50%; background: #fff; flex-shrink: 0; position: relative;">
+                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="position: absolute; top: 0; left: 0; width: 200%; height: 100%; object-fit: cover; object-position: left;" alt="IPNU">
                         </div>
                         <div>
                             <div style="font-size:0.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPNU</div>
@@ -7429,8 +7441,8 @@
                     </div>
                     {{-- IPPNU --}}
                     <div style="background:linear-gradient(135deg,#fef3e8 0%,#fffaf5 100%);border-radius:12px;padding:20px;border:1px solid #fbd8a8;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
-                        <div style="width:56px;height:56px;overflow:hidden;flex-shrink:0;display:flex;justify-content:center;">
-                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="height:100%;width:200%;max-width:none;object-fit:cover;object-position:right;" alt="Logo IPPNU">
+                        <div style="width: 50px; height: 50px; overflow: hidden; border-radius: 50%; background: #fff; flex-shrink: 0; position: relative;">
+                            <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" style="position: absolute; top: 0; left: 0; width: 200%; height: 100%; object-fit: cover; object-position: right;" alt="IPPNU">
                         </div>
                         <div>
                             <div style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPPNU</div>
