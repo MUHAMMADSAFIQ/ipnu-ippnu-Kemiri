@@ -979,7 +979,7 @@
                     <div class="sub-nav-breadcrumb">Admin &rsaquo; <span id="page-breadcrumb">Pemilihan</span></div>
                 </div>
             </div>
-            <div class="sub-nav-right">
+            <div id="nav-votes-block" style="display:none;align-items:center;gap:8px;">
                 <div class="votes-pill">
                     <i class="fa-solid fa-ballot-check"></i>
                     Total: <strong id="total-votes-nav">{{ $totalVotes }}</strong>
@@ -2403,6 +2403,9 @@
             document.getElementById('page-title-text').textContent = pageTitles[id].title;
             document.getElementById('page-breadcrumb').textContent = pageTitles[id].breadcrumb;
         }
+        // Tampilkan Total + Reset Suara hanya di Kelola Kandidat
+        const votesBlock = document.getElementById('nav-votes-block');
+        if (votesBlock) votesBlock.style.display = (id === 'candidates') ? 'flex' : 'none';
         // on mobile: close sidebar after selection
         if (window.innerWidth <= 900) closeSidebar();
         window.scrollTo({ top: 0, behavior: 'smooth' });
