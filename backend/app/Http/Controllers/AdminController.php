@@ -704,20 +704,6 @@ class AdminController extends Controller
         }
         return back()->with('success', 'Informasi portal berhasil diperbarui!');
     }
-    // =============================================
-    // AGENDA
-    // =============================================
-    public function storeAgenda(Request $request)
-    {
-        $request->validate(['title' => 'required|string', 'date' => 'required|date', 'location' => 'required|string']);
-        \App\Models\Agenda::create($request->only('title', 'date', 'location'));
-        return back()->with('success', 'Agenda berhasil ditambahkan!');
-    }
-    public function deleteAgenda(\App\Models\Agenda $agenda)
-    {
-        $agenda->delete();
-        return back()->with('success', 'Agenda berhasil dihapus!');
-    }
 
     // =============================================
     // PROGRAM
