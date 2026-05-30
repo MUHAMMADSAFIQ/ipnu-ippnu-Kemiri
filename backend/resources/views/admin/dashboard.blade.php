@@ -926,6 +926,7 @@
             </button>
             <button onclick="switchSection('stats')"   id="nav-stats"   class="nav-item"><i class="fa-solid fa-chart-simple"></i> Statistik Anggota</button>
             <button onclick="switchSection('agendas')" id="nav-agendas" class="nav-item"><i class="fa-solid fa-calendar-check"></i> Agenda Kegiatan</button>
+            <button onclick="switchSection('programs')" id="nav-programs" class="nav-item"><i class="fa-solid fa-handshake"></i> Sinergi Program</button>
             <button onclick="switchSection('gallery')" id="nav-gallery" class="nav-item"><i class="fa-solid fa-images"></i> Galeri Dokumentasi</button>
 
             <!-- Layanan -->
@@ -1502,6 +1503,45 @@
             </div>
 
             {{-- ══════════════════════════════════════════════
+                 SECTION: SINERGI PROGRAM
+            ══════════════════════════════════════════════ --}}
+            <div id="section-programs" class="admin-section">
+                <div class="card">
+                    <div class="card-header"><div class="card-header-title"><i class="fa-solid fa-handshake"></i> Tambah Program</div></div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.program.store') }}" method="POST">
+                            @csrf
+                            <div class="form-grid">
+                                <div class="form-group"><label class="form-label">Nama Program *</label><input type="text" name="title" placeholder="Nama program..." required></div>
+                                <div class="form-group"><label class="form-label">Ikon (Opsional)</label><input type="text" name="icon" placeholder="Contoh: fa-solid fa-users"></div>
+                                <div class="form-group full"><label class="form-label">Deskripsi</label><textarea name="description" rows="2" placeholder="Deskripsi singkat..."></textarea></div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-top:14px;"><i class="fa-solid fa-plus"></i> Simpan Program</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><div class="card-header-title"><i class="fa-solid fa-list"></i> Daftar Program</div></div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Nama Program</th><th>Ikon</th><th>Deskripsi</th><th>Aksi</th></tr></thead>
+                            <tbody>
+                                @foreach($programs as $program)
+                                <tr>
+                                    <td style="font-weight:600;">{{ $program->title }}</td>
+                                    <td><i class="{{ $program->icon ?? 'fa-solid fa-circle-check' }}"></i></td>
+                                    <td>{{ $program->description }}</td>
+                                    <td><form action="{{ route('admin.program.delete',$program->id) }}" method="POST">@csrf @method('DELETE')<button type="submit" class="btn btn-danger btn-icon btn-sm" onclick="return confirm('Hapus?')"><i class="fa-solid fa-trash"></i></button></form></td>
+                                </tr>
+                                @endforeach
+                                @if($programs->isEmpty())<tr><td colspan="4"><div class="empty-state"><i class="fa-solid fa-box-open"></i><p>Belum ada program</p></div></td></tr>@endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ══════════════════════════════════════════════
                  SECTION: GALERI DOKUMENTASI
             ══════════════════════════════════════════════ --}}
             <div id="section-gallery" class="admin-section">
@@ -1738,7 +1778,7 @@
                 <div class="card">
                     <div class="card-header"><div class="card-header-title"><i class="fa-solid fa-gear"></i> Pengaturan Portal</div></div>
                     <div class="card-body">
-                        <form action="{{ route('admin.settings.update') }}" method="POST">
+                        <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-grid">
                                 <div class="form-group"><label class="form-label">Nama Organisasi</label><input type="text" name="org_name" value="{{ $settings['org_name'] ?? 'PAC IPNU IPPNU Kemiri' }}"></div>
@@ -1746,8 +1786,15 @@
                                 <div class="form-group"><label class="form-label">Email Kontak</label><input type="email" name="email" value="{{ $settings['email'] ?? '' }}" placeholder="email@org.com"></div>
                                 <div class="form-group"><label class="form-label">No. WhatsApp</label><input type="text" name="whatsapp" value="{{ $settings['whatsapp'] ?? '' }}" placeholder="628xxx"></div>
                                 <div class="form-group full"><label class="form-label">Alamat Sekretariat</label><textarea name="address" rows="2" placeholder="Alamat lengkap...">{{ $settings['address'] ?? '' }}</textarea></div>
+                                
+                                <div class="form-group full"><label class="form-label" style="margin-top:16px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">Pengaturan Halaman Depan (Headline & Banner)</label></div>
+                                <div class="form-group"><label class="form-label">Teks Headline (Judul)</label><input type="text" name="hero_title" value="{{ $settings['hero_title'] ?? '' }}" placeholder="Teks besar di atas..."></div>
+                                <div class="form-group"><label class="form-label">Teks Headline (Subjudul)</label><input type="text" name="hero_subtitle" value="{{ $settings['hero_subtitle'] ?? '' }}" placeholder="Deskripsi di bawah judul..."></div>
+                                <div class="form-group"><label class="form-label">Foto Latar Headline</label><input type="file" name="hero_image" accept="image/*"><small>Biarkan kosong jika tidak ingin mengubah</small></div>
+                                <div class="form-group"><label class="form-label">Judul Banner (Terima Kasih)</label><input type="text" name="banner_thanks_title" value="{{ $settings['banner_thanks_title'] ?? '' }}" placeholder="Terima Kasih..."></div>
+                                <div class="form-group"><label class="form-label">Teks Banner (Terima Kasih)</label><input type="text" name="banner_thanks" value="{{ $settings['banner_thanks'] ?? '' }}" placeholder="Deskripsi lengkap..."></div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-submit"><i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan</button>
+                            <button type="submit" class="btn btn-primary btn-submit" style="margin-top:16px;"><i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan</button>
                         </form>
                     </div>
                 </div>

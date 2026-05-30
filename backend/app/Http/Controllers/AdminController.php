@@ -70,6 +70,7 @@ class AdminController extends Controller
         $structures = \App\Models\Structure::orderBy('order_num', 'asc')->get();
         $stats = \App\Models\Statistic::all();
         $agendas = \App\Models\Agenda::all();
+        $programs = \App\Models\Program::all();
         $products = \App\Models\Product::all();
         $galleries = \App\Models\Gallery::orderBy('created_at', 'desc')->get();
         $feedbacks = \App\Models\Feedback::orderBy('created_at', 'desc')->get();
@@ -81,7 +82,7 @@ class AdminController extends Controller
         
         return view('admin.dashboard', compact(
             'candidates', 'totalVotes', 'articles', 'pendingArticles',
-            'officials', 'structures', 'stats', 'agendas', 'products', 'galleries', 'feedbacks', 'registrations', 'settings', 'unreadFeedbacks', 'ads', 'chatMessages'
+            'officials', 'structures', 'stats', 'agendas', 'programs', 'products', 'galleries', 'feedbacks', 'registrations', 'settings', 'unreadFeedbacks', 'ads', 'chatMessages'
         ));
     }
 
@@ -702,5 +703,34 @@ class AdminController extends Controller
             \App\Models\SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
         }
         return back()->with('success', 'Informasi portal berhasil diperbarui!');
+    }
+    // =============================================
+    // AGENDA
+    // =============================================
+    public function storeAgenda(Request $request)
+    {
+        $request->validate(['title' => 'required|string', 'date' => 'required|date', 'location' => 'required|string']);
+        \App\Models\Agenda::create($request->only('title', 'date', 'location'));
+        return back()->with('success', 'Agenda berhasil ditambahkan!');
+    }
+    public function deleteAgenda(\App\Models\Agenda $agenda)
+    {
+        $agenda->delete();
+        return back()->with('success', 'Agenda berhasil dihapus!');
+    }
+
+    // =============================================
+    // PROGRAM
+    // =============================================
+    public function storeProgram(Request $request)
+    {
+        $request->validate(['title' => 'required|string', 'description' => 'nullable|string', 'icon' => 'nullable|string']);
+        \App\Models\Program::create($request->only('title', 'description', 'icon'));
+        return back()->with('success', 'Program berhasil ditambahkan!');
+    }
+    public function deleteProgram(\App\Models\Program $program)
+    {
+        $program->delete();
+        return back()->with('success', 'Program berhasil dihapus!');
     }
 }

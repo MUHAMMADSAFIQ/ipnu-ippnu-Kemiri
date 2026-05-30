@@ -19,7 +19,9 @@ Route::get('/', function () {
     $settings = \App\Models\SiteSetting::pluck('value', 'key')->toArray();
     $ads = \App\Models\Advertisement::where('is_active', true)->get();
     $chatMessages = \App\Models\ChatMessage::orderBy('created_at', 'desc')->take(50)->get()->reverse();
-    return view('welcome', compact('articles', 'popularArticles', 'latestArticles', 'recentComments', 'galleries', 'allGalleries', 'officials', 'stats', 'products', 'settings', 'ads', 'chatMessages'));
+    $agendas = \App\Models\Agenda::orderBy('date', 'asc')->get();
+    $programs = \App\Models\Program::all();
+    return view('welcome', compact('articles', 'popularArticles', 'latestArticles', 'recentComments', 'galleries', 'allGalleries', 'officials', 'stats', 'products', 'settings', 'ads', 'chatMessages', 'agendas', 'programs'));
 });
 
 Route::get('/artikel/{slug}', function ($slug) {
@@ -213,6 +215,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/admin/ads/{ad}', [AdminController::class, 'updateAd'])->name('admin.ads.update');
     Route::delete('/admin/ads/{ad}', [AdminController::class, 'deleteAd'])->name('admin.ads.delete');
     Route::patch('/admin/ads/{ad}/toggle', [AdminController::class, 'toggleAd'])->name('admin.ads.toggle');
+
+    // Agenda
+    Route::post('/admin/agendas', [AdminController::class, 'storeAgenda'])->name('admin.agendas.store');
+    Route::delete('/admin/agendas/{agenda}', [AdminController::class, 'deleteAgenda'])->name('admin.agendas.delete');
+
+    // Program
+    Route::post('/admin/program', [AdminController::class, 'storeProgram'])->name('admin.program.store');
+    Route::delete('/admin/program/{program}', [AdminController::class, 'deleteProgram'])->name('admin.program.delete');
 });
 
 // Public Article Submission
