@@ -710,8 +710,19 @@ class AdminController extends Controller
     // =============================================
     public function storeProgram(Request $request)
     {
-        $request->validate(['title' => 'required|string', 'description' => 'nullable|string', 'icon' => 'nullable|string']);
-        \App\Models\Program::create($request->only('title', 'description', 'icon'));
+        $request->validate([
+            'title' => 'required|string', 
+            'description' => 'nullable|string', 
+            'icon' => 'nullable|string',
+            'photo' => 'nullable|image'
+        ]);
+
+        $data = $request->only('title', 'description', 'icon');
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('programs', 'public');
+        }
+
+        \App\Models\Program::create($data);
         return back()->with('success', 'Program berhasil ditambahkan!');
     }
     public function deleteProgram(\App\Models\Program $program)

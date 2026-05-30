@@ -4548,9 +4548,9 @@
                     </div>
                 </div>
 
-                <button class="tub-icon" title="Statistik Sinyal"><i class="fa-solid fa-signal"></i></button>
+                <a href="#section-statistik" class="tub-icon" title="Statistik Anggota"><i class="fa-solid fa-signal"></i></a>
                 <a href="{{ route('admin.register') }}" class="tub-icon" title="Login Admin"
-                    style="display: flex; text-decoration: none;"><i class="fa-solid fa-lock"></i></a>
+                    style="display: flex; text-decoration: none;"><i class="fa-solid fa-user-shield"></i></a>
             </div>
         </div>
     </div>
@@ -4574,11 +4574,11 @@
             }
         }
         
-        // Ensure scroll to artikel if searched
+        // Ensure scroll to berita if searched
         document.addEventListener("DOMContentLoaded", function() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('search')) {
-                const artikelSection = document.getElementById('artikel');
+                const artikelSection = document.getElementById('berita');
                 if(artikelSection) {
                     artikelSection.scrollIntoView({ behavior: 'smooth' });
                 }
@@ -4783,13 +4783,25 @@
                 </div>
                 <div class="dc-banner-bottom-tape"></div>
                 <div class="dc-banner-slide active">
-                    <img src="{{ asset('images/banner 1.jpeg') }}" alt="Banner 1">
+                    @if(!empty($settings['banner_image_1']))
+                        <img src="{{ asset('storage/' . $settings['banner_image_1']) }}" alt="Banner 1">
+                    @else
+                        <img src="{{ asset('images/banner 1.jpeg') }}" alt="Banner 1">
+                    @endif
                 </div>
                 <div class="dc-banner-slide">
-                    <img src="{{ asset('images/banner 2.jpg') }}" alt="Banner 2">
+                    @if(!empty($settings['banner_image_2']))
+                        <img src="{{ asset('storage/' . $settings['banner_image_2']) }}" alt="Banner 2">
+                    @else
+                        <img src="{{ asset('images/banner 2.jpg') }}" alt="Banner 2">
+                    @endif
                 </div>
                 <div class="dc-banner-slide">
-                    <img src="{{ asset('images/banner 3.jpeg') }}" alt="Banner 3">
+                    @if(!empty($settings['banner_image_3']))
+                        <img src="{{ asset('storage/' . $settings['banner_image_3']) }}" alt="Banner 3">
+                    @else
+                        <img src="{{ asset('images/banner 3.jpeg') }}" alt="Banner 3">
+                    @endif
                 </div>
             </div>
         </div>
@@ -4882,8 +4894,11 @@
                 <div class="announce-bg"></div>
                 <!-- Logo centered top -->
                 <div class="announce-logo-wrap">
-                    <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}"
-                        alt="Logo PAC IPNU IPPNU Kemiri" class="announce-logo">
+                    @if(!empty($settings['banner_logo']))
+                        <img src="{{ asset('storage/' . $settings['banner_logo']) }}" alt="Logo PAC IPNU IPPNU Kemiri" class="announce-logo">
+                    @else
+                        <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" alt="Logo PAC IPNU IPPNU Kemiri" class="announce-logo">
+                    @endif
                 </div>
                 <!-- Text content -->
                 <div class="announce-body">
@@ -5039,15 +5054,18 @@
                 <div class="hk-left">
                     <span class="hk-wm">HEADLINE</span>
                     <span class="hk-badge">HEADLINE</span>
-                    <h3 class="hk-title">Hari Santri, IPNU Kemiri Masuk Tiga Besar Terbaik Nasional</h3>
-                    <p class="hk-desc">KEMIRI — PAC IPNU IPPNU Kecamatan Kemiri meraih penghargaan luar biasa sebagai
-                        Pelajar Digital Nasional setelah sukses mengelola sistem administrasi berbasis cloud...</p>
+                    <h3 class="hk-title">{{ $settings['hk_title'] ?? 'Hari Santri, IPNU Kemiri Masuk Tiga Besar Terbaik Nasional' }}</h3>
+                    <p class="hk-desc">{{ $settings['hk_desc'] ?? 'KEMIRI — PAC IPNU IPPNU Kecamatan Kemiri meraih penghargaan luar biasa sebagai Pelajar Digital Nasional setelah sukses mengelola sistem administrasi berbasis cloud...' }}</p>
                 </div>
                 <!-- Dark chevron separator -->
                 <div class="hk-sep" aria-hidden="true"></div>
                 <!-- Photo right -->
                 <div class="hk-right">
-                    <img src="{{ asset('images/HEADLINE.jpeg') }}" alt="Headline">
+                    @if(!empty($settings['hk_image']))
+                        <img src="{{ asset('storage/' . $settings['hk_image']) }}" alt="Headline">
+                    @else
+                        <img src="{{ asset('images/HEADLINE.jpeg') }}" alt="Headline">
+                    @endif
                 </div>
             </div>
 
@@ -5190,6 +5208,36 @@
             <!-- DYNAMIC SECTIONS (A-K) -->
             <div id="dynamic-content-area">
                 <!-- A. SEJARAH -->
+                <!-- PROGRAM KERJA -->
+                <div id="section-proker" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
+                    <div class="na-header">
+                        <span>PROGRAM KERJA</span>
+                    </div>
+                    <div class="na-list">
+                        @forelse($programs as $program)
+                            <div class="na-card" style="display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;">
+                                @if($program->photo)
+                                    <div class="na-img-wrapper" style="width: 120px; height: 120px; flex-shrink: 0; border-radius: 8px; overflow: hidden;">
+                                        <img src="{{ asset('storage/' . $program->photo) }}" style="width: 100%; height: 100%; object-fit: cover;" alt="{{ $program->title }}">
+                                    </div>
+                                @elseif($program->icon)
+                                    <div class="na-img-wrapper" style="width: 120px; height: 120px; flex-shrink: 0; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #f8fafc; border: 1px solid #e2e8f0;">
+                                        <i class="{{ $program->icon }}" style="font-size: 3rem; color: var(--primary);"></i>
+                                    </div>
+                                @endif
+                                <div style="flex: 1;">
+                                    <h3 style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 8px;">{{ $program->title }}</h3>
+                                    <p style="font-size: 0.9rem; color: #64748b; line-height: 1.5;">{{ $program->description }}</p>
+                                </div>
+                            </div>
+                        @empty
+                            <div style="text-align: center; color: #64748b; padding: 20px;">
+                                Belum ada program kerja.
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+
                 <div id="section-sejarah" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
                     <div class="na-header"><span>📜 SEJARAH IPNU IPPNU</span></div>
                     <div style="padding: 24px; background: white;">
