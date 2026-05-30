@@ -1484,8 +1484,9 @@
                  SECTION: FOTO STRUKTUR KEPENGURUSAN
             ══════════════════════════════════════════════ --}}
             <div id="section-structures" class="admin-section">
-                <div class="card">
-                    <div class="card-header"><div class="card-header-title"><i class="fa-solid fa-image"></i> Foto Bersama IPNU & IPPNU</div></div>
+                {{-- Card 1: Foto Bersama + Masa Khidmat --}}
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header"><div class="card-header-title"><i class="fa-solid fa-image"></i> Foto Bersama & Masa Khidmat</div></div>
                     <div class="card-body">
                         <p style="color:var(--text-light);font-size:0.82rem;margin-bottom:16px;">Upload foto bersama untuk ditampilkan di halaman Susunan Pengurus (di atas daftar nama).</p>
                         <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
@@ -1495,23 +1496,103 @@
                                     <label class="form-label">Teks Masa Khidmat Struktur</label>
                                     <input type="text" name="structure_service_period" value="{{ $settings['structure_service_period'] ?? 'Masa Khidmat 2025-2027' }}" placeholder="cth: Masa Khidmat 2025-2027">
                                 </div>
-                                <div class="form-group full">
+                                <div class="form-group">
                                     <label class="form-label">Foto Struktur IPNU</label>
                                     <input type="file" name="structure_ipnu_photo" accept="image/*">
-                                    @if(!empty($settings['structure_ipnu_photo'])) 
-                                        <div style="margin-top:10px;"><img src="{{ Storage::url($settings['structure_ipnu_photo']) }}" style="height:100px; border-radius:8px; object-fit:cover;"></div>
+                                    @if(!empty($settings['structure_ipnu_photo']))
+                                        <div style="margin-top:10px;"><img src="{{ Storage::url($settings['structure_ipnu_photo']) }}" style="height:100px; border-radius:8px; object-fit:cover; border:2px solid var(--border);"></div>
                                     @endif
                                 </div>
-                                <div class="form-group full">
+                                <div class="form-group">
                                     <label class="form-label">Foto Struktur IPPNU</label>
                                     <input type="file" name="structure_ippnu_photo" accept="image/*">
-                                    @if(!empty($settings['structure_ippnu_photo'])) 
-                                        <div style="margin-top:10px;"><img src="{{ Storage::url($settings['structure_ippnu_photo']) }}" style="height:100px; border-radius:8px; object-fit:cover;"></div>
+                                    @if(!empty($settings['structure_ippnu_photo']))
+                                        <div style="margin-top:10px;"><img src="{{ Storage::url($settings['structure_ippnu_photo']) }}" style="height:100px; border-radius:8px; object-fit:cover; border:2px solid var(--border);"></div>
                                     @endif
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" style="margin-top:14px;"><i class="fa-solid fa-upload"></i> Simpan Foto</button>
+                            <button type="submit" class="btn btn-primary" style="margin-top:14px;"><i class="fa-solid fa-upload"></i> Simpan Foto & Masa Khidmat</button>
                         </form>
+                    </div>
+                </div>
+
+                {{-- Card 2: Tambah Pengurus BPH --}}
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-header-title"><i class="fa-solid fa-user-plus"></i> Tambah Pengurus BPH</div>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.officials.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="type" value="bph">
+                            <div class="form-grid" style="grid-template-columns: repeat(3,1fr);">
+                                <div class="form-group">
+                                    <label class="form-label">Organisasi *</label>
+                                    <select name="organization" required>
+                                        <option value="IPNU">IPNU</option>
+                                        <option value="IPPNU">IPPNU</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Masa Khidmat *</label>
+                                    <input type="text" name="service_period" value="{{ $settings['structure_service_period'] ?? '2025-2027' }}" placeholder="cth: 2025-2027" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Seksi / Bagian *</label>
+                                    <input type="text" name="section" placeholder="cth: Pengurus Harian, Departemen Kaderisasi" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Jabatan *</label>
+                                    <input type="text" name="position" placeholder="cth: Ketua, Sekretaris, Anggota" required>
+                                </div>
+                                <div class="form-group" style="grid-column:span 2;">
+                                    <label class="form-label">Nama Lengkap *</label>
+                                    <input type="text" name="name" placeholder="cth: Ahmad Fauzi" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-top:14px;"><i class="fa-solid fa-plus"></i> Tambah Pengurus</button>
+                        </form>
+                    </div>
+                </div>
+
+                {{-- Card 3: Daftar Pengurus BPH --}}
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-header-title"><i class="fa-solid fa-list-ul"></i> Daftar Pengurus BPH</div>
+                        <div style="display:flex;gap:8px;">
+                            <button onclick="filterBph('all')" id="bph-filter-all" class="btn btn-primary btn-sm" style="font-size:0.8rem;">Semua</button>
+                            <button onclick="filterBph('IPNU')" id="bph-filter-IPNU" class="btn btn-sm" style="background:#e0f2fe;color:#0369a1;font-size:0.8rem;">IPNU</button>
+                            <button onclick="filterBph('IPPNU')" id="bph-filter-IPPNU" class="btn btn-sm" style="background:#fef3c7;color:#b45309;font-size:0.8rem;">IPPNU</button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Org.</th><th>Seksi / Bagian</th><th>Jabatan</th><th>Nama</th><th>Masa Khidmat</th><th>Aksi</th></tr></thead>
+                            <tbody>
+                                @php $bphList = $officials->where('type','bph')->sortBy(['organization','section','position']); @endphp
+                                @forelse($bphList as $off)
+                                <tr class="bph-row" data-org="{{ $off->organization }}">
+                                    <td>
+                                        <span class="badge {{ $off->organization === 'IPNU' ? 'badge-gray' : 'badge-amber' }}" style="{{ $off->organization === 'IPNU' ? 'background:#dcfce7;color:#15803d;' : 'background:#fef9c3;color:#854d0e;' }}">
+                                            {{ $off->organization }}
+                                        </span>
+                                    </td>
+                                    <td style="font-size:0.8rem;">{{ $off->section ?? '-' }}</td>
+                                    <td style="font-size:0.8rem;font-weight:600;">{{ $off->position }}</td>
+                                    <td style="font-weight:700;">{{ $off->name }}</td>
+                                    <td style="font-size:0.78rem;color:var(--text-light);">{{ $off->service_period ?? '-' }}</td>
+                                    <td>
+                                        <div style="display:flex;gap:5px;">
+                                            <button onclick="openEditOfficial({{ json_encode($off) }})" class="btn btn-blue btn-icon btn-sm" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                                            <form action="{{ route('admin.officials.delete',$off->id) }}" method="POST" style="display:inline;">@csrf @method('DELETE')<button type="submit" class="btn btn-danger btn-icon btn-sm" onclick="return confirm('Hapus pengurus ini?')" title="Hapus"><i class="fa-solid fa-trash"></i></button></form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-users"></i><p>Belum ada data pengurus BPH</p></div></td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -2409,6 +2490,16 @@
         // on mobile: close sidebar after selection
         if (window.innerWidth <= 900) closeSidebar();
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ═══════ BPH FILTER ═══════ */
+    function filterBph(org) {
+        document.querySelectorAll('.bph-row').forEach(row => {
+            row.style.display = (org === 'all' || row.dataset.org === org) ? '' : 'none';
+        });
+        document.querySelectorAll('[id^="bph-filter-"]').forEach(btn => btn.classList.remove('btn-primary'));
+        const active = document.getElementById('bph-filter-' + org);
+        if (active) active.classList.add('btn-primary');
     }
 
     /* ═══════ SIDEBAR (MOBILE ONLY) ═══════ */

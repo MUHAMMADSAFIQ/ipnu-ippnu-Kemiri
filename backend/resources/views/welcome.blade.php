@@ -7446,7 +7446,7 @@
                     </div>
                     {{-- IPPNU --}}
                     <div style="background:linear-gradient(135deg,#fef3e8 0%,#fffaf5 100%);border-radius:12px;padding:20px;border:1px solid #fbd8a8;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
-                        <div style="width: 50px; height: 50px; overflow: hidden; border-radius: 50%; background: #fff; flex-shrink: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                        <div style="width: 55px; height: 55px; overflow: hidden; background: transparent; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                             <img src="{{ asset('images/ippnu-logo.png') }}" style="width: 100%; height: 100%; object-fit: contain;" alt="IPPNU">
                         </div>
                         <div>

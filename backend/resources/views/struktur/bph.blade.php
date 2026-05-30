@@ -243,7 +243,11 @@
                             <div class="sp-col-title">Susunan Pengurus IPNU</div>
 
                             <div class="sp-col-photo">
-                                <img src="{{ asset('images/STRUKTUR IPNU.jpg') }}" alt="Foto Bersama Pengurus IPNU">
+                                @if(!empty($settings['structure_ipnu_photo']))
+                                    <img src="{{ Storage::url($settings['structure_ipnu_photo']) }}" alt="Foto Bersama Pengurus IPNU">
+                                @else
+                                    <img src="{{ asset('images/STRUKTUR IPNU.jpg') }}" alt="Foto Bersama Pengurus IPNU">
+                                @endif
                             </div>
 
                             <div class="sp-col-body">
@@ -274,7 +278,11 @@
                             <div class="sp-col-title">Susunan Pengurus IPPNU</div>
 
                             <div class="sp-col-photo">
-                                <img src="{{ asset('images/STRUKTUR IPPNU.jpeg') }}" alt="Foto Bersama Pengurus IPPNU">
+                                @if(!empty($settings['structure_ippnu_photo']))
+                                    <img src="{{ Storage::url($settings['structure_ippnu_photo']) }}" alt="Foto Bersama Pengurus IPPNU">
+                                @else
+                                    <img src="{{ asset('images/STRUKTUR IPPNU.jpeg') }}" alt="Foto Bersama Pengurus IPPNU">
+                                @endif
                             </div>
 
                             <div class="sp-col-body">
