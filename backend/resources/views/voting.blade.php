@@ -292,7 +292,7 @@
             .sidebar-panel { 
                 position: relative; 
                 top: 0; 
-                height: auto; 
+                height: auto;
                 display: block; 
             }
             
@@ -400,8 +400,7 @@
                     <div class="vote-card" id="card-{{ $candidate->id }}">
                         <div class="card-top">
                             <div class="card-num">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
-                        </div>
-
+                        </div>                   
                         <div class="avatar-wrap" style="position:relative;">
                             <div class="avatar-inner">
                                 @if($candidate->photo)
@@ -499,7 +498,7 @@
         const targetVotes = {{ $targetVotes }};
 
         function submitVote(candidateId) {
-            if (hasVoted) { showToast('❌ Anda sudah memberikan suara.'); return; }
+            if (hasVoted) { showToast('❌ Anda sudah memberikan suara .'); return; }
 
             const card = document.getElementById('card-' + candidateId);
             const avatarWrap = card.querySelector('.avatar-wrap');

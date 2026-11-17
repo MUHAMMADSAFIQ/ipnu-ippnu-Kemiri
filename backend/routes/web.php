@@ -56,6 +56,7 @@ Route::get('/', function () {
     $articles = $query->orderBy('published_at', 'desc')->paginate(6);
     $popularArticles = Article::where('status', 'published')->orderBy('views_count', 'desc')->take(5)->get();
     $latestArticles = Article::where('status', 'published')->orderBy('published_at', 'desc')->take(5)->get();
+    $headlineArticle = $popularArticles->first() ?? $latestArticles->first();
     $recentComments = \App\Models\Feedback::latest()->take(3)->get();
     $galleries = \App\Models\Gallery::latest()->take(4)->get();
     $allGalleries = \App\Models\Gallery::latest()->get();
@@ -64,11 +65,28 @@ Route::get('/', function () {
     $products = \App\Models\Product::latest()->get();
     $settings = \App\Models\SiteSetting::pluck('value', 'key')->toArray();
     $ads = \App\Models\Advertisement::where('is_active', true)->get();
-    $chatMessages = \App\Models\ChatMessage::orderBy('created_at', 'desc')->take(50)->get()->reverse();
+    $chatMessages = \App\Models\ChatMessage::orderBy('id', 'desc')->take(50)->get()->reverse();
     $agendas = \App\Models\Agenda::orderBy('date', 'asc')->get();
     $programs = \App\Models\Program::all();
-    return view('welcome', compact('articles', 'popularArticles', 'latestArticles', 'recentComments', 'galleries', 'allGalleries', 'officials', 'stats', 'products', 'settings', 'ads', 'chatMessages', 'agendas', 'programs', 'visitorStats'));
+    return view('welcome', compact('articles', 'popularArticles', 'latestArticles', 'headlineArticle', 'recentComments', 'galleries', 'allGalleries', 'officials', 'stats', 'products', 'settings', 'ads', 'chatMessages', 'agendas', 'programs', 'visitorStats'));
 });
+
+Route::get('/artikel', function () {
+    $query = Article::where('status', 'published');
+    if (request('search')) {
+        $search = request('search');
+        $query->where(function($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+              ->orWhere('content', 'like', "%{$search}%");
+        });
+    }
+    $articles = $query->orderBy('published_at', 'desc')->paginate(12);
+    return view('artikel.index', compact('articles'));
+})->name('artikel.index');
+
+Route::get('/artikel/kirim', function () {
+    return view('artikel.kirim');
+})->name('artikel.kirim');
 
 Route::get('/artikel/{slug}', function ($slug) {
     $singleArticle = Article::where('slug', $slug)->where('status', 'published')->firstOrFail();
@@ -173,14 +191,65 @@ Route::prefix('info')->group(function () {
         $products = \App\Models\Product::latest()->get();
         return view('info.usaha', compact('products'));
     });
+    Route::get('/dokumen', function () { return redirect()->route('dokumen.index'); });
+    Route::get('/library', function () { return redirect()->route('library.index'); });
 });
 
-Route::get('/kontak', function () { return view('kontak'); });
+// Dedicated Feature Pages (Folder-based structure)
+Route::get('/proker', function () {
+    $programs = \App\Models\Program::all();
+    return view('proker.index', compact('programs'));
+})->name('proker.index');
+
+Route::get('/galeri', function () {
+    $galleries = \App\Models\Gallery::latest()->get();
+    return view('galeri.index', compact('galleries'));
+})->name('galeri.index');
+
+Route::get('/dokumen', function () {
+    $documents = \App\Models\Document::active()->orderBy('created_at', 'desc')->get();
+    return view('dokumen.index', compact('documents'));
+})->name('dokumen.index');
+
+// Public Document Download
+Route::get('/dokumen/download/{document}', function (\App\Models\Document $document) {
+    if (!$document->is_active) {
+        abort(404);
+    }
+    $document->increment('download_count');
+    if ($document->file_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($document->file_path)) {
+        return \Illuminate\Support\Facades\Storage::disk('public')->download($document->file_path, $document->title . '.' . strtolower($document->file_type));
+    }
+    return back()->with('info', 'File berkas untuk "' . $document->title . '" sedang dalam proses digitalisasi oleh Admin sekretariat.');
+})->name('dokumen.download');
+
+Route::get('/library', function () {
+    $books = \App\Models\Book::active()->orderBy('created_at', 'desc')->get();
+    return view('library.index', compact('books'));
+})->name('library.index');
+
+// Public E-Book Download
+Route::get('/library/download/{book}', function (\App\Models\Book $book) {
+    if (!$book->is_active || !$book->file_path) {
+        abort(404);
+    }
+    $book->increment('download_count');
+    return response()->download(storage_path('app/public/' . $book->file_path), $book->title . '.pdf');
+})->name('library.download');
+
+Route::get('/chatbot', function () {
+    return view('chatbot.index');
+})->name('chatbot.index');
+
+Route::get('/kontak', function () {
+    return view('kontak.index');
+})->name('kontak');
 
 
 
 // Voting Routes
-Route::get('/voting', [VotingController::class, 'index'])->name('voting');
+Route::get('/voting', [App\Http\Controllers\VotingController::class, 'index'])->name('voting');
+Route::post('/voting/auth', [App\Http\Controllers\VotingController::class, 'authenticate'])->name('voting.auth');
 Route::post('/voting/submit', [VotingController::class, 'vote'])->name('voting.submit');
 
 // Required by Laravel auth middleware - redirects to admin login
@@ -269,6 +338,24 @@ Route::middleware(['auth'])->group(function () {
     // Program
     Route::post('/admin/program', [AdminController::class, 'storeProgram'])->name('admin.program.store');
     Route::delete('/admin/program/{program}', [AdminController::class, 'deleteProgram'])->name('admin.program.delete');
+
+    // Library / E-Book Management
+    Route::post('/admin/books', [AdminController::class, 'storeBook'])->name('admin.books.store');
+    Route::put('/admin/books/{book}', [AdminController::class, 'updateBook'])->name('admin.books.update');
+    Route::delete('/admin/books/{book}', [AdminController::class, 'deleteBook'])->name('admin.books.delete');
+    Route::patch('/admin/books/{book}/toggle', [AdminController::class, 'toggleBook'])->name('admin.books.toggle');
+
+    // Official Documents Management
+    Route::post('/admin/documents', [AdminController::class, 'storeDocument'])->name('admin.documents.store');
+    Route::put('/admin/documents/{document}', [AdminController::class, 'updateDocument'])->name('admin.documents.update');
+    Route::delete('/admin/documents/{document}', [AdminController::class, 'deleteDocument'])->name('admin.documents.delete');
+    Route::patch('/admin/documents/{document}/toggle', [AdminController::class, 'toggleDocument'])->name('admin.documents.toggle');
+
+    // Footer Links Management
+    Route::post('/admin/footer-links', [AdminController::class, 'storeFooterLink'])->name('admin.footer-links.store');
+    Route::put('/admin/footer-links/{footerLink}', [AdminController::class, 'updateFooterLink'])->name('admin.footer-links.update');
+    Route::delete('/admin/footer-links/{footerLink}', [AdminController::class, 'deleteFooterLink'])->name('admin.footer-links.delete');
+    Route::patch('/admin/footer-links/{footerLink}/toggle', [AdminController::class, 'toggleFooterLink'])->name('admin.footer-links.toggle');
 });
 
 // Public Article Submission
@@ -278,7 +365,7 @@ Route::post('/artikel/submit-public', function (\Illuminate\Http\Request $reques
         'author'  => 'required|string|max:255',
         'contact' => 'nullable|string|max:255', // opsional kontak
         'content' => 'required|string',
-        'image'   => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // maks 2MB
+        'image'   => 'required|image|mimes:jpeg,png,jpg,gif,webp', // tanpa batas ukuran MB
     ]);
 
     $imagePath = $request->file('image')->store('articles', 'public');
@@ -298,7 +385,7 @@ Route::post('/artikel/submit-public', function (\Illuminate\Http\Request $reques
 })->name('artikel.submit.public');
 
 // Public Chatbot Submission
-Route::post('/chat/send-public', function (\Illuminate\Http\Request $request) {
+Route::post('/chat/send-public', function (\Illuminate\Http\Request $request, \App\Services\ChatbotService $chatbotService) {
     $request->validate([
         'message' => 'required|string|max:1000',
     ]);
@@ -309,17 +396,25 @@ Route::post('/chat/send-public', function (\Illuminate\Http\Request $request) {
         'content' => $request->message,
     ]);
     
-    // Bot reply
-    $botMessage = \App\Models\ChatMessage::create([
-        'author' => 'Bot',
-        'content' => "Halo! Pesan Anda: " . $request->message,
+    // Intelligent reply from ChatbotService
+    $botReply = $chatbotService->reply($request->message);
+    $autoReply = \App\Models\ChatMessage::create([
+        'author' => 'AI Bot',
+        'content' => $botReply
     ]);
     
     return response()->json([
         'user' => $userMessage,
-        'bot' => $botMessage,
+        'bot' => $autoReply,
     ]);
 })->name('chat.send.public');
+
+// Public Chatbot Polling
+Route::get('/chat/messages-public', function () {
+    $chatMessages = \App\Models\ChatMessage::orderBy('id', 'desc')->take(50)->get()->reverse()->values();
+    return response()->json($chatMessages);
+})->name('chat.messages.public');
+
 
 // Temporary route to run migrations because terminal is restricted
 Route::get('/migrate-db', function() {
@@ -330,5 +425,6 @@ Route::get('/migrate-db', function() {
         return "Database migration, seeding, & Storage Link success! <br><pre>" . \Illuminate\Support\Facades\Artisan::output() . "</pre><a href='/admin/dashboard'>Back to Dashboard</a>";
     } catch (\Exception $e) {
         return "Migration/Seeding failed: " . $e->getMessage() . "<br><a href='/admin/dashboard'>Go to Dashboard anyway</a>";
-    }
+    } 
 });
+

@@ -563,12 +563,11 @@
             height: 90px !important;
             width: auto !important;
             object-fit: contain;
-            animation: logoRotate3D 8s linear infinite;
-            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.6));
+            /* Removed heavy 3D rotation animation */
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
             margin-bottom: 12px;
             display: block !important;
             flex-shrink: 0;
-            transform-style: preserve-3d;
         }
 
         .hero-title-center {
@@ -1085,15 +1084,6 @@
             background: transparent;
         }
 
-        @keyframes logoRotate3D {
-            0% {
-                transform: rotateY(0deg);
-            }
-
-            100% {
-                transform: rotateY(360deg);
-            }
-        }
 
         .hero-title-center {
             font-size: 1.1rem;
@@ -3501,8 +3491,8 @@
             width: auto;
             position: relative;
             z-index: 10;
-            animation: pulseLogo 1.5s infinite;
-            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.4));
+            animation: pulseLogo 3s infinite ease-in-out;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
         }
 
         .loader-title {
@@ -3538,7 +3528,7 @@
             position: absolute;
             border-radius: 50%;
             opacity: 0.8;
-            animation: floatBubble 2s infinite ease-in-out alternate;
+            animation: floatBubble 5s infinite ease-in-out alternate;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
@@ -4549,7 +4539,7 @@
                     </div>
                 </div>
 
-                <a href="#section-statistik" class="tub-icon" title="Statistik Anggota"><i class="fa-solid fa-signal"></i></a>
+                <a href="{{ url('/info/statistik') }}" class="tub-icon" title="Statistik Anggota"><i class="fa-solid fa-signal"></i></a>
                 <a href="{{ route('admin.register') }}" class="tub-icon" title="Login Admin"
                     style="display: flex; text-decoration: none;"><i class="fa-solid fa-user-shield"></i></a>
             </div>
@@ -4628,55 +4618,73 @@
                     <!-- Icon Grid -->
                     <div class="hero-features-grid-container">
                         <div class="hero-features-grid">
-                            <a href="javascript:void(0)" onclick="toggleProfil()" class="h-feature-card">
+                            <a href="{{ url('/profil/sejarah') }}" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
                                     <i class="fa-solid fa-id-card-clip h-feature-icon"></i>
                                 </div>
                                 <div class="h-feature-text">Profil<br>Organisasi</div>
                             </a>
-                            <a href="#susunan-pengurus" class="h-feature-card">
+                            <a href="{{ url('/struktur/bph') }}" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
                                     <i class="fa-solid fa-people-group h-feature-icon"></i>
                                 </div>
                                 <div class="h-feature-text">Susunan<br>Pengurus</div>
                             </a>
-                            <a href="#section-statistik" class="h-feature-card">
+                            <a href="{{ url('/proker') }}" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
-                                    <i class="fa-solid fa-chart-pie h-feature-icon"></i>
+                                    <i class="fa-solid fa-list-check h-feature-icon"></i>
                                 </div>
-                                <div class="h-feature-text">Data<br>Anggota</div>
+                                <div class="h-feature-text">Program<br>Kerja</div>
                             </a>
-                            <a href="#galeri" class="h-feature-card">
+                            <a href="{{ url('/galeri') }}" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
                                     <i class="fa-solid fa-photo-film h-feature-icon"></i>
                                 </div>
                                 <div class="h-feature-text">Galeri<br>Foto</div>
                             </a>
-                            <a href="javascript:void(0)" onclick="showSection('usaha')" class="h-feature-card">
+                            <a href="{{ url('/dokumen') }}" class="h-feature-card">
+                                <div class="h-feature-icon-wrap">
+                                    <i class="fa-solid fa-folder-open h-feature-icon"></i>
+                                </div>
+                                <div class="h-feature-text">Pusat<br>Dokumen</div>
+                            </a>
+                            <a href="{{ url('/library') }}" class="h-feature-card">
+                                <div class="h-feature-icon-wrap">
+                                    <i class="fa-solid fa-book-bookmark h-feature-icon"></i>
+                                </div>
+                                <div class="h-feature-text">Digital<br>Library</div>
+                            </a>
+                            <a href="{{ url('/info/usaha') }}" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
                                     <i class="fa-solid fa-shop h-feature-icon"></i>
                                 </div>
                                 <div class="h-feature-text">Lapak<br>Pelajar</div>
                             </a>
-                            <a href="javascript:void(0)" onclick="showSection('proker')" class="h-feature-card">
+                            <a href="{{ url('/info/statistik') }}" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
-                                    <i class="fa-solid fa-handshake h-feature-icon"></i>
+                                    <i class="fa-solid fa-chart-pie h-feature-icon"></i>
                                 </div>
-                                <div class="h-feature-text">Program<br>Kerja</div>
+                                <div class="h-feature-text">Data<br>Anggota</div>
                             </a>
-                            <a href="javascript:void(0)" onclick="showSection('peta')" class="h-feature-card">
+                            <a href="{{ route('voting') }}" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
-                                    <i class="fa-solid fa-map-pin h-feature-icon"></i>
+                                    <i class="fa-solid fa-check-to-slot h-feature-icon"></i>
                                 </div>
-                                <div class="h-feature-text">Peta<br>Ranting</div>
+                                <div class="h-feature-text">E-Voting<br>Pemilihan</div>
                             </a>
-                            <a href="#berita" class="h-feature-card">
+                            <a href="{{ url('/artikel') }}" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
                                     <i class="fa-solid fa-newspaper h-feature-icon"></i>
                                 </div>
                                 <div class="h-feature-text">Arsip<br>Artikel</div>
                             </a>
-                            <a href="javascript:void(0)" onclick="showSection('kritik')" class="h-feature-card">
+                            <a href="{{ url('/chatbot') }}" class="h-feature-card">
+                                <div class="h-feature-icon-wrap">
+                                    <i class="fa-solid fa-robot h-feature-icon"></i>
+                                </div>
+                                <div class="h-feature-text">Tanya<br>AI Bot</div>
+                            </a>
+                            <a href="{{ url('/kontak') }}" class="h-feature-card">
                                 <div class="h-feature-icon-wrap">
                                     <i class="fa-solid fa-comment-dots h-feature-icon"></i>
                                 </div>
@@ -4694,24 +4702,14 @@
                         <div class="k-sidebar-menu">
                             <!-- Profil -->
                             <div class="ks-item" onclick="this.classList.toggle('active')">
-                                <div class="ks-header">Profil</div>
+                                <div class="ks-header">Profil Organisasi</div>
                                 <div class="ks-body">
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('sejarah'); event.stopPropagation();">Sejarah IPNU
-                                        IPPNU</a>
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('visi-misi'); event.stopPropagation();">Visi Misi IPNU
-                                        IPPNU</a>
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('visi-misi-pac'); event.stopPropagation();">Visi Misi PAC
-                                        Kemiri</a>
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('nahkoda'); event.stopPropagation();">Nahkoda PAC
-                                        Kemiri</a>
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('peta'); event.stopPropagation();">Peta Kemiri</a>
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('lokasi'); event.stopPropagation();">Lokasi Sekretariat</a>
+                                    <a href="{{ url('/profil/sejarah') }}">Sejarah IPNU IPPNU</a>
+                                    <a href="{{ url('/profil/visi-misi') }}">Visi Misi IPNU IPPNU</a>
+                                    <a href="{{ url('/profil/visi-misi-pac') }}">Visi Misi PAC Kemiri</a>
+                                    <a href="{{ url('/profil/nahkoda') }}">Nahkoda PAC Kemiri</a>
+                                    <a href="{{ url('/profil/peta') }}">Peta Sekretariat</a>
+                                    <a href="{{ url('/profil/lokasi') }}">Lokasi Sekretariat</a>
                                 </div>
                             </div>
 
@@ -4719,50 +4717,46 @@
                             <div class="ks-item" onclick="this.classList.toggle('active')">
                                 <div class="ks-header">Lembaga & Struktur</div>
                                 <div class="ks-body">
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('susunan-pengurus'); event.stopPropagation();">Susunan Pengurus</a>
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('proker'); event.stopPropagation();">Program Kerja</a>
+                                    <a href="{{ url('/struktur/bph') }}">Susunan Pengurus BPH</a>
+                                    <a href="{{ url('/proker') }}">Program Kerja Unggulan</a>
                                 </div>
                             </div>
 
                             <!-- Informasi -->
-                            <div class="ks-item" onclick="this.classList.toggle('active')">
+                            <div class="ks-item active" onclick="this.classList.toggle('active')">
                                 <div class="ks-header">Informasi & Berita</div>
                                 <div class="ks-body">
-                                    <a href="#berita" onclick="event.stopPropagation();">Berita Terkini</a>
-                                    <a href="#section-statistik" onclick="event.stopPropagation();">Statistik</a>
-                                    <a href="#agenda" onclick="event.stopPropagation();">Agenda Kegiatan</a>
-                                    <a href="#galeri" onclick="event.stopPropagation();">Galeri</a>
+                                    <a href="{{ url('/artikel') }}">Berita & Artikel</a>
+                                    <a href="{{ url('/galeri') }}">Galeri Foto Unlimited</a>
+                                    <a href="{{ url('/dokumen') }}">PUSAT DOKUMEN</a>
+                                    <a href="{{ url('/library') }}">IPNU-IPPNU Library</a>
+                                    <a href="{{ url('/artikel/kirim') }}">Kirim Berita / Tulisan</a>
+                                    <a href="{{ url('/info/statistik') }}">Statistik Anggota</a>
                                 </div>
                             </div>
 
                             <!-- Ekonomi -->
                             <div class="ks-item" onclick="this.classList.toggle('active')">
-                                <div class="ks-header">Ekonomi</div>
+                                <div class="ks-header">Ekonomi Kader</div>
                                 <div class="ks-body">
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('usaha'); event.stopPropagation();">Usaha IPNU-IPPNU</a>
+                                    <a href="{{ url('/info/usaha') }}">Usaha & Lapak Pelajar</a>
                                 </div>
                             </div>
 
                             <!-- Pemilihan -->
                             <div class="ks-item" onclick="this.classList.toggle('active')">
-                                <div class="ks-header">Pemilihan</div>
+                                <div class="ks-header">Demokrasi Pelajar</div>
                                 <div class="ks-body">
-                                    <a href="{{ route('voting') }}" onclick="event.stopPropagation();">Pemilihan
-                                        Ketua</a>
+                                    <a href="{{ route('voting') }}">E-Voting Pemilihan Ketua</a>
                                 </div>
                             </div>
 
                             <!-- Interaksi / Aduan -->
                             <div class="ks-item" onclick="this.classList.toggle('active')">
-                                <div class="ks-header">Interaksi & Aduan</div>
+                                <div class="ks-header">Layanan Interaksi</div>
                                 <div class="ks-body">
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('kritik'); event.stopPropagation();">Kritik & Saran</a>
-                                    <a href="javascript:void(0)"
-                                        onclick="showSection('chatbot'); event.stopPropagation();">AI Chatbot</a>
+                                    <a href="{{ url('/chatbot') }}">Asisten AI Chatbot</a>
+                                    <a href="{{ url('/kontak') }}">Ruang Lapor & Aspirasi</a>
                                 </div>
                             </div>
                         </div><!-- /.k-sidebar-menu -->
@@ -4811,43 +4805,43 @@
 
         <!-- Mobile Quick Features (only visible on mobile) -->
         <div class="mobile-quick-features">
-            <a href="javascript:void(0)" onclick="toggleProfil()" class="h-feature-card">
+            <a href="{{ url('/profil/sejarah') }}" class="h-feature-card">
                 <i class="fa-solid fa-address-card h-feature-icon"></i>
                 <div class="h-feature-text">Profil</div>
             </a>
-            <a href="#susunan-pengurus" class="h-feature-card">
+            <a href="{{ url('/struktur/bph') }}" class="h-feature-card">
                 <i class="fa-solid fa-users h-feature-icon"></i>
                 <div class="h-feature-text">Pengurus</div>
             </a>
-            <a href="#section-statistik" class="h-feature-card">
-                <i class="fa-solid fa-chart-pie h-feature-icon"></i>
-                <div class="h-feature-text">Anggota</div>
-            </a>
-            <a href="#galeri" class="h-feature-card">
-                <i class="fa-solid fa-images h-feature-icon"></i>
-                <div class="h-feature-text">Galeri</div>
-            </a>
-            <a href="#agenda" class="h-feature-card">
-                <i class="fa-solid fa-clipboard-list h-feature-icon"></i>
-                <div class="h-feature-text">Agenda</div>
-            </a>
-            <a href="javascript:void(0)" onclick="showSection('proker')" class="h-feature-card">
+            <a href="{{ url('/proker') }}" class="h-feature-card">
                 <i class="fa-solid fa-handshake h-feature-icon"></i>
                 <div class="h-feature-text">Proker</div>
             </a>
-            <a href="javascript:void(0)" onclick="showSection('usaha')" class="h-feature-card">
+            <a href="{{ url('/galeri') }}" class="h-feature-card">
+                <i class="fa-solid fa-images h-feature-icon"></i>
+                <div class="h-feature-text">Galeri</div>
+            </a>
+            <a href="{{ url('/dokumen') }}" class="h-feature-card">
+                <i class="fa-solid fa-folder-open h-feature-icon"></i>
+                <div class="h-feature-text">Dokumen</div>
+            </a>
+            <a href="{{ url('/library') }}" class="h-feature-card">
+                <i class="fa-solid fa-book-bookmark h-feature-icon"></i>
+                <div class="h-feature-text">Library</div>
+            </a>
+            <a href="{{ url('/info/usaha') }}" class="h-feature-card">
                 <i class="fa-solid fa-store h-feature-icon"></i>
                 <div class="h-feature-text">Lapak</div>
             </a>
-            <a href="javascript:void(0)" onclick="showSection('peta')" class="h-feature-card">
-                <i class="fa-solid fa-map-location-dot h-feature-icon"></i>
-                <div class="h-feature-text">Peta</div>
+            <a href="{{ route('voting') }}" class="h-feature-card">
+                <i class="fa-solid fa-check-to-slot h-feature-icon"></i>
+                <div class="h-feature-text">Voting</div>
             </a>
-            <a href="#berita" class="h-feature-card">
-                <i class="fa-solid fa-folder-open h-feature-icon"></i>
-                <div class="h-feature-text">Arsip</div>
+            <a href="{{ url('/artikel') }}" class="h-feature-card">
+                <i class="fa-solid fa-newspaper h-feature-icon"></i>
+                <div class="h-feature-text">Berita</div>
             </a>
-            <a href="javascript:void(0)" onclick="showSection('kritik')" class="h-feature-card">
+            <a href="{{ url('/kontak') }}" class="h-feature-card">
                 <i class="fa-solid fa-bullhorn h-feature-icon"></i>
                 <div class="h-feature-text">Lapor</div>
             </a>
@@ -5056,25 +5050,27 @@
                 </div>
             </div>
 
-            <!-- Headline Krandegan Style -->
-            <div class="hk-wrap" style="margin-bottom: 12px;">
+            <!-- Headline Krandegan Style (Linked to Most Viewed Article) -->
+            <a href="{{ $headlineArticle ? route('artikel.show', $headlineArticle->slug) : '#' }}" class="hk-wrap" style="margin-bottom: 12px; text-decoration: none; color: inherit; display: flex;">
                 <div class="hk-left">
                     <span class="hk-wm">HEADLINE</span>
-                    <span class="hk-badge">HEADLINE</span>
-                    <h3 class="hk-title">{{ $settings['hk_title'] ?? 'Hari Santri, IPNU Kemiri Masuk Tiga Besar Terbaik Nasional' }}</h3>
-                    <p class="hk-desc">{{ $settings['hk_desc'] ?? 'KEMIRI — PAC IPNU IPPNU Kecamatan Kemiri meraih penghargaan luar biasa sebagai Pelajar Digital Nasional setelah sukses mengelola sistem administrasi berbasis cloud...' }}</p>
+                    <span class="hk-badge"><i class="fa-solid fa-fire"></i> BERITA POPULER</span>
+                    <h3 class="hk-title">{{ $headlineArticle ? $headlineArticle->title : ($settings['hk_title'] ?? 'Hari Santri, IPNU Kemiri Masuk Tiga Besar Terbaik Nasional') }}</h3>
+                    <p class="hk-desc">{{ $headlineArticle ? ($headlineArticle->excerpt ?: Str::limit(strip_tags($headlineArticle->content), 130)) : ($settings['hk_desc'] ?? 'KEMIRI — PAC IPNU IPPNU Kecamatan Kemiri meraih penghargaan luar biasa sebagai Pelajar Digital Nasional setelah sukses mengelola sistem administrasi berbasis cloud...') }}</p>
                 </div>
                 <!-- Dark chevron separator -->
                 <div class="hk-sep" aria-hidden="true"></div>
                 <!-- Photo right -->
                 <div class="hk-right">
-                    @if(!empty($settings['hk_image']))
+                    @if($headlineArticle && $headlineArticle->image)
+                        <img src="{{ Str::startsWith($headlineArticle->image, 'images/') ? asset($headlineArticle->image) : asset('storage/' . $headlineArticle->image) }}" alt="{{ $headlineArticle->title }}">
+                    @elseif(!empty($settings['hk_image']))
                         <img src="{{ asset('storage/' . $settings['hk_image']) }}" alt="Headline">
                     @else
                         <img src="{{ asset('images/HEADLINE.jpeg') }}" alt="Headline">
                     @endif
                 </div>
-            </div>
+            </a>
 
             <style>
                 .hk-wrap {
@@ -5084,6 +5080,15 @@
                     overflow: hidden;
                     box-shadow: 0 4px 15px rgba(100, 116, 139, 0.15);
                     position: relative;
+                    text-decoration: none;
+                    color: inherit;
+                    cursor: pointer;
+                    transition: transform 0.25s ease, box-shadow 0.25s ease;
+                }
+
+                .hk-wrap:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
                 }
 
                 .hk-left {
@@ -5212,1400 +5217,8 @@
                 }
             </style>
 
-            <!-- DYNAMIC SECTIONS (A-K) -->
-            <div id="dynamic-content-area">
-                <!-- A. SEJARAH -->
-                <!-- PROGRAM KERJA -->
-                <div id="section-proker" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header">
-                        <span>PROGRAM KERJA</span>
-                    </div>
-                    <div class="na-list">
-                        @forelse($programs as $program)
-                            <div class="na-card" style="display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;">
-                                @if($program->photo)
-                                    <div class="na-img-wrapper" style="width: 120px; height: 120px; flex-shrink: 0; border-radius: 8px; overflow: hidden;">
-                                        <img src="{{ asset('storage/' . $program->photo) }}" style="width: 100%; height: 100%; object-fit: cover;" alt="{{ $program->title }}">
-                                    </div>
-                                @elseif($program->icon)
-                                    <div class="na-img-wrapper" style="width: 120px; height: 120px; flex-shrink: 0; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #f8fafc; border: 1px solid #e2e8f0;">
-                                        <i class="{{ $program->icon }}" style="font-size: 3rem; color: var(--primary);"></i>
-                                    </div>
-                                @endif
-                                <div style="flex: 1;">
-                                    <h3 style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 8px;">{{ $program->title }}</h3>
-                                    <p style="font-size: 0.9rem; color: #64748b; line-height: 1.5;">{{ $program->description }}</p>
-                                </div>
-                            </div>
-                        @empty
-                            <div style="text-align: center; color: #64748b; padding: 20px;">
-                                Belum ada program kerja.
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-
-                <div id="section-sejarah" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header"><span>📜 SEJARAH IPNU IPPNU</span></div>
-                    <div style="padding: 24px; background: white;">
-                        <style>
-                            .sejarah-tabs-container {
-                                display: flex;
-                                justify-content: center;
-                                margin-bottom: 20px;
-                            }
-                            .sejarah-tabs {
-                                display: flex;
-                                border-radius: 8px;
-                                overflow: hidden;
-                                box-shadow: var(--shadow-md);
-                                width: 100%;
-                                max-width: 500px;
-                            }
-                            .sejarah-tab {
-                                flex: 1;
-                                text-align: center;
-                                padding: 12px 16px;
-                                font-weight: 700;
-                                cursor: pointer;
-                                background: white;
-                                color: var(--text-dark);
-                                transition: all 0.3s;
-                                border: none;
-                                outline: none;
-                                font-family: 'Outfit', sans-serif;
-                                font-size: 1.1rem;
-                            }
-                            .sejarah-tab:hover {
-                                background: var(--bg-light);
-                            }
-                            .sejarah-tab.active {
-                                background: var(--primary);
-                                color: white;
-                            }
-                            .sejarah-content {
-                                display: none;
-                                background: #f0fdf4; /* Very light green */
-                                padding: 24px;
-                                border-radius: 12px;
-                                border: 1px solid rgba(21, 128, 61, 0.1);
-                                line-height: 1.8;
-                                color: var(--text-dark);
-                                text-align: justify;
-                            }
-                            .sejarah-content.active {
-                                display: block;
-                                animation: fadeIn 0.4s ease-in-out;
-                            }
-                            @keyframes fadeIn {
-                                from { opacity: 0; transform: translateY(5px); }
-                                to { opacity: 1; transform: translateY(0); }
-                            }
-                        </style>
-
-                        <div class="sejarah-tabs-container">
-                            <div class="sejarah-tabs">
-                                <button class="sejarah-tab active" onclick="switchSejarahTab('ipnu')">IPNU</button>
-                                <button class="sejarah-tab" onclick="switchSejarahTab('ippnu')">IPPNU</button>
-                            </div>
-                        </div>
-
-                        <div id="sejarah-ipnu" class="sejarah-content active">
-                            <h3 style="color: var(--primary); margin-bottom: 20px; text-align: center; font-family: 'Outfit', sans-serif; font-weight: 800;">Sejarah IPNU</h3>
-                            
-                            <div style="border-radius:12px; overflow:hidden; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
-                                <!-- Banner -->
-                                <img src="{{ isset($settings['sejarah_ipnu_photo_banner']) ? Storage::url($settings['sejarah_ipnu_photo_banner']) : asset('images/KH Tolchah Mansoer Pendiri IPNU.jpg') }}" style="width:100%; height:auto; display:block;" alt="Banner Pendiri IPNU">
-                                
-                                <!-- Info with Portrait -->
-                                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:20px; padding:20px; background:white; border-left: 4px solid var(--primary);">
-                                    <img src="{{ isset($settings['sejarah_ipnu_photo_portrait']) ? Storage::url($settings['sejarah_ipnu_photo_portrait']) : asset('images/PENDIRI IPNU.jpg') }}" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border: 3px solid #bbf7d0; box-shadow:0 4px 10px rgba(0,0,0,0.1);" alt="KH. Tolchah Mansoer">
-                                    <div style="flex:1; min-width:200px;">
-                                        <h4 style="margin:0 0 5px 0; color:var(--primary-dark); font-weight:800; font-size:1.2rem;">{{ $settings['sejarah_ipnu_title'] ?? 'Prof. Dr. KH. Tolchah Mansoer' }}</h4>
-                                        <p style="margin:0; color:#64748b; font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Pendiri IPNU</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @php
-                                $sejarahIpnuText = $settings['sejarah_ipnu'] ?? "Ikatan Pelajar Nahdlatul Ulama (IPNU) didirikan pada tanggal 20 Jumadil Akhir 1373 H, bertepatan dengan 24 Februari 1954 M ketika diselenggarakan Kongres LP Ma’arif di Semarang. Sejak berdirinya, IPNU menjadi bagian dari LP Ma’arif. Namun pada tahun 1966 ketika diselenggarakan Kongres IPNU di Surabaya, IPNU resmi melepaskan diri dari LP Ma’arif dan menjadi badan otonom (banom) NU. Salah seorang pendiri IPNU adalah Prof. Dr. KH. Tolchah Mansyur.\n\nSejak berdirinya, IPNu merupakan kepanjangan dari Ikatan Pelajar Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-10 di Jombang yang dikenal dengan istilah Deklarasi Jombang, kepanjangan IPNU berganti menjadi Ikatan Putera nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.\n\nNamun setelah orde baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah, kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya. Melalui kongresnya yang ke-14 di Surabaya (18-22 juni 2003), kepanjangan IPNU kembali seperti semula yaitu Ikatan Pelajar Nahdlatul Ulama.";
-                            @endphp
-                            @foreach(explode("\n", str_replace("\r", "", $sejarahIpnuText)) as $p)
-                                @if(trim($p))
-                                    <p style="margin-bottom: 12px;">{!! nl2br(e(trim($p))) !!}</p>
-                                @endif
-                            @endforeach
-                        </div>
-
-                        <div id="sejarah-ippnu" class="sejarah-content">
-                            <h3 style="color: #c2410c; margin-bottom: 20px; text-align: center; font-family: 'Outfit', sans-serif; font-weight: 800;">Sejarah IPPNU</h3>
-                            
-                            <div style="border-radius:12px; overflow:hidden; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow:0 4px 15px rgba(0,0,0,0.05);">
-                                <!-- Banner -->
-                                <img src="{{ isset($settings['sejarah_ippnu_photo_banner']) ? Storage::url($settings['sejarah_ippnu_photo_banner']) : asset('images/Pendiri IPPNU (1).jpg') }}" style="width:100%; height:auto; display:block;" alt="Banner Pendiri IPPNU">
-                                
-                                <!-- Info with Portrait -->
-                                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:20px; padding:20px; background:white; border-left: 4px solid #c2410c;">
-                                    <img src="{{ isset($settings['sejarah_ippnu_photo_portrait']) ? Storage::url($settings['sejarah_ippnu_photo_portrait']) : asset('images/PENDIRI IPPNU.jpg') }}" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border: 3px solid #fdba74; box-shadow:0 4px 10px rgba(0,0,0,0.1);" alt="Ny. Hj. Umroh Mahfudzah">
-                                    <div style="flex:1; min-width:200px;">
-                                        <h4 style="margin:0 0 5px 0; color:#c2410c; font-weight:800; font-size:1.2rem;">{{ $settings['sejarah_ippnu_title'] ?? 'Ny. Hj. Umroh Mahfudzah' }}</h4>
-                                        <p style="margin:0; color:#64748b; font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Pendiri IPPNU</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @php
-                                $sejarahIppnuText = $settings['sejarah_ippnu'] ?? "Sedangkan Ikatan Pelajar Putri Nahdlatul Ulama (IPPNU) didirikan pada tanggal 8 Rajab 1374 H bertepatan dengan tanggal 2 maret 1955 M di Solo Jawa Tengah. Salah seorang pendirinya adalah Ny. Umroh Mahfudzah. Sejak berdirinya, IPPNU bernaung di bawah LP Ma’arif. Namun sejak tahun 1966 melalui kongresnya di Surabaya, IPPNU berdiri sendiri sebagai salah satu badan otonom (banom) NU.\n\nSejak berdirinya, IPPNU merupakan kepanjangan dari Ikatan pelajar Putri Nahdlatul Ulama. Namun sejak tahun 1988, melalui kongresnya yang ke-9 di Jombang (29-31 januari 1988), kepanjangan IPPNU berganti menjadi Ikatan Putri-putri Nahdlatul Ulama. Hal ini dikarenakan harus menyesuaikan diri dengan Undang-undang Nomor 8 Tahun 1985 tentang keormasan yang melarang adanya organisasi pelajar di sekolah selain OSIS.\n\nNamun setelah Orde Baru tumbang, di saat kebebasan berpendapat dan berekspresi dapat diperoleh dengan mudah kepanjangan tersebut dikembalikan lagi seperti saat kelahirannya, melalui kongresnya yang ke-13 di Surabaya (18-22 Juni 2003), kepanjangan IPPNU kembali seperti semula yaitu Ikatan Pelajar Putri Nahdlatul Ulama.";
-                            @endphp
-                            @foreach(explode("\n", str_replace("\r", "", $sejarahIppnuText)) as $p)
-                                @if(trim($p))
-                                    <p style="margin-bottom: 12px;">{!! nl2br(e(trim($p))) !!}</p>
-                                @endif
-                            @endforeach
-                        </div>
-
-                        <script>
-                            function switchSejarahTab(tab) {
-                                document.querySelectorAll('.sejarah-tab').forEach(t => t.classList.remove('active'));
-                                document.querySelectorAll('.sejarah-content').forEach(c => c.classList.remove('active'));
-                                
-                                if (tab === 'ipnu') {
-                                    document.querySelectorAll('.sejarah-tab')[0].classList.add('active');
-                                    document.getElementById('sejarah-ipnu').classList.add('active');
-                                } else {
-                                    document.querySelectorAll('.sejarah-tab')[1].classList.add('active');
-                                    document.getElementById('sejarah-ippnu').classList.add('active');
-                                }
-                            }
-                        </script>
-                    </div>
-                </div>
-
-                <!-- A. VISI MISI -->
-                <div id="section-visi-misi" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header"><span>🎯 VISI MISI IPNU IPPNU</span></div>
-                    <div style="padding: 24px; background: white;">
-                        <style>
-                            .vm-tabs-container {
-                                display: flex;
-                                justify-content: center;
-                                margin-bottom: 20px;
-                            }
-                            .vm-tabs {
-                                display: flex;
-                                border-radius: 8px;
-                                overflow: hidden;
-                                box-shadow: var(--shadow-md);
-                                width: 100%;
-                                max-width: 500px;
-                            }
-                            .vm-tab {
-                                flex: 1;
-                                text-align: center;
-                                padding: 12px 16px;
-                                font-weight: 700;
-                                cursor: pointer;
-                                background: white;
-                                color: var(--text-dark);
-                                transition: all 0.3s;
-                                border: none;
-                                outline: none;
-                                font-family: 'Outfit', sans-serif;
-                                font-size: 1.1rem;
-                            }
-                            .vm-tab:hover {
-                                background: var(--bg-light);
-                            }
-                            .vm-tab.active {
-                                background: var(--primary);
-                                color: white;
-                            }
-                            .vm-content {
-                                display: none;
-                                background: #f0fdf4;
-                                padding: 24px;
-                                border-radius: 12px;
-                                border: 1px solid rgba(21, 128, 61, 0.1);
-                                line-height: 1.8;
-                                color: var(--text-dark);
-                                text-align: justify;
-                            }
-                            .vm-content.active {
-                                display: block;
-                                animation: fadeIn 0.4s ease-in-out;
-                            }
-                        </style>
-
-                        <div class="vm-tabs-container">
-                            <div class="vm-tabs">
-                                <button class="vm-tab active" onclick="switchVmTab('ipnu')">IPNU</button>
-                                <button class="vm-tab" onclick="switchVmTab('ippnu')">IPPNU</button>
-                            </div>
-                        </div>
-
-                        <!-- IPNU Visi Misi -->
-                        <div id="vm-ipnu" class="vm-content active">
-                            <h3 style="color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; text-align: center;">Visi IPNU</h3>
-                            <p style="margin-bottom: 20px; font-style: italic; text-align: center;">{{ $settings['visi_ipnu'] ?? 'Terwujudnya pelajar-pelajar bangsa yang bertaqwa kepada Allah SWT, berahlakul karimah, menguasai ilmu pengetahuan dan teknologi, memiliki kesadaran dan tanggungjawab terhada tatanan masyarakat yang berkeadilan dan demokratis atas dasar ajaran Islam ahlusunnah wal jamaah.' }}</p>
-                            
-                            <h3 style="color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; text-align: center;">Misi IPNU</h3>
-                            @php
-                                $misiIpnu = array_filter(explode("\n", str_replace("\r", "", $settings['misi_ipnu'] ?? "Mendorong para pelajar bangsa untuk taat (patuh) dalam menjalankan perintah dan menjauhi segala larangan yang termaktub dalam ajaran Islam.\nMembentuk karakter para pelajar bangsa yang santun dalam bertindak, jujur dalam berprilaku, jernih dan obyektif dalam berfikir, serta memiliki ide/gagasan yang inovatif.\nMendorong pemamfaatan dan pengembangan ilmu pengetahuan dan teknologi sebagai media pengembangan potensi dan peningkatan SDM belajar.\nMewujudkan kader pemimpin bangsa yang profesional, jujur dan bertanggung jawab yang dilandasi oleh spirit nilai ajaran Islam ahlusunnah wal jamaah.")));
-                            @endphp
-                            <ol style="padding-left: 20px;">
-                                @foreach($misiIpnu as $m)
-                                    @if(trim($m))
-                                        <li style="margin-bottom: 8px;">{{ trim($m) }}</li>
-                                    @endif
-                                @endforeach
-                            </ol>
-                        </div>
-
-                        <!-- IPPNU Visi Misi -->
-                        <div id="vm-ippnu" class="vm-content">
-                            <h3 style="color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; text-align: center;">Visi IPPNU</h3>
-                            <p style="margin-bottom: 20px; font-style: italic; text-align: center;">{{ $settings['visi_ippnu'] ?? 'Terbentuknya kesempurnaan Pelajar Putri Indonesia yang bertakwa, berakhlaqul karimah, berilmu, dan berwawasan kebangsaan.' }}</p>
-                            
-                            <h3 style="color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; text-align: center;">Misi IPPNU</h3>
-                            @php
-                                $misiIppnu = array_filter(explode("\n", str_replace("\r", "", $settings['misi_ippnu'] ?? "Membangun kader NU yang berkualitas, berakhlaqul karimah, bersikap demokratis dalam kehidupan bermasyarakat, berbangsa dan bernegara.\nMengembangkan wacana dan kualitas sumber dya kader menuju terciptanya kesetaraan gender.\nMembentuk kader yang dinamis, kreatif, dan inovatif.")));
-                            @endphp
-                            <ol style="padding-left: 20px;">
-                                @foreach($misiIppnu as $m)
-                                    @if(trim($m))
-                                        <li style="margin-bottom: 8px;">{{ trim($m) }}</li>
-                                    @endif
-                                @endforeach
-                            </ol>
-                        </div>
-
-                        <script>
-                            function switchVmTab(tab) {
-                                document.querySelectorAll('.vm-tab').forEach(t => t.classList.remove('active'));
-                                document.querySelectorAll('.vm-content').forEach(c => c.classList.remove('active'));
-                                
-                                if (tab === 'ipnu') {
-                                    document.querySelectorAll('.vm-tab')[0].classList.add('active');
-                                    document.getElementById('vm-ipnu').classList.add('active');
-                                } else {
-                                    document.querySelectorAll('.vm-tab')[1].classList.add('active');
-                                    document.getElementById('vm-ippnu').classList.add('active');
-                                }
-                            }
-                        </script>
-                    </div>
-                </div>
-
-                <!-- A. VISI MISI PAC -->
-                <div id="section-visi-misi-pac" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header"><span>🌟 VISI MISI PAC KEMIRI</span></div>
-                    <div style="padding: 24px; background: white;">
-                        <h3 style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; margin-bottom: 10px; text-align: center;">Visi</h3>
-                        <div style="background: #f0fdf4; padding: 20px; border-radius: 12px; border-left: 4px solid var(--primary); margin-bottom: 25px;">
-                            <p style="font-style: italic; color: #166534; font-size: 1.05rem; text-align: center; margin: 0;">
-                                “{{ $settings['visi_pac'] ?? 'Terwujudnya organisasi IPNU-IPPNU yang solid, bersinergi, dan progresif dalam membangun pelajar Nahdlatul Ulama yang berkualitas, berakhlakul karimah, berwawasan luas, serta mampu berkontribusi bagi agama, bangsa, dan masyarakat.' }}”
-                            </p>
-                        </div>
-
-                        <h3 style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; margin-bottom: 15px;">Misi</h3>
-                        @php
-                            $misiPac = array_filter(explode("\n", str_replace("\r", "", $settings['misi_pac'] ?? "Meningkatkan solidaritas dan sinergi antar pengurus serta anggota IPNU-IPPNU dalam menjalankan organisasi.\nMengembangkan kualitas pelajar NU melalui kegiatan pendidikan, keagamaan, dan pengembangan keterampilan.\nMenanamkan nilai-nilai Ahlussunnah wal Jama’ah An-Nahdliyah dalam kehidupan sehari-hari.\nMendorong budaya organisasi yang aktif, inovatif, dan progresif sesuai perkembangan zaman.\nMembentuk generasi pelajar NU yang berkarakter, bertanggung jawab, dan mampu menjadi teladan di lingkungan masyarakat.\nMemperkuat kerja sama dengan berbagai pihak demi mendukung kemajuan organisasi dan pengembangan potensi pelajar NU.")));
-                        @endphp
-                        <ol style="padding-left: 20px; line-height: 1.8; color: var(--text-dark);">
-                            @foreach($misiPac as $m)
-                                @if(trim($m))
-                                    <li style="margin-bottom: 8px;">{{ trim($m) }}</li>
-                                @endif
-                            @endforeach
-                        </ol>
-                    </div>
-                </div>
-
-                <!-- A. NAHKODA -->
-                <div id="section-nahkoda" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header"><span>⚓ NAHKODA PAC KEMIRI DARI MASA KE MASA</span></div>
-                    <div style="padding: 24px; background: white;">
-                        @php
-                            $groupedPimpinan = $officials->where('type', 'pimpinan')->groupBy(function($item) {
-                                return $item->service_period ?: 'Periode Lainnya';
-                            })->sortByDesc(function($item, $key) {
-                                return $key; // simple sort by period string desc
-                            });
-                        @endphp
-
-                        @if($groupedPimpinan->isEmpty())
-                            <div style="text-align: center; padding: 30px; color: #94a3b8; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">
-                                <div style="font-size: 2.5rem; margin-bottom: 8px;">🛡️</div>
-                                <div style="font-weight: 700;">Data Nahkoda Belum Tersedia</div>
-                                <div style="font-size: 0.85rem;">Admin belum mendaftarkan data pimpinan.</div>
-                            </div>
-                        @else
-                            <style>
-                                .nahkoda-tabs-container {
-                                    display: flex;
-                                    flex-wrap: nowrap;
-                                    overflow-x: auto;
-                                    gap: 10px;
-                                    margin-bottom: 24px;
-                                    padding-bottom: 8px;
-                                    -webkit-overflow-scrolling: touch;
-                                    scrollbar-width: none;
-                                }
-                                .nahkoda-tabs-container::-webkit-scrollbar {
-                                    display: none;
-                                }
-                                .nahkoda-tab {
-                                    padding: 10px 20px;
-                                    font-weight: 700;
-                                    cursor: pointer;
-                                    background: white;
-                                    color: var(--text-dark);
-                                    transition: all 0.3s;
-                                    border: 1px solid #cbd5e1;
-                                    border-radius: 8px;
-                                    outline: none;
-                                    font-family: 'Outfit', sans-serif;
-                                    font-size: 0.95rem;
-                                    white-space: nowrap;
-                                    flex-shrink: 0;
-                                }
-                                .nahkoda-tab:hover {
-                                    background: var(--bg-light);
-                                }
-                                .nahkoda-tab.active {
-                                    background: var(--primary);
-                                    color: white;
-                                    border-color: var(--primary);
-                                }
-                                .nahkoda-content {
-                                    display: none;
-                                }
-                                .nahkoda-content.active {
-                                    display: block;
-                                    animation: fadeIn 0.4s ease-in-out;
-                                }
-
-                                /* === NAHKODA GRID SYSTEM === */
-                                .nahkoda-main-grid {
-                                    display: grid;
-                                    grid-template-columns: 1fr 1fr;
-                                    gap: 16px;
-                                    align-items: start;
-                                }
-                                .nahkoda-org-block {
-                                    background: rgba(248,250,252,0.6);
-                                    padding: 16px;
-                                    border-radius: 16px;
-                                    border: 1px solid #e2e8f0;
-                                }
-                                .nahkoda-org-title {
-                                    text-align: center;
-                                    margin-bottom: 16px;
-                                }
-                                .nahkoda-org-title h3 {
-                                    font-family: 'Outfit', sans-serif;
-                                    font-weight: 800;
-                                    color: var(--primary-dark);
-                                    margin: 0;
-                                    font-size: 1.2rem;
-                                }
-                                .nahkoda-persons-grid {
-                                    display: grid;
-                                    grid-template-columns: 1fr;
-                                    gap: 12px;
-                                    justify-items: center;
-                                }
-                                .nahkoda-person-card {
-                                    background: white;
-                                    border: 1px solid #e2e8f0;
-                                    border-radius: 12px;
-                                    overflow: hidden;
-                                    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-                                    display: flex;
-                                    flex-direction: column;
-                                    position: relative;
-                                    width: 100%;
-                                }
-                                .nahkoda-person-card .nc-topbar {
-                                    height: 6px;
-                                    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
-                                }
-                                .nahkoda-person-card .nc-photo-wrap {
-                                    padding: 16px 12px 8px 12px;
-                                    display: flex;
-                                    justify-content: center;
-                                }
-                                .nahkoda-person-card .nc-photo {
-                                    width: 100%;
-                                    aspect-ratio: 1/1;
-                                    max-width: 160px;
-                                    border: 3px solid #f1f5f9;
-                                    border-radius: 8px;
-                                    overflow: hidden;
-                                    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-                                }
-                                .nahkoda-person-card .nc-photo img {
-                                    width: 100%;
-                                    height: 100%;
-                                    object-fit: cover;
-                                }
-                                .nahkoda-person-card .nc-info {
-                                    padding: 0 12px 12px 12px;
-                                    text-align: center;
-                                    display: flex;
-                                    flex-direction: column;
-                                    flex-grow: 1;
-                                }
-                                .nahkoda-person-card .nc-name {
-                                    margin: 0 0 4px 0;
-                                    font-family: 'Outfit', sans-serif;
-                                    font-weight: 800;
-                                    font-size: 1rem;
-                                    color: var(--text-dark);
-                                    line-height: 1.2;
-                                }
-                                .nahkoda-person-card .nc-position {
-                                    color: white;
-                                    background: var(--primary);
-                                    padding: 2px 8px;
-                                    border-radius: 40px;
-                                    font-weight: 800;
-                                    font-size: 0.6rem;
-                                    text-transform: uppercase;
-                                    letter-spacing: 0.5px;
-                                    display: inline-block;
-                                    margin: 0 auto 8px auto;
-                                }
-                                .nahkoda-person-card .nc-details {
-                                    text-align: left;
-                                    background: #f8fafc;
-                                    border-radius: 8px;
-                                    padding: 8px;
-                                    margin-bottom: 8px;
-                                    border: 1px solid #e2e8f0;
-                                }
-                                .nahkoda-person-card .nc-detail-label {
-                                    font-size: 0.6rem;
-                                    color: #64748b;
-                                    font-weight: 700;
-                                    text-transform: uppercase;
-                                    margin-bottom: 1px;
-                                }
-                                .nahkoda-person-card .nc-detail-value {
-                                    font-size: 0.78rem;
-                                    color: var(--text-dark);
-                                    font-weight: 600;
-                                }
-                                .nahkoda-person-card .nc-motto {
-                                    margin-top: auto;
-                                    padding: 8px;
-                                    background: #f0fdf4;
-                                    border-radius: 8px;
-                                    border: 1px dashed #bbf7d0;
-                                }
-                                .nahkoda-person-card .nc-motto-label {
-                                    font-size: 0.6rem;
-                                    color: var(--primary);
-                                    font-weight: 800;
-                                    text-transform: uppercase;
-                                    margin-bottom: 3px;
-                                }
-                                .nahkoda-person-card .nc-motto-text {
-                                    margin: 0;
-                                    font-size: 0.78rem;
-                                    font-style: italic;
-                                    color: #166534;
-                                    line-height: 1.3;
-                                    font-weight: 500;
-                                }
-
-                                /* === MOBILE (max-width: 768px) === */
-                                @media (max-width: 768px) {
-                                    .nahkoda-main-grid {
-                                        grid-template-columns: 1fr 1fr;
-                                        gap: 8px;
-                                    }
-                                    .nahkoda-org-block {
-                                        padding: 8px;
-                                        border-radius: 10px;
-                                    }
-                                    .nahkoda-org-title {
-                                        margin-bottom: 10px;
-                                    }
-                                    .nahkoda-org-title h3 {
-                                        font-size: 0.85rem;
-                                    }
-                                    .nahkoda-tab {
-                                        padding: 8px 14px;
-                                        font-size: 0.8rem;
-                                    }
-                                    .nahkoda-person-card .nc-photo-wrap {
-                                        padding: 8px 6px 4px 6px;
-                                    }
-                                    .nahkoda-person-card .nc-photo {
-                                        max-width: 120px;
-                                        border-width: 2px;
-                                    }
-                                    .nahkoda-person-card .nc-info {
-                                        padding: 0 6px 8px 6px;
-                                    }
-                                    .nahkoda-person-card .nc-name {
-                                        font-size: 0.8rem;
-                                    }
-                                    .nahkoda-person-card .nc-position {
-                                        font-size: 0.5rem;
-                                        padding: 2px 6px;
-                                        margin-bottom: 6px;
-                                    }
-                                    .nahkoda-person-card .nc-details {
-                                        padding: 6px;
-                                        margin-bottom: 6px;
-                                    }
-                                    .nahkoda-person-card .nc-detail-label {
-                                        font-size: 0.5rem;
-                                    }
-                                    .nahkoda-person-card .nc-detail-value {
-                                        font-size: 0.65rem;
-                                    }
-                                    .nahkoda-person-card .nc-motto {
-                                        padding: 6px;
-                                    }
-                                    .nahkoda-person-card .nc-motto-label {
-                                        font-size: 0.5rem;
-                                    }
-                                    .nahkoda-person-card .nc-motto-text {
-                                        font-size: 0.65rem;
-                                    }
-                                }
-                            </style>
-
-                            <div class="nahkoda-tabs-container">
-                                @foreach($groupedPimpinan as $period => $persons)
-                                    <button class="nahkoda-tab {{ $loop->first ? 'active' : '' }}" onclick="switchNahkodaTab('{{ Str::slug($period) }}')">
-                                        Masa Khidmat {{ $period }}
-                                    </button>
-                                @endforeach
-                            </div>
-
-                            @foreach($groupedPimpinan as $period => $persons)
-                                <div id="nahkoda-{{ Str::slug($period) }}" class="nahkoda-content {{ $loop->first ? 'active' : '' }}">
-                                    <div class="nahkoda-main-grid">
-                                        <!-- IPNU Block -->
-                                        <div class="nahkoda-org-block">
-                                            <div class="nahkoda-org-title">
-                                                <h3>NAHKODA IPNU</h3>
-                                                <div style="width: 40px; height: 4px; background: var(--primary); margin: 6px auto 0; border-radius: 4px;"></div>
-                                            </div>
-                                            <div class="nahkoda-persons-grid">
-                                                @php $ipnuPersons = $persons->where('organization', 'IPNU'); @endphp
-                                                @foreach($ipnuPersons as $person)
-                                                    <div class="nahkoda-person-card">
-                                                        <div class="nc-topbar"></div>
-                                                        <div class="nc-photo-wrap">
-                                                            <div class="nc-photo">
-                                                                @if($person->photo)
-                                                                    <img src="{{ Storage::url($person->photo) }}" alt="{{ $person->name }}">
-                                                                @else
-                                                                    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;background:#e2e8f0;">👤</div>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="nc-info">
-                                                            <h4 class="nc-name">{{ $person->name }}</h4>
-                                                            <div class="nc-position">{{ $person->position }}</div>
-                                                            <div class="nc-details">
-                                                                <div style="margin-bottom: 6px;">
-                                                                    <div class="nc-detail-label">Tempat, Tgl Lahir</div>
-                                                                    <div class="nc-detail-value">{{ $person->birth_place_date ?: '-' }}</div>
-                                                                </div>
-                                                                <div style="height: 1px; background: #e2e8f0; margin-bottom: 6px;"></div>
-                                                                <div>
-                                                                    <div class="nc-detail-label">Fokus Gerakan</div>
-                                                                    <div class="nc-detail-value">{{ $person->movement_focus ?: '-' }}</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nc-motto">
-                                                                <div class="nc-motto-label">Motto Hidup</div>
-                                                                <p class="nc-motto-text">"{{ $person->motto ?: 'Berkhidmat untuk umat, bergerak untuk kemajuan pelajar.' }}"</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                                @if($ipnuPersons->isEmpty())
-                                                    <div style="color: #94a3b8; font-size: 0.85rem; text-align: center; width: 100%; padding: 16px;">Data IPNU belum tersedia</div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- IPPNU Block -->
-                                        <div class="nahkoda-org-block">
-                                            <div class="nahkoda-org-title">
-                                                <h3>NAHKODA IPPNU</h3>
-                                                <div style="width: 40px; height: 4px; background: var(--primary); margin: 6px auto 0; border-radius: 4px;"></div>
-                                            </div>
-                                            <div class="nahkoda-persons-grid">
-                                                @php $ippnuPersons = $persons->where('organization', 'IPPNU'); @endphp
-                                                @foreach($ippnuPersons as $person)
-                                                    <div class="nahkoda-person-card">
-                                                        <div class="nc-topbar"></div>
-                                                        <div class="nc-photo-wrap">
-                                                            <div class="nc-photo">
-                                                                @if($person->photo)
-                                                                    <img src="{{ Storage::url($person->photo) }}" alt="{{ $person->name }}">
-                                                                @else
-                                                                    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;background:#e2e8f0;">👤</div>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="nc-info">
-                                                            <h4 class="nc-name">{{ $person->name }}</h4>
-                                                            <div class="nc-position">{{ $person->position }}</div>
-                                                            <div class="nc-details">
-                                                                <div style="margin-bottom: 6px;">
-                                                                    <div class="nc-detail-label">Tempat, Tgl Lahir</div>
-                                                                    <div class="nc-detail-value">{{ $person->birth_place_date ?: '-' }}</div>
-                                                                </div>
-                                                                <div style="height: 1px; background: #e2e8f0; margin-bottom: 6px;"></div>
-                                                                <div>
-                                                                    <div class="nc-detail-label">Fokus Gerakan</div>
-                                                                    <div class="nc-detail-value">{{ $person->movement_focus ?: '-' }}</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nc-motto">
-                                                                <div class="nc-motto-label">Motto Hidup</div>
-                                                                <p class="nc-motto-text">"{{ $person->motto ?: 'Berkhidmat untuk umat, bergerak untuk kemajuan pelajar.' }}"</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                                @if($ippnuPersons->isEmpty())
-                                                    <div style="color: #94a3b8; font-size: 0.85rem; text-align: center; width: 100%; padding: 16px;">Data IPPNU belum tersedia</div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-
-                            <script>
-                                function switchNahkodaTab(periodSlug) {
-                                    document.querySelectorAll('.nahkoda-tab').forEach(t => t.classList.remove('active'));
-                                    document.querySelectorAll('.nahkoda-content').forEach(c => c.classList.remove('active'));
-                                    
-                                    // Make clicked tab active
-                                    event.currentTarget.classList.add('active');
-                                    document.getElementById('nahkoda-' + periodSlug).classList.add('active');
-                                }
-                            </script>
-                        @endif
-                    </div>
-                </div>
-
-                <!-- SUSUNAN PENGURUS -->
-                <div id="section-susunan-pengurus" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header"><span>🏛️ SUSUNAN PENGURUS PAC KEMIRI</span></div>
-                    <div style="padding: 24px; background: white;">
-                        {{-- HEADLINE FOTO BERSAMA --}}
-                        <div style="margin-bottom:24px;border-radius:12px;overflow:hidden;border:3px solid var(--primary);box-shadow:0 8px 24px rgba(0,0,0,0.1);">
-                            @if(!empty($settings['structure_headline_photo']))
-                                <img src="{{ Storage::url($settings['structure_headline_photo']) }}" alt="Foto Bersama PAC IPNU IPPNU Kemiri" style="width:100%;display:block;object-fit:cover;max-height:400px;">
-                            @else
-                                <img src="{{ asset('images/HEADLINE.jpeg') }}" alt="Foto Bersama PAC IPNU IPPNU Kemiri" style="width:100%;display:block;object-fit:cover;max-height:400px;" onerror="this.parentElement.innerHTML='<div style=\'background:#f1f5f9;height:200px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:0.85rem;\'><div style=\'text-align:center\'><i class=\'fa-solid fa-image\' style=\'font-size:2rem;display:block;margin-bottom:6px;\'></i>Foto Bersama IPNU IPPNU<br><small>(Upload via Admin)</small></div></div>'">
-                            @endif
-                        </div>
-                        <p style="text-align:center;color:#64748b;font-size:0.88rem;margin-bottom:24px;">Pimpinan Anak Cabang IPNU &amp; IPPNU Kecamatan Kemiri — {{ $settings['structure_service_period'] ?? 'Masa Khidmat 2025-2027' }}</p>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-                            {{-- IPNU --}}
-                            <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
-                                <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:12px 16px;font-weight:800;font-size:0.95rem;font-style:italic;">Susunan Pengurus IPNU</div>
-                                <img src="{{ isset($settings['structure_ipnu_photo']) ? Storage::url($settings['structure_ipnu_photo']) : asset('images/STRUKTUR IPNU.jpg') }}" alt="Foto Bersama IPNU" style="width:100%;display:block;object-fit:cover;max-height:280px;border-bottom:3px solid var(--primary);">
-                                <div style="padding:16px;">
-                                    @php $ipnu = $officials->where('type','bph')->where('organization','IPNU'); @endphp
-                                    @foreach($ipnu->groupBy('section') as $section => $members)
-                                        <div style="margin-bottom:16px;">
-                                            <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:6px 14px;font-weight:700;font-size:0.88rem;border-radius:4px;margin-bottom:8px;">{{ $section }}</div>
-                                            <ul style="list-style:disc;padding-left:22px;margin:0;">
-                                                @foreach($members as $person)
-                                                    <li style="padding:2px 0;font-size:0.85rem;color:#1e293b;line-height:1.5;">
-                                                        @if($person->position !== $section && $person->position !== 'Anggota')
-                                                            <strong style="color:var(--primary-dark);">{{ $person->position }}:</strong>
-                                                        @endif
-                                                        {{ $person->name }}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endforeach
-                                    @if($ipnu->isEmpty())
-                                        <p style="text-align:center;color:#94a3b8;padding:20px;">Data belum tersedia</p>
-                                    @endif
-                                </div>
-                            </div>
-
-                            {{-- IPPNU --}}
-                            <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
-                                <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:12px 16px;font-weight:800;font-size:0.95rem;font-style:italic;">Susunan Pengurus IPPNU</div>
-                                <img src="{{ isset($settings['structure_ippnu_photo']) ? Storage::url($settings['structure_ippnu_photo']) : asset('images/STRUKTUR IPPNU.jpeg') }}" alt="Foto Bersama IPPNU" style="width:100%;display:block;object-fit:cover;max-height:280px;border-bottom:3px solid var(--primary);">
-                                <div style="padding:16px;">
-                                    @php $ippnu = $officials->where('type','bph')->where('organization','IPPNU'); @endphp
-                                    @foreach($ippnu->groupBy('section') as $section => $members)
-                                        <div style="margin-bottom:16px;">
-                                            <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:6px 14px;font-weight:700;font-size:0.88rem;border-radius:4px;margin-bottom:8px;">{{ $section }}</div>
-                                            <ul style="list-style:disc;padding-left:22px;margin:0;">
-                                                @foreach($members as $person)
-                                                    <li style="padding:2px 0;font-size:0.85rem;color:#1e293b;line-height:1.5;">
-                                                        @if($person->position !== $section && $person->position !== 'Anggota')
-                                                            <strong style="color:var(--primary-dark);">{{ $person->position }}:</strong>
-                                                        @endif
-                                                        {{ $person->name }}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endforeach
-                                    @if($ippnu->isEmpty())
-                                        <p style="text-align:center;color:#94a3b8;padding:20px;">Data belum tersedia</p>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <!-- G. USAHA / LAPAK PELAJAR -->
-                <div id="section-usaha" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header"><span>🛒 LAPAK PELAJAR</span></div>
-                    <div style="padding: 16px; background: #f5f5f5;">
-                        <style>
-                            .shopee-grid {
-                                display: grid;
-                                grid-template-columns: repeat(2, 1fr);
-                                gap: 12px;
-                            }
-                            @media (min-width: 640px) { .shopee-grid { grid-template-columns: repeat(3, 1fr); } }
-                            @media (min-width: 1024px) { .shopee-grid { grid-template-columns: repeat(4, 1fr); } }
-                            @media (min-width: 1280px) { .shopee-grid { grid-template-columns: repeat(5, 1fr); } }
-
-                            .shopee-card {
-                                background: white;
-                                border-radius: 4px;
-                                overflow: hidden;
-                                box-shadow: 0 1px 1px 0 rgba(0,0,0,.05);
-                                transition: transform 0.1s, box-shadow 0.1s;
-                                text-decoration: none;
-                                display: flex;
-                                flex-direction: column;
-                                border: 1px solid transparent;
-                            }
-                            .shopee-card:hover {
-                                transform: translateY(-2px);
-                                box-shadow: 0 2px 8px rgba(0,0,0,.15);
-                                border-color: var(--primary);
-                            }
-                            .shopee-img-wrapper {
-                                width: 100%;
-                                padding-top: 100%; /* 1:1 Aspect Ratio */
-                                position: relative;
-                                background: #f8f8f8;
-                            }
-                            .shopee-img {
-                                position: absolute;
-                                top: 0; left: 0; width: 100%; height: 100%;
-                                object-fit: cover;
-                            }
-                            .shopee-discount-badge {
-                                position: absolute;
-                                top: 0; right: 0;
-                                background: rgba(255,212,36,.9);
-                                color: #ee4d2d;
-                                font-size: 0.75rem;
-                                font-weight: 700;
-                                padding: 2px 4px;
-                                text-align: center;
-                                line-height: 1.1;
-                                border-bottom-left-radius: 2px;
-                            }
-                            .shopee-info {
-                                padding: 8px;
-                                display: flex;
-                                flex-direction: column;
-                                flex-grow: 1;
-                            }
-                            .shopee-title {
-                                font-size: 0.8rem;
-                                line-height: 1.2;
-                                font-weight: 500;
-                                color: rgba(0,0,0,.87);
-                                display: -webkit-box;
-                                -webkit-line-clamp: 2;
-                                -webkit-box-orient: vertical;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                margin-bottom: 4px;
-                                min-height: 28px;
-                            }
-                            .shopee-price-row {
-                                margin-top: auto;
-                                display: flex;
-                                align-items: baseline;
-                                flex-wrap: wrap;
-                            }
-                            .shopee-price {
-                                color: #ee4d2d;
-                                font-size: 1.1rem;
-                                font-weight: 600;
-                            }
-                            .shopee-price-original {
-                                color: #ccc;
-                                text-decoration: line-through;
-                                font-size: 0.7rem;
-                                margin-left: 4px;
-                            }
-                            .shopee-meta {
-                                display: flex;
-                                align-items: center;
-                                justify-content: space-between;
-                                margin-top: 6px;
-                                font-size: 0.7rem;
-                                color: rgba(0,0,0,.54);
-                            }
-                            .shopee-rating i {
-                                color: #ffce3d;
-                                font-size: 0.65rem;
-                            }
-                            .shopee-location {
-                                font-size: 0.65rem;
-                                color: rgba(0,0,0,.54);
-                                margin-top: 4px;
-                                display: flex;
-                                align-items: center;
-                                gap: 3px;
-                            }
-                        </style>
-                        <div class="shopee-grid">
-                            @foreach($products as $prod)
-                            @php
-                                $prodData = [
-                                    'name' => $prod->name,
-                                    'description' => $prod->description,
-                                    'price_formatted' => 'Rp ' . number_format($prod->price, 0, ',', '.'),
-                                    'discounted_price_formatted' => 'Rp ' . number_format($prod->discounted_price, 0, ',', '.'),
-                                    'discount' => $prod->discount,
-                                    'rating' => number_format($prod->rating, 1),
-                                    'sold_count' => $prod->sold_count,
-                                    'condition' => $prod->condition,
-                                    'stock' => $prod->stock,
-                                    'category' => $prod->category,
-                                    'location' => $prod->location ?? 'Indonesia',
-                                    'wa_link' => $prod->wa_link ?? '#',
-                                    'image_url' => $prod->image ? Storage::url($prod->image) : null
-                                ];
-                            @endphp
-                            <a href="javascript:void(0)" onclick='openProductModal(@json($prodData))' class="shopee-card">
-                                <div class="shopee-img-wrapper">
-                                    @if($prod->image)
-                                        <img src="{{ Storage::url($prod->image) }}" class="shopee-img" alt="{{ $prod->name }}">
-                                    @else
-                                        <div class="shopee-img" style="display:flex;align-items:center;justify-content:center;background:#eaeaea;font-size:2rem;color:#ccc;"><i class="fa-solid fa-box"></i></div>
-                                    @endif
-                                    @if($prod->discount > 0)
-                                    <div class="shopee-discount-badge">
-                                        <div>{{ $prod->discount }}%</div>
-                                        <div>OFF</div>
-                                    </div>
-                                    @endif
-                                </div>
-                                <div class="shopee-info">
-                                    <div class="shopee-title">{{ $prod->name }}</div>
-                                    <div class="shopee-price-row">
-                                        <span class="shopee-price">Rp{{ number_format($prod->discounted_price, 0, ',', '.') }}</span>
-                                        @if($prod->discount > 0)
-                                        <span class="shopee-price-original">Rp{{ number_format($prod->price, 0, ',', '.') }}</span>
-                                        @endif
-                                    </div>
-                                    <div class="shopee-meta">
-                                        <div class="shopee-rating">
-                                            <i class="fa-solid fa-star"></i> {{ number_format($prod->rating, 1) }}
-                                        </div>
-                                        <div class="shopee-sold">{{ $prod->sold_count }} Terjual</div>
-                                    </div>
-                                    <div class="shopee-location">
-                                        <i class="fa-solid fa-location-dot"></i> {{ $prod->location ?? 'Indonesia' }}
-                                    </div>
-                                </div>
-                            </a>
-                            @endforeach
-                            @if($products->isEmpty())
-                                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #888;">
-                                    <i class="fa-solid fa-store-slash" style="font-size: 3rem; margin-bottom: 15px; color: #ccc;"></i>
-                                    <div>Belum ada produk di Lapak Pelajar.</div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <!-- A. PETA -->
-                <div id="section-peta" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header"><span>🗺️ PETA KECAMATAN KEMIRI</span></div>
-                    <div class="map-card" style="height: 450px; border-radius: 0;">
-                        <div class="map-label"><i class="fa-solid fa-map"></i> Interaktif</div>
-                        <div class="map-content">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31630.0!2d109.91!3d-7.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a8ca16f5c862d%3A0x4027a765a3717a0!2sKemiri%2C%20Kec.%20Kemiri%2C%20Kabupaten%20Purworejo%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1714630000000!5m2!1sid!2sid"
-                                allowfullscreen="" loading="lazy"></iframe>
-                            <a href="https://maps.app.goo.gl/qJdrVL3cghZddma99" target="_blank"
-                                class="map-btn-float">
-                                <i class="fa-solid fa-up-right-from-square"></i> Buka Peta Besar
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- A. LOKASI -->
-                <div id="section-lokasi" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header"><span>📍 LOKASI SEKRETARIAT</span></div>
-                    <div class="map-card"
-                        style="height: auto; min-height: 400px; border-radius: 0; flex-direction: column;">
-                        <div class="map-info-left"
-                            style="width: 100%; border-right: none; border-bottom: 1px solid #e2e8f0; padding-top: 24px;">
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                <div>
-                                    <h3 style="color: var(--primary); margin-bottom: 8px; font-family: 'Outfit';">
-                                        Sekretariat Bersama PAC IPNU IPPNU Kemiri</h3>
-                                    <p style="font-size: 0.95rem;"><i class="fa-solid fa-location-dot"
-                                            style="color: #ef4444; margin-right: 8px;"></i> Kompleks Kantor MWC NU
-                                        Kemiri, Jl. Raya Kemiri - Pituruh, Kemiri, Purworejo, Jawa Tengah 54262</p>
-                                </div>
-                                <div
-                                    style="width: 60px; height: 60px; background: #f0fdf4; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary); border: 1px solid var(--primary-light);">
-                                    <i class="fa-solid fa-building-flag"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="map-content" style="height: 250px;">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15814.734842542488!2d109.9042567890!3d-7.632156890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a8ca16f5c862d%3A0x4027a765a3717a0!2sKemiri%2C%20Kec.%20Kemiri%2C%20Kabupaten%20Purworejo%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1714630000000!5m2!1sid!2sid"
-                                allowfullscreen="" loading="lazy"></iframe>
-                            <a href="https://maps.app.goo.gl/qJdrVL3cghZddma99" target="_blank" class="map-btn-float">
-                                <i class="fa-solid fa-route"></i> Petunjuk Arah
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- K. RUANG LAPOR -->
-                <div id="section-kritik" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                    <div class="na-header">
-                        <span><i class="fa-solid fa-comment-dots" style="margin-right:6px;"></i>RUANG LAPOR</span>
-                        <div class="na-icons"><span></span><span></span><span></span><span></span></div>
-                    </div>
-                    <div style="padding: 20px 20px 24px; background: white;">
-                        <p style="font-size: 0.85rem; color: #64748b; margin: 0 0 18px 0; line-height: 1.6;">
-                            Sampaikan kritik, saran, atau laporan Anda kepada kami. Kami akan merespons secepatnya.
-                        </p>
-                        <form id="form-ruang-lapor2" onsubmit="submitLapor2(event)" novalidate>
-                            <div class="rl-grid">
-                                <div class="rl-field">
-                                    <label class="rl-label"><i class="fa-solid fa-user"></i> Nama Lengkap <span
-                                            class="rl-req">*</span></label>
-                                    <input type="text" id="rl2-nama" class="rl-input" placeholder="Nama lengkap Anda"
-                                        required>
-                                </div>
-                                <div class="rl-field">
-                                    <label class="rl-label"><i class="fa-solid fa-envelope"></i> Email <span
-                                            class="rl-req">*</span></label>
-                                    <input type="email" id="rl2-email" class="rl-input" placeholder="contoh@email.com"
-                                        required>
-                                </div>
-                                <div class="rl-field">
-                                    <label class="rl-label"><i class="fa-solid fa-phone"></i> No. Telepon / WA <span
-                                            class="rl-req">*</span></label>
-                                    <input type="tel" id="rl2-telp" class="rl-input" placeholder="08xxxxxxxxxx"
-                                        required>
-                                </div>
-                                <div class="rl-field">
-                                    <label class="rl-label"><i class="fa-solid fa-tag"></i> Topik Laporan</label>
-                                    <select id="rl2-topik" class="rl-input">
-                                        <option value="">-- Pilih Topik --</option>
-                                        <option value="kritik">Kritik</option>
-                                        <option value="saran">Saran</option>
-                                        <option value="pengaduan">Pengaduan</option>
-                                        <option value="pertanyaan">Pertanyaan</option>
-                                        <option value="lainnya">Lainnya</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="rl-field" style="margin-top: 14px;">
-                                <label class="rl-label"><i class="fa-solid fa-message"></i> Pesan Anda <span
-                                        class="rl-req">*</span></label>
-                                <textarea id="rl2-pesan" class="rl-input rl-textarea"
-                                    placeholder="Tuliskan pesan, kritik, saran, atau laporan Anda..."
-                                    required></textarea>
-                            </div>
-                            <!-- CAPTCHA -->
-                            <div class="rl-captcha-wrap">
-                                <div class="rl-captcha-label"><i class="fa-solid fa-shield-halved"></i> Verifikasi
-                                    Keamanan</div>
-                                <div class="rl-captcha-box">
-                                    <div class="rl-captcha-question">
-                                        <span id="rl2-cap-q" class="rl-cap-text"></span>
-                                        <button type="button" onclick="generateCaptcha2()" class="rl-cap-refresh"
-                                            title="Ganti soal">
-                                            <i class="fa-solid fa-rotate"></i>
-                                        </button>
-                                    </div>
-                                    <div class="rl-captcha-input-wrap">
-                                        <span class="rl-cap-eq">=</span>
-                                        <input type="number" id="rl2-cap-ans" class="rl-input rl-cap-input"
-                                            placeholder="?" min="0">
-                                    </div>
-                                </div>
-                                <div id="rl2-cap-msg" class="rl-cap-msg" style="display:none;"></div>
-                            </div>
-                            <button type="submit" class="rl-submit-btn">
-                                <i class="fa-solid fa-paper-plane"></i> Kirim Laporan
-                            </button>
-                            <div id="rl2-success" class="rl-success-msg" style="display:none;">
-                                <i class="fa-solid fa-circle-check"></i>
-                                Laporan Anda berhasil dikirim! Terima kasih.
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <style>
-                    .rl-grid {
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 12px;
-                    }
-
-                    @media (max-width: 600px) {
-                        .rl-grid {
-                            grid-template-columns: 1fr;
-                        }
-                    }
-
-                    .rl-field {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 5px;
-                    }
-
-                    .rl-label {
-                        font-size: 0.78rem;
-                        font-weight: 700;
-                        color: #374151;
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                    }
-
-                    .rl-label i {
-                        color: var(--primary);
-                    }
-
-                    .rl-req {
-                        color: #ef4444;
-                    }
-
-                    .rl-input {
-                        border: 1.5px solid #e2e8f0;
-                        border-radius: 7px;
-                        padding: 9px 12px;
-                        font-size: 0.83rem;
-                        color: #1e293b;
-                        font-family: 'Outfit', sans-serif;
-                        background: #f9fafb;
-                        outline: none;
-                        transition: border-color 0.2s, box-shadow 0.2s;
-                        width: 100%;
-                        box-sizing: border-box;
-                    }
-
-                    .rl-input:focus {
-                        border-color: var(--primary);
-                        box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
-                        background: white;
-                    }
-
-                    .rl-textarea {
-                        resize: vertical;
-                        min-height: 110px;
-                        line-height: 1.6;
-                    }
-
-                    .rl-captcha-wrap {
-                        margin-top: 16px;
-                        background: #f8fafc;
-                        border: 1.5px solid #e2e8f0;
-                        border-radius: 10px;
-                        padding: 14px 16px;
-                    }
-
-                    .rl-captcha-label {
-                        font-size: 0.78rem;
-                        font-weight: 700;
-                        color: #374151;
-                        margin-bottom: 10px;
-                        display: flex;
-                        align-items: center;
-                        gap: 6px;
-                    }
-
-                    .rl-captcha-label i {
-                        color: var(--primary);
-                    }
-
-                    .rl-captcha-box {
-                        display: flex;
-                        align-items: center;
-                        gap: 12px;
-                        flex-wrap: wrap;
-                    }
-
-                    .rl-captcha-question {
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        background: white;
-                        border: 1.5px solid var(--primary);
-                        border-radius: 8px;
-                        padding: 8px 14px;
-                    }
-
-                    .rl-cap-text {
-                        font-size: 1rem;
-                        font-weight: 900;
-                        color: var(--primary-dark);
-                        font-family: 'Courier New', monospace;
-                        letter-spacing: 2px;
-                    }
-
-                    .rl-cap-refresh {
-                        background: none;
-                        border: none;
-                        color: var(--primary);
-                        cursor: pointer;
-                        font-size: 0.85rem;
-                        padding: 2px 4px;
-                        border-radius: 4px;
-                        transition: transform 0.3s;
-                    }
-
-                    .rl-cap-refresh:hover {
-                        transform: rotate(180deg);
-                    }
-
-                    .rl-captcha-input-wrap {
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                    }
-
-                    .rl-cap-eq {
-                        font-size: 1.2rem;
-                        font-weight: 900;
-                        color: #64748b;
-                    }
-
-                    .rl-cap-input {
-                        width: 90px !important;
-                        text-align: center;
-                        font-size: 1rem;
-                        font-weight: 700;
-                    }
-
-                    .rl-cap-msg {
-                        margin-top: 8px;
-                        font-size: 0.78rem;
-                        font-weight: 600;
-                        padding: 6px 10px;
-                        border-radius: 6px;
-                    }
-
-                    .rl-cap-msg.error {
-                        background: #fef2f2;
-                        color: #dc2626;
-                        border: 1px solid #fecaca;
-                    }
-
-                    .rl-cap-msg.ok {
-                        background: #f0fdf4;
-                        color: #16a34a;
-                        border: 1px solid #bbf7d0;
-                    }
-
-                    .rl-submit-btn {
-                        margin-top: 18px;
-                        width: 100%;
-                        background: var(--primary);
-                        color: white;
-                        border: none;
-                        border-radius: 8px;
-                        padding: 12px;
-                        font-size: 0.9rem;
-                        font-weight: 800;
-                        font-family: 'Outfit', sans-serif;
-                        letter-spacing: 0.5px;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 8px;
-                        transition: all 0.2s ease;
-                        box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 40%, transparent);
-                    }
-
-                    .rl-submit-btn:hover {
-                        background: var(--primary-dark);
-                        transform: translateY(-1px);
-                    }
-
-                    .rl-success-msg {
-                        margin-top: 14px;
-                        background: #f0fdf4;
-                        border: 1.5px solid #bbf7d0;
-                        color: #15803d;
-                        border-radius: 8px;
-                        padding: 14px 16px;
-                        font-size: 0.88rem;
-                        font-weight: 700;
-                        display: flex;
-                        align-items: center;
-                        gap: 10px;
-                        animation: rlFadeIn 0.4s ease;
-                    }
-
-                    .rl-success-msg i {
-                        font-size: 1.3rem;
-                    }
-
-                    @keyframes rlFadeIn {
-                        from {
-                            opacity: 0;
-                            transform: translateY(8px);
-                        }
-
-                        to {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-                </style>
-
-                <script>
-                    let rlCap2Answer = 0;
-                    function generateCaptcha2() {
-                        const a = Math.floor(Math.random() * 15) + 1;
-                        const b = Math.floor(Math.random() * 10) + 1;
-                        const ops = ['+', '-', '×'];
-                        const op = ops[Math.floor(Math.random() * 3)];
-                        let answer;
-                        if (op === '+') answer = a + b;
-                        else if (op === '-') { answer = Math.max(a, b) - Math.min(a, b); }
-                        else answer = a * b;
-                        const q = op === '-' ? `${Math.max(a, b)} − ${Math.min(a, b)}` : `${a} ${op} ${b}`;
-                        const el = document.getElementById('rl2-cap-q');
-                        if (el) { el.textContent = q; rlCap2Answer = answer; }
-                        const ans = document.getElementById('rl2-cap-ans');
-                        if (ans) ans.value = '';
-                        const msg = document.getElementById('rl2-cap-msg');
-                        if (msg) msg.style.display = 'none';
-                    }
-                    function submitLapor2(e) {
-                        e.preventDefault();
-                        const nama = document.getElementById('rl2-nama').value.trim();
-                        const email = document.getElementById('rl2-email').value.trim();
-                        const telp = document.getElementById('rl2-telp').value.trim();
-                        const topik = document.getElementById('rl2-topik').value;
-                        const pesan = document.getElementById('rl2-pesan').value.trim();
-                        const ans = parseInt(document.getElementById('rl2-cap-ans').value);
-                        const msg = document.getElementById('rl2-cap-msg');
-                        if (!nama || !email || !telp || !pesan) {
-                            msg.className = 'rl-cap-msg error';
-                            msg.textContent = '⚠ Harap isi semua kolom yang wajib diisi.';
-                            msg.style.display = 'block'; return;
-                        }
-                        if (isNaN(ans) || ans !== rlCap2Answer) {
-                            msg.className = 'rl-cap-msg error';
-                            msg.textContent = '✗ Jawaban captcha salah. Coba lagi.';
-                            msg.style.display = 'block'; generateCaptcha2(); return;
-                        }
-                        
-                        msg.className = 'rl-cap-msg ok';
-                        msg.textContent = 'Sedang mengirim...';
-                        msg.style.display = 'block';
-
-                        const formData = new FormData();
-                        formData.append('_token', '{{ csrf_token() }}');
-                        formData.append('name', nama);
-                        formData.append('contact', email + ' / ' + telp);
-                        formData.append('subject', topik);
-                        formData.append('message', pesan);
-
-                        fetch('/ruang-lapor', {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json',
-                                'X-Requested-With': 'XMLHttpRequest'
-                            },
-                            body: formData
-                        }).then(res => {
-                            if (res.ok) {
-                                msg.className = 'rl-cap-msg ok';
-                                msg.textContent = '✓ Laporan berhasil dikirim!';
-                                setTimeout(() => {
-                                    document.getElementById('form-ruang-lapor2').reset();
-                                    document.getElementById('rl2-success').style.display = 'flex';
-                                    msg.style.display = 'none'; generateCaptcha2();
-                                    setTimeout(() => { document.getElementById('rl2-success').style.display = 'none'; }, 5000);
-                                }, 700);
-                            } else {
-                                throw new Error('Network error');
-                            }
-                        }).catch(err => {
-                            msg.className = 'rl-cap-msg error';
-                            msg.textContent = '⚠ Gagal mengirim laporan. Coba lagi.';
-                            msg.style.display = 'block';
-                        });
-                    }
-                    document.addEventListener('DOMContentLoaded', generateCaptcha2);
-                </script>
-
-            </div>
-
-            <!-- SECTION CHATBOT (AI) -->
-            <div id="section-chatbot" class="dynamic-section na-wrapper" style="display:none; margin-bottom: 16px;">
-                <div class="na-header">
-                    <div>
-                        <div class="na-subtitle">Layanan Cerdas</div>
-                        <h2 class="na-title">AI Chatbot</h2>
-                    </div>
-                </div>
-                <div class="na-grid" style="grid-template-columns: 1fr;">
-                    <div class="article-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; height: 600px; max-height: 70vh;">
-                        <div id="public-chat-window" class="chat-window" style="flex-grow: 1; padding: 20px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 15px;">
-                            @foreach($chatMessages as $msg)
-                                <div class="chat-bubble {{ $msg->author === 'Bot' ? 'bot' : 'user' }}">
-                                    <strong>{{ $msg->author }}:</strong> {{ $msg->content }}
-                                </div>
-                            @endforeach
-                        </div>
-                        <div style="padding: 15px; background: #fff; border-top: 1px solid #e2e8f0;">
-                            <form id="public-chat-form" onsubmit="return sendPublicMessage(event);" style="display: flex; gap: 10px;">
-                                <input type="text" id="public-message-input" placeholder="Tanyakan sesuatu pada AI..." required autocomplete="off" style="flex-grow: 1; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 24px; outline: none; font-family: inherit;">
-                                <button type="submit" style="background: var(--primary); color: white; border: none; padding: 10px 24px; border-radius: 24px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-                                    <i class="fa-solid fa-paper-plane"></i> <span class="hide-mobile">Kirim</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Dynamic content area placeholder -->
+            <div id="dynamic-content-area" style="display:none;"></div>
 
             <!-- Berita Section in Center Column -->
             <div id="berita" class="krandegan-news-container" style="margin-top: 8px;">
@@ -6683,244 +5296,8 @@
                     </div>
                     @endif
 
-                    <!-- Profil Organisasi Widget (Hidden by default) -->
-                    <div class="na-wrapper" id="profil" style="margin-top: 16px; display: none;">
-                        <div class="na-header">
-                            <span>PROFIL ORGANISASI</span>
-                            <div class="na-icons"><span></span><span></span><span></span><span></span></div>
-                        </div>
-                        <div class="profil-grid widget-grid">
-                            <div class="profil-card">
-                                <h3>📜 Sejarah & Arah Gerak</h3>
-                                <p>PAC IPNU-IPPNU Kemiri telah menjadi wadah bagi ratusan pelajar Nahdlatul Ulama untuk
-                                    mengembangkan potensi diri, berorganisasi, dan memahami nilai-nilai Ahlussunnah wal
-                                    Jama'ah an-Nahdliyah. Kami terus beradaptasi dengan perkembangan zaman tanpa
-                                    melupakan
-                                    akar tradisi kepesantrenan.</p>
-                                <p>Melalui berbagai inovasi program, IPNU Kemiri berkomitmen untuk tidak hanya mencetak
-                                    generasi yang religius, tetapi juga melek teknologi, memiliki jiwa sosial yang
-                                    tinggi,
-                                    dan siap menjadi pemimpin masa depan.</p>
-                            </div>
-                            <div class="profil-card">
-                                <h3>🎯 Visi & Misi</h3>
-                                <p><strong>Visi:</strong> Terwujudnya pelajar Nusantara yang bertakwa kepada Allah SWT,
-                                    berilmu, berakhlak mulia dan berwawasan kebangsaan.</p>
-                                <ul class="profil-list">
-                                    <li>Menghimpun dan membina pelajar NU dalam satu wadah organisasi.</li>
-                                    <li>Mempersiapkan kader-kader militan penerus perjuangan Nahdlatul Ulama.</li>
-                                    <li>Meningkatkan SDM pelajar melalui pelatihan digital dan kepemimpinan.</li>
-                                    <li>Mengembangkan literasi dan kepekaan sosial terhadap masyarakat sekitar.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- Susunan Pengurus Section (2-column reference style) -->
-                    <div id="susunan-pengurus" class="officials-wrapper"
-                        style="margin-top: 16px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
-                        <div class="officials-header">
-                            <i class="fa-solid fa-users-gear"></i> SUSUNAN PENGURUS
-                        </div>
-                        <p style="text-align:center;color:#64748b;font-size:0.85rem;margin-bottom:20px;">Pimpinan Anak Cabang IPNU &amp; IPPNU Kecamatan Kemiri — {{ $settings['structure_service_period'] ?? 'Masa Khidmat 2025-2027' }}</p>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-                            {{-- IPNU --}}
-                            <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
-                                <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:10px 14px;font-weight:800;font-size:0.92rem;font-style:italic;">Susunan Pengurus IPNU</div>
-                                <img src="{{ asset('images/STRUKTUR IPNU.jpg') }}" alt="Foto Bersama IPNU" style="width:100%;display:block;object-fit:cover;max-height:240px;border-bottom:3px solid var(--primary);">
-                                <div style="padding:14px;">
-                                    @php $ipnuMain = $officials->where('type','bph')->where('organization','IPNU'); @endphp
-                                    @foreach($ipnuMain->groupBy('section') as $sec => $members)
-                                        <div style="margin-bottom:14px;">
-                                            <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:5px 12px;font-weight:700;font-size:0.82rem;border-radius:4px;margin-bottom:6px;">{{ $sec }}</div>
-                                            <ul style="list-style:disc;padding-left:20px;margin:0;">
-                                                @foreach($members as $person)
-                                                    <li style="padding:2px 0;font-size:0.82rem;color:#1e293b;line-height:1.45;">
-                                                        @if($person->position !== $sec && $person->position !== 'Anggota')
-                                                            <strong style="color:var(--primary-dark);">{{ $person->position }}:</strong>
-                                                        @endif
-                                                        {{ $person->name }}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endforeach
-                                    @if($ipnuMain->isEmpty())
-                                        <p style="text-align:center;color:#94a3b8;padding:16px;">Data belum tersedia</p>
-                                    @endif
-                                </div>
-                            </div>
-
-                            {{-- IPPNU --}}
-                            <div style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
-                                <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:10px 14px;font-weight:800;font-size:0.92rem;font-style:italic;">Susunan Pengurus IPPNU</div>
-                                <img src="{{ asset('images/STRUKTUR IPPNU.jpeg') }}" alt="Foto Bersama IPPNU" style="width:100%;display:block;object-fit:cover;max-height:240px;border-bottom:3px solid var(--primary);">
-                                <div style="padding:14px;">
-                                    @php $ippnuMain = $officials->where('type','bph')->where('organization','IPPNU'); @endphp
-                                    @foreach($ippnuMain->groupBy('section') as $sec => $members)
-                                        <div style="margin-bottom:14px;">
-                                            <div style="background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:white;padding:5px 12px;font-weight:700;font-size:0.82rem;border-radius:4px;margin-bottom:6px;">{{ $sec }}</div>
-                                            <ul style="list-style:disc;padding-left:20px;margin:0;">
-                                                @foreach($members as $person)
-                                                    <li style="padding:2px 0;font-size:0.82rem;color:#1e293b;line-height:1.45;">
-                                                        @if($person->position !== $sec && $person->position !== 'Anggota')
-                                                            <strong style="color:var(--primary-dark);">{{ $person->position }}:</strong>
-                                                        @endif
-                                                        {{ $person->name }}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endforeach
-                                    @if($ippnuMain->isEmpty())
-                                        <p style="text-align:center;color:#94a3b8;padding:16px;">Data belum tersedia</p>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Kirim Artikel Publik Section -->
-                    <div class="na-wrapper" id="kirim-artikel" style="margin-top: 16px;">
-                        <div class="na-header">
-                            <span>✍️ UPLOAD ARTIKEL BERITA</span>
-                        </div>
-                        <div style="padding: 24px; background: white;">
-                            @if(session('success_article'))
-                                <div style="background: #dcfce7; color: #166534; padding: 16px; border-radius: 8px; margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                                    <i class="fa-solid fa-circle-check" style="font-size:1.2rem;"></i> {{ session('success_article') }}
-                                </div>
-                            @endif
-
-                            <div style="background: var(--bg-light); padding: 16px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px; font-size: 0.9rem; color: var(--text-dark); line-height: 1.5;">
-                                <strong style="color:var(--primary);"><i class="fa-solid fa-circle-info"></i> Panduan Mengirim Artikel:</strong><br>
-                                Anda dapat mengirimkan artikel atau berita untuk ditayangkan di website PAC IPNU IPPNU Kemiri. Semua artikel yang masuk akan diverifikasi terlebih dahulu oleh admin sebelum dipublikasikan. Pastikan artikel yang dikirim sesuai dengan nilai-nilai Ahlussunnah wal Jama'ah.
-                            </div>
-
-                            <form action="{{ route('artikel.submit.public') }}" method="POST" enctype="multipart/form-data" style="display:flex; flex-direction:column; gap:16px;">
-                                @csrf
-                                <div>
-                                    <label style="font-weight:600; font-size:0.9rem; margin-bottom:6px; display:block;">Judul Artikel <span style="color:red;">*</span></label>
-                                    <input type="text" name="title" required placeholder="Masukkan judul artikel" style="width:100%; padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;">
-                                </div>
-                                
-                                <div style="display:flex; gap:16px; flex-wrap:wrap;">
-                                    <div style="flex:1; min-width:200px;">
-                                        <label style="font-weight:600; font-size:0.9rem; margin-bottom:6px; display:block;">Nama Penulis <span style="color:red;">*</span></label>
-                                        <input type="text" name="author" required placeholder="Nama lengkap Anda" style="width:100%; padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;">
-                                    </div>
-                                    <div style="flex:1; min-width:200px;">
-                                        <label style="font-weight:600; font-size:0.9rem; margin-bottom:6px; display:block;">Kontak (No WA / Email) <span style="color:red;">*</span></label>
-                                        <input type="text" name="contact" required placeholder="Untuk konfirmasi admin" style="width:100%; padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;">
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label style="font-weight:600; font-size:0.9rem; margin-bottom:6px; display:block;">Foto / Gambar Utama <span style="color:red;">*</span> (Maks 2MB)</label>
-                                    <input type="file" name="image" accept="image/*" required style="width:100%; padding:10px 14px; border:1px solid #cbd5e1; border-radius:8px; background:#f8fafc; font-family:inherit; box-sizing:border-box;">
-                                </div>
-
-                                <div>
-                                    <label style="font-weight:600; font-size:0.9rem; margin-bottom:6px; display:block;">Isi Artikel <span style="color:red;">*</span></label>
-                                    <textarea name="content" required rows="8" placeholder="Tuliskan isi berita/artikel Anda di sini..." style="width:100%; padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box; resize:vertical;"></textarea>
-                                </div>
-
-                                <button type="submit" style="background:var(--primary); color:white; border:none; padding:14px; border-radius:8px; font-weight:700; font-size:1rem; cursor:pointer; font-family:'Outfit', sans-serif; display:flex; align-items:center; justify-content:center; gap:8px;">
-                                    <i class="fa-solid fa-paper-plane"></i> Kirim Artikel Sekarang
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Galeri Dokumentasi Widget -->
-                    <div class="na-wrapper" id="galeri" style="margin-top: 16px;">
-                        <div class="na-header">
-                            <span>GALERI DOKUMENTASI</span>
-                            <div class="na-icons"><span></span><span></span><span></span><span></span></div>
-                        </div>
-                        @php
-                            $availableCategories = isset($allGalleries) && $allGalleries->count() > 0 ? $allGalleries->pluck('category')->unique()->filter()->values() : collect();
-                            if ($availableCategories->isEmpty()) {
-                                $availableCategories = collect(['Kegiatan', 'Prestasi', 'Konferensi', 'Lainnya']);
-                            }
-
-                            $displayGalleries = $allGalleries;
-                        @endphp
-
-                        <div style="padding: 10px 16px 0 16px;">
-                            <div class="gallery-category-tabs"
-                                style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none;">
-                                <button class="gallery-tab-btn active" onclick="filterGallery('Semua', this)"
-                                    style="padding: 6px 16px; border-radius: 20px; border: none; background: var(--primary); color: white; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 0.85rem; transition: all 0.3s ease;">Semua</button>
-                                @foreach($availableCategories as $cat)
-                                    <button class="gallery-tab-btn" onclick="filterGallery('{{ $cat }}', this)"
-                                        style="padding: 6px 16px; border-radius: 20px; border: none; background: #f3f4f6; color: #4b5563; font-weight: 600; cursor: pointer; white-space: nowrap; font-size: 0.85rem; transition: all 0.3s ease;">{{ $cat }}</button>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div class="gallery-grid" id="main-gallery-grid" style="padding-top: 8px;">
-                            @foreach($displayGalleries as $gallery)
-                                @php
-                                    $imagePath = isset($gallery->image) && Str::startsWith($gallery->image, 'images/')
-                                        ? asset($gallery->image)
-                                        : asset('storage/' . ($gallery->image ?? ''));
-                                @endphp
-                                <div class="gallery-item" data-category="{{ $gallery->category ?? 'Umum' }}"
-                                    onclick="openGalleryViewer('{{ $imagePath }}', '{{ $gallery->title }}')">
-                                    <img src="{{ $imagePath }}" alt="{{ $gallery->title }}"
-                                        onerror="this.src='{{ asset('images/alun_alun_kemiri.png') }}'">
-                                    <div class="gallery-overlay">
-                                        <h4 class="gallery-title">{{ $gallery->title }}</h4>
-                                        <span
-                                            style="font-size: 0.7rem; color: #facc15; font-weight: 700; text-transform: uppercase;">{{ $gallery->category ?? 'Umum' }}</span>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <script>
-                            function filterGallery(category, btn) {
-                                document.querySelectorAll('.gallery-tab-btn').forEach(b => {
-                                    b.style.background = '#f3f4f6';
-                                    b.style.color = '#4b5563';
-                                    b.classList.remove('active');
-                                });
-                                btn.style.background = 'var(--primary)';
-                                btn.style.color = 'white';
-                                btn.classList.add('active');
-
-                                const items = document.querySelectorAll('#main-gallery-grid .gallery-item');
-                                items.forEach(item => {
-                                    if (category === 'Semua' || item.getAttribute('data-category') === category) {
-                                        item.style.display = 'block';
-                                        item.style.animation = 'galleryFadeIn 0.4s ease-out forwards';
-                                    } else {
-                                        item.style.display = 'none';
-                                    }
-                                });
-                            }
-                        </script>
-                        <style>
-                            @keyframes galleryFadeIn {
-                                from {
-                                    opacity: 0;
-                                    transform: scale(0.95);
-                                }
-
-                                to {
-                                    opacity: 1;
-                                    transform: scale(1);
-                                }
-                            }
-
-                            .gallery-category-tabs::-webkit-scrollbar {
-                                display: none;
-                            }
-                        </style>
-                    </div>
-
+                    </div><!-- /.na-wrapper #articles-list-wrapper -->
+            </div><!-- /#berita .krandegan-news-container -->
         </main>
         <!-- Right Column -->
         <aside class="desktop-right">
@@ -7132,457 +5509,72 @@
         </aside>
         <!-- transparansi and maps blocks follow, still inside .desktop-layout -->
 
-        <!-- Statistik Anggota Block -->
-        <div id="section-statistik" style="margin-top: 40px; margin-bottom: 40px; width: 100%;">
-            <style>
-                .desa-stat-container {
-                    background: #ffffff;
-                    border-radius: 12px;
-                    padding: 50px 30px 40px 30px;
-                    position: relative;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-                    border: 1px solid #e2e8f0;
-                }
-
-                .stat-grid-top {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 20px;
-                    margin-bottom: 24px;
-                }
-
-                .stat-grid-bottom {
-                    display: grid;
-                    grid-template-columns: repeat(4, 1fr);
-                    gap: 14px;
-                }
-
-                @media(max-width: 768px) {
-                    .stat-grid-top,
-                    .stat-grid-bottom {
-                        grid-template-columns: 1fr;
-                    }
-                }
-
-                .desa-stat-header-pill {
-                    position: absolute;
-                    top: -20px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: var(--primary);
-                    color: white;
-                    font-weight: 800;
-                    padding: 10px 40px;
-                    border-radius: 8px;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                    font-size: 1.1rem;
-                    letter-spacing: 2px;
-                    z-index: 10;
-                    white-space: nowrap;
-                    font-family: 'Outfit', sans-serif;
-                }
-
-                .desa-stat-content {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    position: relative;
-                    min-height: 240px;
-                    gap: 16px;
-                }
-
-                .desa-stat-center-circle {
-                    position: absolute;
-                    left: 50%;
-                    top: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 160px;
-                    height: 160px;
-                    background: white;
-                    border-radius: 50%;
-                    border: 5px solid var(--primary);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-                    z-index: 5;
-                }
-
-                .desa-stat-center-title {
-                    font-weight: 800;
-                    font-size: 0.8rem;
-                    margin-top: 6px;
-                    color: var(--primary);
-                    letter-spacing: 1.5px;
-                    text-transform: uppercase;
-                }
-
-                .desa-stat-center-number {
-                    font-weight: 900;
-                    font-size: 2rem;
-                    color: #0f172a;
-                    line-height: 1;
-                }
-
-                .desa-stat-left,
-                .desa-stat-right {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 14px;
-                    width: 45%;
-                    z-index: 2;
-                }
-
-                .desa-stat-left {
-                    padding-right: 100px;
-                    align-items: flex-end;
-                }
-
-                .desa-stat-right {
-                    padding-left: 100px;
-                    align-items: flex-start;
-                }
-
-                .desa-stat-pill {
-                    background: white;
-                    border-radius: 50px;
-                    display: flex;
-                    align-items: center;
-                    padding: 6px;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                    border: 1px solid #e9ecef;
-                    width: 100%;
-                    max-width: 300px;
-                    transition: all 0.2s ease;
-                    cursor: pointer;
-                }
-
-                .desa-stat-pill:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-                    border-color: var(--primary-light);
-                }
-
-                .desa-stat-pill-left {
-                    justify-content: space-between;
-                    padding-left: 18px;
-                }
-
-                .desa-stat-pill-right {
-                    justify-content: flex-start;
-                    padding-right: 18px;
-                }
-
-                .desa-stat-pill-text {
-                    font-weight: 600;
-                    font-size: 0.82rem;
-                    color: #334155;
-                    flex: 1;
-                }
-
-                .desa-stat-pill-left .desa-stat-pill-text {
-                    text-align: left;
-                }
-
-                .desa-stat-pill-right .desa-stat-pill-text {
-                    text-align: right;
-                    padding-left: 12px;
-                }
-
-                .desa-stat-pill-icon {
-                    width: 38px;
-                    height: 38px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: white;
-                    font-size: 1rem;
-                    flex-shrink: 0;
-                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-                }
-
-                /* Divider line between pills and gender stats */
-                .desa-stat-divider {
-                    height: 1px;
-                    background: #e2e8f0;
-                    margin: 24px 0 20px;
-                }
-
-                .desa-stat-bottom {
-                    display: flex;
-                    justify-content: center;
-                    gap: 48px;
-                }
-
-                .desa-stat-gender {
-                    display: flex;
-                    align-items: center;
-                    gap: 14px;
-                }
-
-                .desa-stat-gender-val {
-                    font-weight: 900;
-                    font-size: 1.3rem;
-                    line-height: 1.2;
-                    text-align: center;
-                    color: #0f172a;
-                }
-
-                .desa-stat-gender-val small {
-                    font-weight: 700;
-                    font-size: 0.7rem;
-                    color: #64748b;
-                    letter-spacing: 1px;
-                    display: block;
-                }
-
-                .desa-stat-gender-avatar {
-                    width: 52px;
-                    height: 52px;
-                    border-radius: 50%;
-                    background: white;
-                    padding: 2px;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-                    object-fit: cover;
-                }
-
-                @media(max-width: 768px) {
-                    .desa-stat-container {
-                        padding: 44px 10px 20px 10px;
-                    }
-
-                    .desa-stat-content {
-                        min-height: 200px;
-                    }
-
-                    .desa-stat-center-circle {
-                        width: 90px;
-                        height: 90px;
-                        border-width: 3px;
-                    }
-
-                    .desa-stat-center-circle i {
-                        font-size: 1.4rem !important;
-                        margin-bottom: 2px !important;
-                    }
-
-                    .desa-stat-center-title {
-                        font-size: 0.5rem;
-                        margin-top: 2px;
-                    }
-
-                    .desa-stat-center-number {
-                        font-size: 1rem;
-                    }
-
-                    .desa-stat-left {
-                        padding-right: 55px;
-                        gap: 8px;
-                    }
-
-                    .desa-stat-right {
-                        padding-left: 55px;
-                        gap: 8px;
-                    }
-
-                    .desa-stat-pill {
-                        padding: 4px;
-                    }
-
-                    .desa-stat-pill-icon {
-                        width: 26px;
-                        height: 26px;
-                        font-size: 0.7rem;
-                    }
-
-                    .desa-stat-pill-text {
-                        font-size: 0.58rem;
-                    }
-
-                    .desa-stat-pill-left {
-                        padding-left: 8px;
-                    }
-
-                    .desa-stat-pill-right {
-                        padding-right: 8px;
-                    }
-
-                    .desa-stat-pill-right .desa-stat-pill-text {
-                        padding-left: 6px;
-                    }
-
-                    .desa-stat-bottom {
-                        gap: 20px;
-                    }
-
-                    .desa-stat-gender-avatar {
-                        width: 38px;
-                        height: 38px;
-                    }
-
-                    .desa-stat-gender-val {
-                        font-size: 1rem;
-                    }
-                }
-            </style>
-
-            <div class="desa-stat-container">
-                <div class="desa-stat-header-pill">STATISTIK ANGGOTA</div>
-
-                <div class="stat-grid-top">
-                    {{-- IPNU --}}
-                    <div style="background:linear-gradient(135deg,#e8f0fe 0%,#f8faff 100%);border-radius:12px;padding:20px;border:1px solid #c7d9fb;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
-                        <div style="width: 50px; height: 50px; overflow: hidden; border-radius: 50%; background: #fff; flex-shrink: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-                            <img src="{{ asset('images/ipnu-logo.png') }}" style="width: 100%; height: 100%; object-fit: contain;" alt="IPNU">
+        <!-- Peta Sekretariat PAC IPNU IPPNU Kemiri (Single Location at Bottom) -->
+        <div id="peta-sekretariat" class="single-map-wrapper" style="margin-top: 30px; margin-bottom: 25px; width: 100%;">
+            <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
+                <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 38px; height: 38px; background: rgba(255,255,255,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                            <i class="fa-solid fa-location-dot"></i>
                         </div>
                         <div>
-                            <div style="font-size:0.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPNU</div>
-                            <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">{{ number_format((int)($settings['total_anggota_ipnu'] ?? 31340)) }}</div>
-                            <div style="font-size:0.78rem;color:#64748b;font-weight:600;">Rekan IPNU Terverifikasi</div>
-                            <div style="margin-top:8px;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:4px;width:80%;margin-left:auto;margin-right:auto;"></div>
+                            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; font-family: 'Outfit', sans-serif; letter-spacing: 0.5px;">PETA SEKRETARIAT PAC IPNU IPPNU KEMIRI</h3>
+                            <p style="margin: 0; font-size: 0.8rem; opacity: 0.9;">Pusat Administrasi & Pelayanan Pelajar NU Kecamatan Kemiri</p>
                         </div>
                     </div>
-                    {{-- IPPNU --}}
-                    <div style="background:linear-gradient(135deg,#fef3e8 0%,#fffaf5 100%);border-radius:12px;padding:20px;border:1px solid #fbd8a8;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;text-align:center;">
-                        <div style="width: 55px; height: 55px; overflow: hidden; background: transparent; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                            <img src="{{ asset('images/ippnu-logo.png') }}" style="width: 100%; height: 100%; object-fit: contain;" alt="IPPNU">
-                        </div>
-                        <div>
-                            <div style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">● TOTAL ANGGOTA IPPNU</div>
-                            <div style="font-size:2.2rem;font-weight:900;color:#0f172a;line-height:1;margin-bottom:4px;">{{ number_format((int)($settings['total_anggota_ippnu'] ?? 37197)) }}</div>
-                            <div style="font-size:0.78rem;color:#64748b;font-weight:600;">Rekanita IPPNU Terverifikasi</div>
-                            <div style="margin-top:8px;height:4px;background:linear-gradient(90deg,#c2410c,#f97316);border-radius:4px;width:80%;margin-left:auto;margin-right:auto;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Divider --}}
-                <div class="desa-stat-divider"></div>
-
-                {{-- Grid Stats: Anak Cabang, Ranting, Komisariat --}}
-                <div class="stat-grid-bottom">
-                    {{-- Anak Cabang --}}
-                    <div style="background:#f8faff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center;">
-                        <div style="width:44px;height:44px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 10px rgba(30,58,138,0.3);">
-                            <i class="fa-solid fa-building" style="color:white;font-size:1.1rem;"></i>
-                        </div>
-                        <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Anak Cabang</div>
-                        <div style="display:flex;justify-content:center;gap:16px;">
-                            <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#1e3a8a;line-height:1;">{{ $settings['stats_ipnu_ac'] ?? '482' }}</div>
-                                <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
-                            </div>
-                            <div style="width:1px;background:#e2e8f0;"></div>
-                            <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">{{ $settings['stats_ippnu_ac'] ?? '510' }}</div>
-                                <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- Ranting (Desa) --}}
-                    <div style="background:#f8faff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center;">
-                        <div style="width:44px;height:44px;background:linear-gradient(135deg,#065f46,#10b981);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 10px rgba(6,95,70,0.3);">
-                            <i class="fa-solid fa-tree-city" style="color:white;font-size:1.1rem;"></i>
-                        </div>
-                        <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Ranting (Desa)</div>
-                        <div style="display:flex;justify-content:center;gap:16px;">
-                            <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#065f46;line-height:1;">{{ $settings['stats_ipnu_ranting'] ?? '2,750' }}</div>
-                                <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
-                            </div>
-                            <div style="width:1px;background:#e2e8f0;"></div>
-                            <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">{{ $settings['stats_ippnu_ranting'] ?? '2,566' }}</div>
-                                <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- Komisariat Sekolah --}}
-                    <div style="background:#f8faff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center;">
-                        <div style="width:44px;height:44px;background:linear-gradient(135deg,#5b21b6,#8b5cf6);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 10px rgba(91,33,182,0.3);">
-                            <i class="fa-solid fa-school" style="color:white;font-size:1.1rem;"></i>
-                        </div>
-                        <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Komisariat Sekolah</div>
-                        <div style="display:flex;justify-content:center;gap:16px;">
-                            <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#5b21b6;line-height:1;">{{ $settings['stats_ipnu_sekolah'] ?? '880' }}</div>
-                                <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
-                            </div>
-                            <div style="width:1px;background:#e2e8f0;"></div>
-                            <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">{{ $settings['stats_ippnu_sekolah'] ?? '804' }}</div>
-                                <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- Komisariat Pondok Pesantren --}}
-                    <div style="background:#f8faff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;text-align:center;">
-                        <div style="width:44px;height:44px;background:linear-gradient(135deg,#b45309,#d97706);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 10px rgba(180,83,9,0.3);">
-                            <i class="fa-solid fa-mosque" style="color:white;font-size:1.1rem;"></i>
-                        </div>
-                        <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Komisariat Pondok Pesantren</div>
-                        <div style="display:flex;justify-content:center;gap:16px;">
-                            <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#b45309;line-height:1;">{{ $settings['stats_ipnu_pesantren'] ?? '450' }}</div>
-                                <div style="font-size:0.62rem;color:var(--primary);font-weight:700;margin-top:2px;">IPNU</div>
-                            </div>
-                            <div style="width:1px;background:#e2e8f0;"></div>
-                            <div>
-                                <div style="font-size:1.5rem;font-weight:900;color:#c2410c;line-height:1;">{{ $settings['stats_ippnu_pesantren'] ?? '420' }}</div>
-                                <div style="font-size:0.62rem;color:#c2410c;font-weight:700;margin-top:2px;">IPPNU</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Sumber data --}}
-                <div style="text-align:center;margin-top:16px;font-size:0.72rem;color:#94a3b8;">
-                    <i class="fa-solid fa-circle-info"></i> Sumber: <a href="https://sipadu.or.id" target="_blank" style="color:var(--primary);font-weight:700;">sipadu.or.id</a> — Data Real-time PW IPNU &amp; IPPNU Jawa Tengah
-                </div>
-            </div>
-        </div>
-        <!-- Maps Block -->
-        <div class="maps-block">
-            <div class="map-card">
-                <div class="map-label"><i class="fa-solid fa-building-circle-check"></i> LOKASI KANTOR PAC</div>
-                <div class="map-content">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15814.734842542488!2d109.9042567890!3d-7.632156890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a8ca16f5c862d%3A0x4027a765a3717a0!2sKemiri%2C%20Kec.%20Kemiri%2C%20Kabupaten%20Purworejo%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1714630000000!5m2!1sid!2sid"
-                        allowfullscreen="" loading="lazy"></iframe>
-                    <a href="https://maps.app.goo.gl/qJdrVL3cghZddma99" target="_blank" class="map-btn-float">
-                        <i class="fa-solid fa-location-arrow"></i> Rute
+                    <a href="https://maps.app.goo.gl/qJdrVL3cghZddma99" target="_blank" style="background: var(--accent); color: #0f172a; padding: 8px 18px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.2s;">
+                        <i class="fa-solid fa-diamond-turn-right"></i> Petunjuk Arah
                     </a>
                 </div>
-            </div>
-            <div class="map-card">
-                <div class="map-label"><i class="fa-solid fa-map-marked-alt"></i> WILAYAH KERJA PAC</div>
-                <div class="map-info-left">
-                    <div
-                        style="background: #f1f5f9; padding: 12px; border-radius: 8px; border-left: 4px solid var(--primary);">
-                        <div
-                            style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
-                            Koordinat</div>
-                        <strong>Lat:</strong> -7.7528<br>
-                        <strong>Long:</strong> 109.9226
+                
+                <div style="display: grid; grid-template-columns: 340px 1fr; min-height: 380px;">
+                    <div style="padding: 24px; background: #f8fafc; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div style="margin-bottom: 18px;">
+                                <div style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 6px;">
+                                    <i class="fa-solid fa-building"></i> Alamat Kantor
+                                </div>
+                                <p style="font-size: 0.92rem; color: #334155; line-height: 1.6; margin: 0; font-weight: 600;">
+                                    Kompleks Gedung MWC NU Kemiri<br>
+                                    Jl. Raya Kemiri - Pituruh, Kemiri Lor<br>
+                                    Kecamatan Kemiri, Kabupaten Purworejo<br>
+                                    Jawa Tengah 54262
+                                </p>
+                            </div>
+
+                            <div style="margin-bottom: 18px; padding: 12px 14px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                <div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Titik Koordinat</div>
+                                <div style="font-size: 0.85rem; color: #1e293b; font-family: monospace;">-7.697471, 109.897364</div>
+                            </div>
+
+                            <div style="padding: 12px 14px; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                <div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Waktu Operasional</div>
+                                <div style="font-size: 0.85rem; color: #1e293b; font-weight: 600;">Setiap Hari: 08.00 - 16.00 WIB</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px dashed #cbd5e1; font-size: 0.78rem; color: #64748b;">
+                            <i class="fa-solid fa-circle-info"></i> Lokasi hanya 1 yaitu Sekretariat Utama PAC IPNU IPPNU Kemiri.
+                        </div>
                     </div>
-                    <div style="margin-top: 8px;">
-                        <div
-                            style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
-                            Alamat</div>
-                        <p style="font-weight: 600; color: #334155; margin-bottom: 0;">PAC IPNU IPPNU Kemiri,<br>
-                            Kecamatan Kemiri,<br>
-                            Kabupaten Purworejo</p>
+
+                    <div style="position: relative; width: 100%; min-height: 380px; background: #e2e8f0;">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15814.734842542488!2d109.9042567890!3d-7.632156890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a8ca16f5c862d%3A0x4027a765a3717a0!2sKemiri%2C%20Kec.%20Kemiri%2C%20Kabupaten%20Purworejo%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1714630000000!5m2!1sid!2sid"
+                            style="width: 100%; height: 100%; min-height: 380px; border: 0;"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
-                </div>
-                <div class="map-content">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31630.0!2d109.91!3d-7.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a8ca16f5c862d%3A0x4027a765a3717a0!2sKemiri%2C%20Kec.%20Kemiri%2C%20Kabupaten%20Purworejo%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1714630000000!5m2!1sid!2sid"
-                        allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
         </div>
+        <style>
+            @media(max-width: 900px) {
+                #peta-sekretariat > div > div:nth-child(2) {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+        </style>
 
         <a href="#" class="scroll-top-btn"><i class="fa-solid fa-arrow-up"></i></a>
 
@@ -7598,39 +5590,7 @@
         </div>
 
         <!-- Footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-grid">
-                    <div>
-                        <a href="#" class="footer-logo">IPNU IPPNU <span>Kemiri</span></a>
-                        <p class="footer-desc">Ikatan Pelajar Nahdlatul Ulama & Ikatan Pelajar Putri Nahdlatul Ulama
-                            Kecamatan Kemiri. Berkhidmat tanpa batas, berinovasi tiada henti.</p>
-                    </div>
-                    <div>
-                        <h4 class="footer-heading">Tautan Cepat</h4>
-                        <ul class="footer-links">
-                            <li><a href="#beranda">Beranda</a></li>
-                            <li><a href="javascript:void(0)" onclick="toggleProfil()">Profil & Sejarah</a></li>
-                            <li><a href="#agenda">Agenda Kegiatan</a></li>
-                            <li><a href="#berita">Berita Terbaru</a></li>
-                            <li><a href="{{ route('voting') }}">Polling Pemilu</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="footer-heading">Hubungi Kami</h4>
-                        <ul class="footer-links">
-                            <li>Sekretariat PAC IPNU IPPNU Kemiri</li>
-                            <li>Kecamatan Kemiri, Purworejo, Jawa Tengah</li>
-                            <li>Email: info@ipnukemiri.or.id</li>
-                            <li>Telp: +62 812 3456 7890</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p>&copy; 2026 PAC IPNU IPPNU Kemiri. Dikembangkan dengan ❤️ untuk kemajuan Pelajar NU.</p>
-                </div>
-            </div>
-        </footer>
+        @include('partials.footer')
 
     </div><!-- /.desktop-layout -->
     <div class="toast-icon">✓</div>
@@ -8164,16 +6124,39 @@
         </div>
     </div>
 
-    <!-- Gallery Viewer Modal -->
+    <!-- Gallery Viewer Modal with Slider Navigation -->
     <div id="gallery-viewer-modal"
-        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; flex-direction: column;">
-        <button onclick="closeGalleryViewer()"
-            style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 2.5rem; cursor: pointer; line-height: 1;">&times;</button>
-        <img id="gallery-viewer-img" src=""
-            style="max-width: 90%; max-height: 80vh; object-fit: contain; border-radius: 8px;">
-        <h3 id="gallery-viewer-title"
-            style="color: white; margin-top: 16px; font-family: 'Outfit'; text-align: center;">
-        </h3>
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.94); z-index: 100000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; backdrop-filter: blur(8px); user-select: none;">
+        
+        <!-- Top bar -->
+        <div style="position: absolute; top: 20px; left: 24px; right: 24px; display: flex; justify-content: space-between; align-items: center; z-index: 10;">
+            <span id="gallery-viewer-counter" style="background: rgba(255,255,255,0.2); color: white; padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">1 / 1</span>
+            <button onclick="closeGalleryViewer()"
+                style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: white; width: 44px; height: 44px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.85)';" onmouseout="this.style.background='rgba(255,255,255,0.15)';">&times;</button>
+        </div>
+
+        <!-- Prev button -->
+        <button id="galleryPrevBtn" onclick="prevWelcomeGallery()" aria-label="Sebelumnya"
+            style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: white; width: 52px; height: 52px; border-radius: 50%; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s; backdrop-filter: blur(4px);" onmouseover="this.style.background='var(--primary)'; this.style.transform='translateY(-50%) scale(1.1)';" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='translateY(-50%) scale(1)';">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <!-- Image & Caption -->
+        <div style="max-width: 90vw; max-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <img id="gallery-viewer-img" src=""
+                style="max-width: 100%; max-height: 72vh; object-fit: contain; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); transition: opacity 0.2s ease, transform 0.2s ease;">
+            <div style="margin-top: 14px; text-align: center; color: white;">
+                <h3 id="gallery-viewer-title"
+                    style="color: white; font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; margin: 0 0 6px 0;"></h3>
+                <div style="font-size: 0.75rem; color: #94a3b8;"><i class="fa-solid fa-arrows-left-right"></i> Geser layar / Gunakan tombol panah &larr; &rarr;</div>
+            </div>
+        </div>
+
+        <!-- Next button -->
+        <button id="galleryNextBtn" onclick="nextWelcomeGallery()" aria-label="Selanjutnya"
+            style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: white; width: 52px; height: 52px; border-radius: 50%; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s; backdrop-filter: blur(4px);" onmouseover="this.style.background='var(--primary)'; this.style.transform='translateY(-50%) scale(1.1)';" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='translateY(-50%) scale(1)';">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
     </div>
 
     <!-- All Galleries Modal -->
@@ -8191,9 +6174,12 @@
             <div class="gallery-grid"
                 style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
                 @foreach($allGalleries as $gallery)
+                    @php
+                        $galUrl = Str::startsWith($gallery->image, 'images/') ? asset($gallery->image) : asset('storage/' . $gallery->image);
+                    @endphp
                     <div class="gallery-item"
-                        onclick="openGalleryViewer('{{ asset('storage/' . $gallery->image) }}', '{{ $gallery->title }}')">
-                        <img src="{{ asset('storage/' . $gallery->image) }}" alt="{{ $gallery->title }}"
+                        onclick="openGalleryViewer('{{ $galUrl }}', '{{ addslashes($gallery->title) }}')">
+                        <img src="{{ $galUrl }}" alt="{{ $gallery->title }}"
                             onerror="this.src='{{ asset('images/alun_alun_kemiri.png') }}'">
                         <div class="gallery-overlay">
                             <h4 class="gallery-title">{{ $gallery->title }}</h4>
@@ -8208,21 +6194,92 @@
     </div>
 
     <script>
+        const welcomeGalleries = [
+            @foreach($allGalleries as $gallery)
+            {
+                url: "{{ Str::startsWith($gallery->image, 'images/') ? asset($gallery->image) : asset('storage/' . $gallery->image) }}",
+                title: "{{ addslashes($gallery->title) }}"
+            },
+            @endforeach
+        ];
+        let currentWelcomeGalleryIndex = 0;
+
         function openGalleryViewer(url, title) {
-            document.getElementById('gallery-viewer-img').src = url;
-            document.getElementById('gallery-viewer-title').innerText = title;
+            const idx = welcomeGalleries.findIndex(g => g.url === url || g.title === title);
+            currentWelcomeGalleryIndex = (idx !== -1) ? idx : 0;
+            renderWelcomeGallery();
             document.getElementById('gallery-viewer-modal').style.display = 'flex';
-        }
-        function closeGalleryViewer() {
-            document.getElementById('gallery-viewer-modal').style.display = 'none';
-        }
-        function showAllGalleries() {
-            document.getElementById('all-galleries-modal').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
-        function closeAllGalleries() {
-            document.getElementById('all-galleries-modal').style.display = 'none';
+
+        function renderWelcomeGallery() {
+            if (welcomeGalleries.length === 0) return;
+            const item = welcomeGalleries[currentWelcomeGalleryIndex];
+            const img = document.getElementById('gallery-viewer-img');
+            img.style.opacity = '0.3';
+            setTimeout(() => {
+                img.src = item.url;
+                img.onload = () => { img.style.opacity = '1'; };
+                img.style.opacity = '1';
+            }, 80);
+            document.getElementById('gallery-viewer-title').innerText = item.title;
+            document.getElementById('gallery-viewer-counter').innerText = (currentWelcomeGalleryIndex + 1) + ' / ' + welcomeGalleries.length;
+
+            const prev = document.getElementById('galleryPrevBtn');
+            const next = document.getElementById('galleryNextBtn');
+            if (welcomeGalleries.length <= 1) {
+                if (prev) prev.style.display = 'none';
+                if (next) next.style.display = 'none';
+            } else {
+                if (prev) prev.style.display = 'flex';
+                if (next) next.style.display = 'flex';
+            }
+        }
+
+        function nextWelcomeGallery() {
+            if (welcomeGalleries.length <= 1) return;
+            currentWelcomeGalleryIndex = (currentWelcomeGalleryIndex + 1) % welcomeGalleries.length;
+            renderWelcomeGallery();
+        }
+
+        function prevWelcomeGallery() {
+            if (welcomeGalleries.length <= 1) return;
+            currentWelcomeGalleryIndex = (currentWelcomeGalleryIndex - 1 + welcomeGalleries.length) % welcomeGalleries.length;
+            renderWelcomeGallery();
+        }
+
+        function closeGalleryViewer() {
+            document.getElementById('gallery-viewer-modal').style.display = 'none';
             document.body.style.overflow = '';
+        }
+
+        // Keyboard navigation for welcome gallery
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('gallery-viewer-modal');
+            if (modal && modal.style.display === 'flex') {
+                if (e.key === 'ArrowRight') nextWelcomeGallery();
+                if (e.key === 'ArrowLeft')  prevWelcomeGallery();
+                if (e.key === 'Escape')     closeGalleryViewer();
+            }
+        });
+
+        // Swipe navigation for welcome gallery on mobile
+        let welcomeTouchStartX = 0;
+        let welcomeTouchEndX = 0;
+        const welcomeModal = document.getElementById('gallery-viewer-modal');
+        if (welcomeModal) {
+            welcomeModal.addEventListener('touchstart', function(e) {
+                welcomeTouchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            welcomeModal.addEventListener('touchend', function(e) {
+                welcomeTouchEndX = e.changedTouches[0].screenX;
+                const diff = welcomeTouchEndX - welcomeTouchStartX;
+                if (Math.abs(diff) > 40) {
+                    if (diff < 0) nextWelcomeGallery();
+                    else prevWelcomeGallery();
+                }
+            }, { passive: true });
         }
         
         function openProductModal(prod) {

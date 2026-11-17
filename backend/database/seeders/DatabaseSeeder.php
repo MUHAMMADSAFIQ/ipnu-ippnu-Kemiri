@@ -103,5 +103,10 @@ class DatabaseSeeder extends Seeder
                 ArticleSeeder::class,
             ]);
         }
+
+        $this->call([
+            DocumentSeeder::class,
+            FooterLinkSeeder::class,
+        ]);
     }
 }

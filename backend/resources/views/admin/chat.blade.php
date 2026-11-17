@@ -12,7 +12,7 @@
     <h2 class="chat-title">Admin Chatbot</h2>
     <div id="chat-window" class="chat-window">
         @foreach($messages as $msg)
-            <div class="chat-bubble {{ $msg->author === 'Bot' ? 'bot' : 'user' }}">
+            <div class="chat-bubble {{ $msg->author !== 'Admin' ? 'bot' : 'user' }}">
                 <strong>{{ $msg->author }}:</strong> {{ $msg->content }}
             </div>
         @endforeach

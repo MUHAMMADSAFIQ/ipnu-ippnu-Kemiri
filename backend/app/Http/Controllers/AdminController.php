@@ -65,7 +65,7 @@ class AdminController extends Controller
         $totalVotes = \App\Models\Candidate::sum('votes_count');
         $articles = \App\Models\Article::where('status', 'published')->orderBy('created_at', 'desc')->get();
         $pendingArticles = \App\Models\Article::where('status', 'pending')->orderBy('created_at', 'desc')->get();
-        
+
         $officials = \App\Models\Official::all();
         $structures = \App\Models\Structure::orderBy('order_num', 'asc')->get();
         $stats = \App\Models\Statistic::all();
@@ -79,10 +79,31 @@ class AdminController extends Controller
         $unreadFeedbacks = \App\Models\Feedback::where('is_read', false)->count();
         $ads = \App\Models\Advertisement::all();
         $chatMessages = \App\Models\ChatMessage::orderBy('created_at', 'desc')->take(50)->get()->reverse();
-        
+        $books = \App\Models\Book::orderBy('created_at', 'desc')->get();
+        $documents = \App\Models\Document::orderBy('created_at', 'desc')->get();
+        $footerLinks = \App\Models\FooterLink::orderBy('order', 'asc')->get();
+
         return view('admin.dashboard', compact(
-            'candidates', 'totalVotes', 'articles', 'pendingArticles',
-            'officials', 'structures', 'stats', 'agendas', 'programs', 'products', 'galleries', 'feedbacks', 'registrations', 'settings', 'unreadFeedbacks', 'ads', 'chatMessages'
+            'candidates',
+            'totalVotes',
+            'articles',
+            'pendingArticles',
+            'officials',
+            'structures',
+            'stats',
+            'agendas',
+            'programs',
+            'products',
+            'galleries',
+            'feedbacks',
+            'registrations',
+            'settings',
+            'unreadFeedbacks',
+            'ads',
+            'chatMessages',
+            'books',
+            'documents',
+            'footerLinks'
         ));
     }
 
@@ -92,11 +113,12 @@ class AdminController extends Controller
     public function storeArticle(Request $request)
     {
         $request->validate([
-            'title'   => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'author'  => 'nullable|string',
-            'image'   => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
-            'category'=> 'nullable|string|max:100',
+            'author' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
+            'category' => 'nullable|string|max:100',
+            'published_at' => 'nullable|date',
         ]);
 
         $imagePath = null;
@@ -105,13 +127,13 @@ class AdminController extends Controller
         }
 
         \App\Models\Article::create([
-            'title'        => $request->title,
-            'slug'         => \Illuminate\Support\Str::slug($request->title) . '-' . rand(100, 999),
-            'content'      => $request->content,
-            'author'       => $request->author ?? 'Admin',
-            'status'       => 'published', // Admin default published
-            'image'        => $imagePath,
-            'published_at' => now(),
+            'title' => $request->title,
+            'slug' => \Illuminate\Support\Str::slug($request->title) . '-' . rand(100, 999),
+            'content' => $request->input('content'),
+            'author' => $request->author ?? 'Admin',
+            'status' => 'published', // Admin default published
+            'image' => $imagePath,
+            'published_at' => $request->published_at ? \Carbon\Carbon::parse($request->published_at) : now(),
         ]);
 
         return back()->with('success', 'Artikel berhasil diterbitkan!');
@@ -120,16 +142,18 @@ class AdminController extends Controller
     public function updateArticle(Request $request, \App\Models\Article $article)
     {
         $request->validate([
-            'title'   => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'author'  => 'nullable|string',
-            'image'   => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'author' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
+            'published_at' => 'nullable|date',
         ]);
 
         $data = [
-            'title'   => $request->title,
-            'content' => $request->content,
-            'author'  => $request->author ?? $article->author,
+            'title' => $request->title,
+            'content' => $request->input('content'),
+            'author' => $request->author ?? $article->author,
+            'published_at' => $request->published_at ? \Carbon\Carbon::parse($request->published_at) : $article->published_at,
         ];
 
         if ($request->hasFile('image')) {
@@ -168,15 +192,15 @@ class AdminController extends Controller
     public function storeCandidate(Request $request)
     {
         $request->validate([
-            'name'               => 'required|string|max:255',
-            'vision'             => 'nullable|string',
-            'mission'            => 'nullable|string',
-            'photo'              => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
-            'nomor_urut'         => 'nullable|integer',
-            'asal_ranting'       => 'nullable|string|max:255',
+            'name' => 'required|string|max:255',
+            'vision' => 'nullable|string',
+            'mission' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
+            'nomor_urut' => 'nullable|integer',
+            'asal_ranting' => 'nullable|string|max:255',
             'jabatan_sebelumnya' => 'nullable|string|max:255',
-            'jenis_kelamin'      => 'nullable|string|in:L,P',
-            'angkatan'           => 'nullable|string|max:50',
+            'jenis_kelamin' => 'nullable|string|in:L,P',
+            'angkatan' => 'nullable|string|max:50',
         ]);
 
         try {
@@ -186,17 +210,17 @@ class AdminController extends Controller
             }
 
             \App\Models\Candidate::create([
-                'name'               => $request->name,
-                'vision'             => $request->vision,
-                'mission'            => $request->mission,
-                'photo'              => $photoPath,
-                'nomor_urut'         => $request->nomor_urut,
-                'asal_ranting'       => $request->asal_ranting,
+                'name' => $request->name,
+                'vision' => $request->vision,
+                'mission' => $request->mission,
+                'photo' => $photoPath,
+                'nomor_urut' => $request->nomor_urut,
+                'asal_ranting' => $request->asal_ranting,
                 'jabatan_sebelumnya' => $request->jabatan_sebelumnya,
-                'jenis_kelamin'      => $request->jenis_kelamin,
-                'angkatan'           => $request->angkatan,
-                'votes_count'        => 0,
-                'is_active'          => true,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'angkatan' => $request->angkatan,
+                'votes_count' => 0,
+                'is_active' => true,
             ]);
 
             return redirect('/admin/dashboard')->with('success', 'Kandidat ' . $request->name . ' berhasil didaftarkan!');
@@ -208,31 +232,32 @@ class AdminController extends Controller
     public function updateCandidate(Request $request, \App\Models\Candidate $candidate)
     {
         $request->validate([
-            'name'               => 'required|string|max:255',
-            'vision'             => 'nullable|string',
-            'mission'            => 'nullable|string',
-            'photo'              => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'nomor_urut'         => 'nullable|integer',
-            'asal_ranting'       => 'nullable|string|max:255',
+            'name' => 'required|string|max:255',
+            'vision' => 'nullable|string',
+            'mission' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp',
+            'nomor_urut' => 'nullable|integer',
+            'asal_ranting' => 'nullable|string|max:255',
             'jabatan_sebelumnya' => 'nullable|string|max:255',
-            'jenis_kelamin'      => 'nullable|string|in:L,P',
-            'angkatan'           => 'nullable|string|max:50',
+            'jenis_kelamin' => 'nullable|string|in:L,P',
+            'angkatan' => 'nullable|string|max:50',
         ]);
 
         if ($request->hasFile('photo')) {
-            if ($candidate->photo) Storage::disk('public')->delete($candidate->photo);
+            if ($candidate->photo)
+                Storage::disk('public')->delete($candidate->photo);
             $candidate->photo = $request->file('photo')->store('candidates', 'public');
         }
 
         $candidate->update([
-            'name'               => $request->name,
-            'vision'             => $request->vision,
-            'mission'            => $request->mission,
-            'nomor_urut'         => $request->nomor_urut,
-            'asal_ranting'       => $request->asal_ranting,
+            'name' => $request->name,
+            'vision' => $request->vision,
+            'mission' => $request->mission,
+            'nomor_urut' => $request->nomor_urut,
+            'asal_ranting' => $request->asal_ranting,
             'jabatan_sebelumnya' => $request->jabatan_sebelumnya,
-            'jenis_kelamin'      => $request->jenis_kelamin,
-            'angkatan'           => $request->angkatan,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'angkatan' => $request->angkatan,
         ]);
 
         return back()->with('success', 'Kandidat berhasil diperbarui!');
@@ -262,7 +287,8 @@ class AdminController extends Controller
 
     public function deleteCandidate(\App\Models\Candidate $candidate)
     {
-        if ($candidate->photo) Storage::disk('public')->delete($candidate->photo);
+        if ($candidate->photo)
+            Storage::disk('public')->delete($candidate->photo);
         $candidate->delete();
         return back()->with('success', 'Kandidat berhasil dihapus!');
     }
@@ -291,37 +317,38 @@ class AdminController extends Controller
     public function storeOfficial(Request $request)
     {
         $request->validate([
-            'name'             => 'required|string',
-            'position'         => 'required|string',
-            'type'             => 'required|string|in:pimpinan,bph',
-            'organization'     => 'nullable|string',
-            'section'          => 'nullable|string',
-            'photo'            => 'nullable|image|max:2048',
-            'description'      => 'nullable|string',
+            'name' => 'required|string',
+            'position' => 'required|string',
+            'type' => 'required|string|in:pimpinan,bph',
+            'organization' => 'nullable|string',
+            'section' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
+            'description' => 'nullable|string',
             'birth_place_date' => 'nullable|string',
-            'movement_focus'   => 'nullable|string',
-            'service_period'   => 'nullable|string',
-            'motto'            => 'nullable|string',
+            'movement_focus' => 'nullable|string',
+            'service_period' => 'nullable|string',
+            'motto' => 'nullable|string',
         ]);
         $path = $request->hasFile('photo') ? $request->file('photo')->store('officials', 'public') : null;
         \App\Models\Official::create([
-            'name'             => $request->name,
-            'position'         => $request->position,
-            'type'             => $request->type,
-            'organization'     => $request->organization,
-            'section'          => $request->section,
-            'photo'            => $path,
+            'name' => $request->name,
+            'position' => $request->position,
+            'type' => $request->type,
+            'organization' => $request->organization,
+            'section' => $request->section,
+            'photo' => $path,
             'birth_place_date' => $request->birth_place_date,
-            'movement_focus'   => $request->movement_focus,
-            'service_period'   => $request->service_period,
-            'motto'            => $request->motto,
+            'movement_focus' => $request->movement_focus,
+            'service_period' => $request->service_period,
+            'motto' => $request->motto,
         ]);
         return back()->with('success', 'Data pengurus berhasil disimpan!');
     }
 
     public function deleteOfficial(\App\Models\Official $official)
     {
-        if ($official->photo) Storage::disk('public')->delete($official->photo);
+        if ($official->photo)
+            Storage::disk('public')->delete($official->photo);
         $official->delete();
         return back()->with('success', 'Data pengurus berhasil dihapus!');
     }
@@ -329,35 +356,36 @@ class AdminController extends Controller
     public function updateOfficial(Request $request, \App\Models\Official $official)
     {
         $request->validate([
-            'name'             => 'required|string',
-            'position'         => 'required|string',
-            'type'             => 'required|string|in:pimpinan,bph',
-            'organization'     => 'nullable|string',
-            'section'          => 'nullable|string',
-            'photo'            => 'nullable|image|max:2048',
+            'name' => 'required|string',
+            'position' => 'required|string',
+            'type' => 'required|string|in:pimpinan,bph',
+            'organization' => 'nullable|string',
+            'section' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
             'birth_place_date' => 'nullable|string',
-            'movement_focus'   => 'nullable|string',
-            'service_period'   => 'nullable|string',
-            'motto'            => 'nullable|string',
+            'movement_focus' => 'nullable|string',
+            'service_period' => 'nullable|string',
+            'motto' => 'nullable|string',
         ]);
-        
+
         if ($request->hasFile('photo')) {
-            if ($official->photo) Storage::disk('public')->delete($official->photo);
+            if ($official->photo)
+                Storage::disk('public')->delete($official->photo);
             $official->photo = $request->file('photo')->store('officials', 'public');
         }
-        
+
         $official->update([
-            'name'             => $request->name,
-            'position'         => $request->position,
-            'type'             => $request->type,
-            'organization'     => $request->organization,
-            'section'          => $request->section,
+            'name' => $request->name,
+            'position' => $request->position,
+            'type' => $request->type,
+            'organization' => $request->organization,
+            'section' => $request->section,
             'birth_place_date' => $request->birth_place_date,
-            'movement_focus'   => $request->movement_focus,
-            'service_period'   => $request->service_period,
-            'motto'            => $request->motto,
+            'movement_focus' => $request->movement_focus,
+            'service_period' => $request->service_period,
+            'motto' => $request->motto,
         ]);
-        
+
         return back()->with('success', 'Data pengurus berhasil diperbarui!');
     }
 
@@ -367,17 +395,17 @@ class AdminController extends Controller
     public function storeStructure(Request $request)
     {
         $request->validate([
-            'organization'  => 'required|in:IPNU,IPPNU',
+            'organization' => 'required|in:IPNU,IPPNU',
             'section_title' => 'required|string|max:255',
-            'content'       => 'nullable|string',
-            'order_num'     => 'nullable|integer',
+            'content' => 'nullable|string',
+            'order_num' => 'nullable|integer',
         ]);
 
         \App\Models\Structure::create([
-            'organization'  => $request->organization,
-            'section_title' => $request->section_title,
-            'content'       => $request->content,
-            'order_num'     => $request->order_num ?? 0,
+            'organization' => $request->input('organization'),
+            'section_title' => $request->input('section_title'),
+            'content' => $request->input('content'),
+            'order_num' => $request->input('order_num') ?? 0,
         ]);
 
         return back()->with('success', 'Seksi struktur berhasil ditambahkan!');
@@ -386,17 +414,18 @@ class AdminController extends Controller
     public function updateStructure(Request $request, \App\Models\Structure $structure)
     {
         $request->validate([
-            'organization'  => 'required|in:IPNU,IPPNU',
+            'organization' => 'required|in:IPNU,IPPNU',
             'section_title' => 'required|string|max:255',
-            'content'       => 'nullable|string',
-            'order_num'     => 'nullable|integer',
+            'content' => 'nullable|string',
+            'order_num' => 'nullable|integer',
         ]);
 
         $structure->update([
-            'organization'  => $request->organization,
-            'section_title' => $request->section_title,
-            'content'       => $request->content,
-            'order_num'     => $request->order_num ?? 0,
+            'organization' => $request->input('organization'),
+            'section_title' => $request->input('section_title'),
+            'content' => $request->input('content'),
+            'order_num' => $request->input('order_num') ?? 0,
+
         ]);
 
         return back()->with('success', 'Seksi struktur berhasil diperbarui!');
@@ -416,12 +445,12 @@ class AdminController extends Controller
         $request->validate([
             'label' => 'required|string',
             'value' => 'required|integer',
-            'icon'  => 'nullable|string|max:10',
+            'icon' => 'nullable|string|max:10',
         ]);
         \App\Models\Statistic::create([
             'label' => $request->label,
             'value' => $request->value,
-            'icon'  => $request->icon ?? '📊',
+            'icon' => $request->icon ?? '📊',
         ]);
         return back()->with('success', 'Statistik berhasil ditambahkan!');
     }
@@ -431,12 +460,12 @@ class AdminController extends Controller
         $request->validate([
             'label' => 'required|string',
             'value' => 'required|integer',
-            'icon'  => 'nullable|string|max:10',
+            'icon' => 'nullable|string|max:10',
         ]);
         $statistic->update([
             'label' => $request->label,
             'value' => $request->value,
-            'icon'  => $request->icon ?? $statistic->icon,
+            'icon' => $request->icon ?? $statistic->icon,
         ]);
         return back()->with('success', 'Statistik berhasil diperbarui!');
     }
@@ -453,14 +482,14 @@ class AdminController extends Controller
     public function storeAgenda(Request $request)
     {
         $request->validate([
-            'title'       => 'required|string',
-            'date'        => 'required|date',
-            'location'    => 'required|string',
+            'title' => 'required|string',
+            'date' => 'required|date',
+            'location' => 'required|string',
             'description' => 'nullable|string',
         ]);
         \App\Models\Agenda::create([
-            'title'    => $request->title,
-            'date'     => $request->date,
+            'title' => $request->title,
+            'date' => $request->date,
             'location' => $request->location,
         ]);
         return back()->with('success', 'Agenda berhasil dijadwalkan!');
@@ -478,33 +507,33 @@ class AdminController extends Controller
     public function storeProduct(Request $request)
     {
         $request->validate([
-            'name'        => 'required|string',
-            'price'       => 'required|integer',
+            'name' => 'required|string',
+            'price' => 'required|integer',
             'description' => 'nullable|string',
-            'category'    => 'nullable|string',
-            'discount'    => 'nullable|integer|min:0|max:99',
-            'condition'   => 'nullable|string',
-            'stock'       => 'nullable|integer|min:0',
-            'location'    => 'nullable|string',
-            'sold_count'  => 'nullable|integer|min:0',
-            'rating'      => 'nullable|numeric|min:0|max:5',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
-            'wa_link'     => 'nullable|string',
+            'category' => 'nullable|string',
+            'discount' => 'nullable|integer|min:0|max:99',
+            'condition' => 'nullable|string',
+            'stock' => 'nullable|integer|min:0',
+            'location' => 'nullable|string',
+            'sold_count' => 'nullable|integer|min:0',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif',
+            'wa_link' => 'nullable|string',
         ]);
         $path = $request->hasFile('image') ? $request->file('image')->store('products', 'public') : null;
         \App\Models\Product::create([
-            'name'        => $request->name,
+            'name' => $request->name,
             'description' => $request->description,
-            'category'    => $request->category ?? 'Lainnya',
-            'price'       => $request->price,
-            'discount'    => $request->discount ?? 0,
-            'condition'   => $request->condition ?? 'Baru',
-            'stock'       => $request->stock ?? 0,
-            'location'    => $request->location ?? 'Kemiri, Purworejo',
-            'sold_count'  => $request->sold_count ?? 0,
-            'rating'      => $request->rating ?? 5.0,
-            'wa_link'     => $request->wa_link,
-            'image'       => $path,
+            'category' => $request->category ?? 'Lainnya',
+            'price' => $request->price,
+            'discount' => $request->discount ?? 0,
+            'condition' => $request->condition ?? 'Baru',
+            'stock' => $request->stock ?? 0,
+            'location' => $request->location ?? 'Kemiri, Purworejo',
+            'sold_count' => $request->sold_count ?? 0,
+            'rating' => $request->rating ?? 5.0,
+            'wa_link' => $request->wa_link,
+            'image' => $path,
         ]);
         return back()->with('success', 'Produk lapak berhasil ditambahkan!');
     }
@@ -512,36 +541,37 @@ class AdminController extends Controller
     public function updateProduct(Request $request, \App\Models\Product $product)
     {
         $request->validate([
-            'name'        => 'required|string',
-            'price'       => 'required|integer',
+            'name' => 'required|string',
+            'price' => 'required|integer',
             'description' => 'nullable|string',
-            'category'    => 'nullable|string',
-            'discount'    => 'nullable|integer|min:0|max:99',
-            'condition'   => 'nullable|string',
-            'stock'       => 'nullable|integer|min:0',
-            'location'    => 'nullable|string',
-            'sold_count'  => 'nullable|integer|min:0',
-            'rating'      => 'nullable|numeric|min:0|max:5',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
-            'wa_link'     => 'nullable|string',
+            'category' => 'nullable|string',
+            'discount' => 'nullable|integer|min:0|max:99',
+            'condition' => 'nullable|string',
+            'stock' => 'nullable|integer|min:0',
+            'location' => 'nullable|string',
+            'sold_count' => 'nullable|integer|min:0',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif',
+            'wa_link' => 'nullable|string',
         ]);
 
         $data = [
-            'name'        => $request->name,
+            'name' => $request->name,
             'description' => $request->description,
-            'category'    => $request->category ?? $product->category,
-            'price'       => $request->price,
-            'discount'    => $request->discount ?? 0,
-            'condition'   => $request->condition ?? $product->condition,
-            'stock'       => $request->stock ?? $product->stock,
-            'location'    => $request->location ?? $product->location,
-            'sold_count'  => $request->sold_count ?? $product->sold_count,
-            'rating'      => $request->rating ?? $product->rating,
-            'wa_link'     => $request->wa_link,
+            'category' => $request->category ?? $product->category,
+            'price' => $request->price,
+            'discount' => $request->discount ?? 0,
+            'condition' => $request->condition ?? $product->condition,
+            'stock' => $request->stock ?? $product->stock,
+            'location' => $request->location ?? $product->location,
+            'sold_count' => $request->sold_count ?? $product->sold_count,
+            'rating' => $request->rating ?? $product->rating,
+            'wa_link' => $request->wa_link,
         ];
 
         if ($request->hasFile('image')) {
-            if ($product->image) Storage::disk('public')->delete($product->image);
+            if ($product->image)
+                Storage::disk('public')->delete($product->image);
             $data['image'] = $request->file('image')->store('products', 'public');
         }
 
@@ -551,7 +581,8 @@ class AdminController extends Controller
 
     public function deleteProduct(\App\Models\Product $product)
     {
-        if ($product->image) Storage::disk('public')->delete($product->image);
+        if ($product->image)
+            Storage::disk('public')->delete($product->image);
         $product->delete();
         return back()->with('success', 'Produk berhasil dihapus!');
     }
@@ -562,15 +593,15 @@ class AdminController extends Controller
     public function storeGallery(Request $request)
     {
         $request->validate([
-            'title'    => 'required|string',
+            'title' => 'required|string',
             'category' => 'required|string',
-            'image'    => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp',
         ]);
         $path = $request->file('image')->store('gallery', 'public');
         \App\Models\Gallery::create([
-            'title'    => $request->title,
+            'title' => $request->title,
             'category' => $request->category,
-            'image'    => $path,
+            'image' => $path,
         ]);
         return back()->with('success', 'Foto dokumentasi berhasil diunggah!');
     }
@@ -578,18 +609,19 @@ class AdminController extends Controller
     public function updateGallery(Request $request, \App\Models\Gallery $gallery)
     {
         $request->validate([
-            'title'    => 'required|string',
+            'title' => 'required|string',
             'category' => 'required|string',
-            'image'    => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
         ]);
 
         $data = [
-            'title'    => $request->title,
+            'title' => $request->title,
             'category' => $request->category,
         ];
 
         if ($request->hasFile('image')) {
-            if ($gallery->image) Storage::disk('public')->delete($gallery->image);
+            if ($gallery->image)
+                Storage::disk('public')->delete($gallery->image);
             $data['image'] = $request->file('image')->store('gallery', 'public');
         }
 
@@ -599,7 +631,8 @@ class AdminController extends Controller
 
     public function deleteGallery(\App\Models\Gallery $gallery)
     {
-        if ($gallery->image) Storage::disk('public')->delete($gallery->image);
+        if ($gallery->image)
+            Storage::disk('public')->delete($gallery->image);
         $gallery->delete();
         return back()->with('success', 'Foto berhasil dihapus!');
     }
@@ -633,12 +666,12 @@ class AdminController extends Controller
     public function storeAd(Request $request)
     {
         $request->validate([
-            'title'       => 'required|string',
-            'position'    => 'required|string|in:homepage,top_banner',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:4096',
-            'price_info'  => 'nullable|string',
+            'title' => 'required|string',
+            'position' => 'required|string|in:homepage,top_banner',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif',
+            'price_info' => 'nullable|string',
             'description' => 'nullable|string',
-            'link'        => 'nullable|url',
+            'link' => 'nullable|url',
         ]);
 
         $data = $request->except(['image', '_token', 'is_active']);
@@ -655,19 +688,20 @@ class AdminController extends Controller
     public function updateAd(Request $request, \App\Models\Advertisement $ad)
     {
         $request->validate([
-            'title'       => 'required|string',
-            'position'    => 'required|string|in:homepage,top_banner',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:4096',
-            'price_info'  => 'nullable|string',
+            'title' => 'required|string',
+            'position' => 'required|string|in:homepage,top_banner',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif',
+            'price_info' => 'nullable|string',
             'description' => 'nullable|string',
-            'link'        => 'nullable|url',
+            'link' => 'nullable|url',
         ]);
 
         $data = $request->except(['image', '_token', '_method', 'is_active']);
         $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
-            if ($ad->image) Storage::disk('public')->delete($ad->image);
+            if ($ad->image)
+                Storage::disk('public')->delete($ad->image);
             $data['image'] = $request->file('image')->store('ads', 'public');
         }
 
@@ -683,7 +717,8 @@ class AdminController extends Controller
 
     public function deleteAd(\App\Models\Advertisement $ad)
     {
-        if ($ad->image) Storage::disk('public')->delete($ad->image);
+        if ($ad->image)
+            Storage::disk('public')->delete($ad->image);
         $ad->delete();
         return back()->with('success', 'Iklan berhasil dihapus!');
     }
@@ -711,8 +746,8 @@ class AdminController extends Controller
     public function storeProgram(Request $request)
     {
         $request->validate([
-            'title' => 'required|string', 
-            'description' => 'nullable|string', 
+            'title' => 'required|string',
+            'description' => 'nullable|string',
             'icon' => 'nullable|string',
             'photo' => 'nullable|image'
         ]);
@@ -725,9 +760,298 @@ class AdminController extends Controller
         \App\Models\Program::create($data);
         return back()->with('success', 'Program berhasil ditambahkan!');
     }
+
     public function deleteProgram(\App\Models\Program $program)
     {
         $program->delete();
         return back()->with('success', 'Program berhasil dihapus!');
     }
+
+    // =============================================
+    // LIBRARY / E-BOOK MANAGEMENT
+    // =============================================
+    public function storeBook(Request $request)
+    {
+        $request->validate([
+            'title'    => 'required|string|max:255',
+            'author'   => 'required|string|max:255',
+            'category' => 'required|in:aswaja,sejarah,remaja,lainnya',
+            'cat_label'=> 'nullable|string|max:100',
+            'pages'    => 'nullable|string|max:50',
+            'language' => 'nullable|string|max:100',
+            'color'    => 'nullable|string|max:20',
+            'synopsis' => 'nullable|string',
+            'file'     => 'nullable|mimes:pdf|max:51200', // max 50MB
+            'cover'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $data = $request->only('title', 'author', 'category', 'cat_label', 'pages', 'language', 'color', 'synopsis');
+        $data['language'] = $data['language'] ?? 'Bahasa Indonesia';
+        $data['color']    = $data['color'] ?? '#15803d';
+
+        if ($request->hasFile('file')) {
+            $data['file_path'] = $request->file('file')->store('books', 'public');
+        }
+        if ($request->hasFile('cover')) {
+            $data['cover_path'] = $request->file('cover')->store('books/covers', 'public');
+        }
+
+        \App\Models\Book::create($data);
+        return back()->with('success', 'E-Book berhasil ditambahkan ke perpustakaan!');
+    }
+
+    public function updateBook(Request $request, \App\Models\Book $book)
+    {
+        $request->validate([
+            'title'    => 'required|string|max:255',
+            'author'   => 'required|string|max:255',
+            'category' => 'required|in:aswaja,sejarah,remaja,lainnya',
+            'cat_label'=> 'nullable|string|max:100',
+            'pages'    => 'nullable|string|max:50',
+            'language' => 'nullable|string|max:100',
+            'color'    => 'nullable|string|max:20',
+            'synopsis' => 'nullable|string',
+            'file'     => 'nullable|mimes:pdf|max:51200',
+            'cover'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $data = $request->only('title', 'author', 'category', 'cat_label', 'pages', 'language', 'color', 'synopsis');
+
+        if ($request->hasFile('file')) {
+            if ($book->file_path) Storage::disk('public')->delete($book->file_path);
+            $data['file_path'] = $request->file('file')->store('books', 'public');
+        }
+        if ($request->hasFile('cover')) {
+            if ($book->cover_path) Storage::disk('public')->delete($book->cover_path);
+            $data['cover_path'] = $request->file('cover')->store('books/covers', 'public');
+        }
+
+        $book->update($data);
+        return back()->with('success', 'E-Book berhasil diperbarui!');
+    }
+
+    public function deleteBook(\App\Models\Book $book)
+    {
+        if ($book->file_path)  Storage::disk('public')->delete($book->file_path);
+        if ($book->cover_path) Storage::disk('public')->delete($book->cover_path);
+        $book->delete();
+        return back()->with('success', 'E-Book berhasil dihapus!');
+    }
+
+    public function toggleBook(\App\Models\Book $book)
+    {
+        $book->update(['is_active' => !$book->is_active]);
+        $status = $book->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        return back()->with('success', "E-Book berhasil {$status}!");
+    }
+
+    // =============================================
+    // OFFICIAL DOCUMENTS MANAGEMENT
+    // =============================================
+    public function storeDocument(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'desc' => 'nullable|string',
+            'category' => 'required|string',
+            'cat_label' => 'nullable|string|max:100',
+            'file' => 'nullable|file|max:25600',
+            'file_type' => 'nullable|string|max:20',
+            'file_size' => 'nullable|string|max:50',
+            'color' => 'nullable|string|max:20',
+        ]);
+
+        $data = $request->except(['file', '_token']);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $ext = strtolower($file->getClientOriginalExtension());
+            $sizeInBytes = $file->getSize();
+
+            if ($sizeInBytes >= 1048576) {
+                $formattedSize = round($sizeInBytes / 1048576, 1) . ' MB';
+            } else {
+                $formattedSize = round($sizeInBytes / 1024, 0) . ' KB';
+            }
+
+            $data['file_path'] = $file->store('documents', 'public');
+            $data['file_size'] = $formattedSize;
+            $data['file_type'] = strtoupper($ext);
+
+            if (empty($data['icon'])) {
+                $data['icon'] = match($ext) {
+                    'pdf' => 'fa-file-pdf',
+                    'doc', 'docx' => 'fa-file-word',
+                    'xls', 'xlsx' => 'fa-file-excel',
+                    'zip', 'rar', '7z' => 'fa-file-zipper',
+                    'ppt', 'pptx' => 'fa-file-powerpoint',
+                    default => 'fa-file-lines'
+                };
+            }
+            if (empty($data['color'])) {
+                $data['color'] = match($ext) {
+                    'pdf' => '#dc2626',
+                    'doc', 'docx' => '#2563eb',
+                    'xls', 'xlsx' => '#16a34a',
+                    'zip', 'rar', '7z' => '#d97706',
+                    default => '#0284c7'
+                };
+            }
+        }
+
+        if (empty($data['cat_label'])) {
+            $data['cat_label'] = match($data['category'] ?? 'administrasi') {
+                'regulasi' => 'PD/PRT & PO',
+                'kaderisasi' => 'Kaderisasi',
+                'administrasi' => 'Administrasi',
+                default => 'Lainnya'
+            };
+        }
+
+        if (empty($data['icon'])) {
+            $data['icon'] = 'fa-file-pdf';
+        }
+        if (empty($data['color'])) {
+            $data['color'] = '#dc2626';
+        }
+
+        \App\Models\Document::create($data);
+        return back()->with('success', 'Dokumen resmi berhasil ditambahkan!');
+    }
+
+    public function updateDocument(Request $request, \App\Models\Document $document)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'desc' => 'nullable|string',
+            'category' => 'required|string',
+            'cat_label' => 'nullable|string|max:100',
+            'file' => 'nullable|file|max:25600',
+            'file_type' => 'nullable|string|max:20',
+            'file_size' => 'nullable|string|max:50',
+            'color' => 'nullable|string|max:20',
+        ]);
+
+        $data = $request->except(['file', '_token', '_method']);
+
+        if ($request->hasFile('file')) {
+            if ($document->file_path) {
+                Storage::disk('public')->delete($document->file_path);
+            }
+            $file = $request->file('file');
+            $ext = strtolower($file->getClientOriginalExtension());
+            $sizeInBytes = $file->getSize();
+
+            if ($sizeInBytes >= 1048576) {
+                $formattedSize = round($sizeInBytes / 1048576, 1) . ' MB';
+            } else {
+                $formattedSize = round($sizeInBytes / 1024, 0) . ' KB';
+            }
+
+            $data['file_path'] = $file->store('documents', 'public');
+            $data['file_size'] = $formattedSize;
+            $data['file_type'] = strtoupper($ext);
+            $data['icon'] = match($ext) {
+                'pdf' => 'fa-file-pdf',
+                'doc', 'docx' => 'fa-file-word',
+                'xls', 'xlsx' => 'fa-file-excel',
+                'zip', 'rar', '7z' => 'fa-file-zipper',
+                'ppt', 'pptx' => 'fa-file-powerpoint',
+                default => 'fa-file-lines'
+            };
+            if (empty($data['color'])) {
+                $data['color'] = match($ext) {
+                    'pdf' => '#dc2626',
+                    'doc', 'docx' => '#2563eb',
+                    'xls', 'xlsx' => '#16a34a',
+                    'zip', 'rar', '7z' => '#d97706',
+                    default => '#0284c7'
+                };
+            }
+        }
+
+        if (empty($data['cat_label'])) {
+            $data['cat_label'] = match($data['category'] ?? 'administrasi') {
+                'regulasi' => 'PD/PRT & PO',
+                'kaderisasi' => 'Kaderisasi',
+                'administrasi' => 'Administrasi',
+                default => 'Lainnya'
+            };
+        }
+
+        $document->update($data);
+        return back()->with('success', 'Dokumen resmi berhasil diperbarui!');
+    }
+
+    public function deleteDocument(\App\Models\Document $document)
+    {
+        if ($document->file_path) {
+            Storage::disk('public')->delete($document->file_path);
+        }
+        $document->delete();
+        return back()->with('success', 'Dokumen resmi berhasil dihapus!');
+    }
+
+    public function toggleDocument(\App\Models\Document $document)
+    {
+        $document->update(['is_active' => !$document->is_active]);
+        $status = $document->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        return back()->with('success', "Dokumen resmi berhasil {$status}!");
+    }
+
+    // =============================================
+    // FOOTER LINKS MANAGEMENT
+    // =============================================
+    public function storeFooterLink(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:100',
+            'url' => 'required|string|max:255',
+            'target' => 'nullable|string|in:_self,_blank',
+            'order' => 'nullable|integer',
+        ]);
+
+        \App\Models\FooterLink::create([
+            'title' => $request->title,
+            'url' => $request->url,
+            'target' => $request->target ?: '_self',
+            'order' => $request->order ?: 0,
+            'is_active' => true,
+        ]);
+
+        return back()->with('success', 'Tautan footer berhasil ditambahkan!');
+    }
+
+    public function updateFooterLink(Request $request, \App\Models\FooterLink $footerLink)
+    {
+        $request->validate([
+            'title' => 'required|string|max:100',
+            'url' => 'required|string|max:255',
+            'target' => 'nullable|string|in:_self,_blank',
+            'order' => 'nullable|integer',
+        ]);
+
+        $footerLink->update([
+            'title' => $request->title,
+            'url' => $request->url,
+            'target' => $request->target ?: '_self',
+            'order' => $request->order ?: 0,
+        ]);
+
+        return back()->with('success', 'Tautan footer berhasil diperbarui!');
+    }
+
+    public function deleteFooterLink(\App\Models\FooterLink $footerLink)
+    {
+        $footerLink->delete();
+        return back()->with('success', 'Tautan footer berhasil dihapus!');
+    }
+
+    public function toggleFooterLink(\App\Models\FooterLink $footerLink)
+    {
+        $footerLink->update(['is_active' => !$footerLink->is_active]);
+        $status = $footerLink->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        return back()->with('success', "Tautan footer berhasil {$status}!");
+    }
 }
+

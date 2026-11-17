@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Portal Resmi IPNU-IPPNU Kemiri')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,20 +55,34 @@
         .main-wrapper {
             display: grid;
             grid-template-columns: 1fr;
-            max-width: 1400px;
-            margin: 0 auto;
             width: 100%;
-            gap: 20px;
-            padding: 20px;
+            max-width: 100%;
+            margin: 0 auto;
+            gap: 24px;
+            padding: 24px 32px;
+            box-sizing: border-box;
+            flex: 1;
+        }
+
+        .content-area {
+            min-width: 0;
+            width: 100%;
         }
 
         @media (min-width: 1024px) {
             .main-wrapper {
-                grid-template-columns: 280px 1fr;
+                grid-template-columns: 280px minmax(0, 1fr);
             }
 
             .with-right-sidebar {
-                grid-template-columns: 280px 1fr 320px;
+                grid-template-columns: 280px minmax(0, 1fr) 320px;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .main-wrapper {
+                padding: 16px 12px;
+                gap: 16px;
             }
         }
 
@@ -78,12 +93,18 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            padding: 0 32px;
             position: sticky;
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             border-bottom: 1px solid var(--border);
+        }
+
+        @media (max-width: 1023px) {
+            .top-navbar {
+                padding: 0 16px;
+            }
         }
 
         .brand {
@@ -371,11 +392,21 @@
                     class="nav-link {{ Request::is('profil/*') ? 'active' : '' }}">Profil</a>
                 <a href="{{ url('/struktur/bph') }}"
                     class="nav-link {{ Request::is('struktur/*') ? 'active' : '' }}">Struktur</a>
-                <a href="{{ route('voting') }}" class="nav-link">E-Voting</a>
-                <a href="{{ url('/kontak') }}" class="nav-link">Kontak</a>
+                <a href="{{ url('/proker') }}"
+                    class="nav-link {{ Request::is('proker*') ? 'active' : '' }}">Program Kerja</a>
+                <a href="{{ url('/artikel') }}"
+                    class="nav-link {{ Request::is('artikel*') ? 'active' : '' }}">Berita</a>
+                <a href="{{ url('/galeri') }}"
+                    class="nav-link {{ Request::is('galeri*') ? 'active' : '' }}">Galeri</a>
+                <a href="{{ route('voting') }}" class="nav-link {{ Request::is('voting*') ? 'active' : '' }}">E-Voting</a>
+                <a href="{{ url('/kontak') }}" class="nav-link {{ Request::is('kontak*') ? 'active' : '' }}">Kontak</a>
             </div>
 
             <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="{{ url('/chatbot') }}" class="btn-premium" style="background: linear-gradient(135deg, #0f172a, var(--primary));">
+                    <i class="fa-solid fa-robot"></i>
+                    <span class="hidden sm:inline">AI CHAT</span>
+                </a>
                 <a href="{{ route('admin.login') }}" class="btn-premium">
                     <i class="fa-solid fa-user-shield"></i>
                     <span class="hidden sm:inline">ADMIN</span>
@@ -393,13 +424,22 @@
                 <div class="sidebar-card">
                     <h3
                         style="font-family: 'Outfit'; font-weight: 800; color: var(--primary-dark); margin-bottom: 15px;">
-                        Navigasi</h3>
+                        Navigasi Fitur</h3>
                     <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <a href="{{ url('/profil/sejarah') }}" class="drawer-menu-item">📜 Sejarah</a>
-                        <a href="{{ url('/profil/visi-misi-pac') }}" class="drawer-menu-item">🎯 Visi & Misi</a>
-                        <a href="{{ url('/struktur/bph') }}" class="drawer-menu-item">👥 Pengurus</a>
-                        <a href="{{ url('/info/statistik') }}" class="drawer-menu-item">📊 Statistik</a>
-                        <a href="{{ url('/info/usaha') }}" class="drawer-menu-item">🛍️ Lapak Pelajar</a>
+                        <a href="{{ url('/') }}" class="drawer-menu-item {{ Request::is('/') ? 'active' : '' }}">🏠 Beranda</a>
+                        <a href="{{ url('/profil/sejarah') }}" class="drawer-menu-item {{ Request::is('profil/*') ? 'active' : '' }}">📜 Profil Organisasi</a>
+                        <a href="{{ url('/struktur/bph') }}" class="drawer-menu-item {{ Request::is('struktur/*') ? 'active' : '' }}">👥 Pengurus BPH</a>
+                        <a href="{{ url('/proker') }}" class="drawer-menu-item {{ Request::is('proker*') ? 'active' : '' }}">📋 Program Kerja</a>
+                        <a href="{{ url('/artikel') }}" class="drawer-menu-item {{ Request::is('artikel*') ? 'active' : '' }}">📰 Berita & Opini</a>
+                        <a href="{{ url('/galeri') }}" class="drawer-menu-item {{ Request::is('galeri*') ? 'active' : '' }}">📸 Galeri Foto Unlimited</a>
+                        <a href="{{ url('/dokumen') }}" class="drawer-menu-item {{ Request::is('dokumen*') ? 'active' : '' }}">📄 Pusat Dokumen Resmi</a>
+                        <a href="{{ url('/library') }}" class="drawer-menu-item {{ Request::is('library*') ? 'active' : '' }}">📚 IPNU-IPPNU Library</a>
+                        <a href="{{ url('/artikel/kirim') }}" class="drawer-menu-item">✍️ Kirim Berita Ranting</a>
+                        <a href="{{ url('/info/statistik') }}" class="drawer-menu-item {{ Request::is('info/statistik*') ? 'active' : '' }}">📊 Data & Statistik</a>
+                        <a href="{{ url('/info/usaha') }}" class="drawer-menu-item {{ Request::is('info/usaha*') ? 'active' : '' }}">🛍️ Lapak Pelajar</a>
+                        <a href="{{ route('voting') }}" class="drawer-menu-item {{ Request::is('voting*') ? 'active' : '' }}">🗳️ E-Voting Pemilihan</a>
+                        <a href="{{ url('/chatbot') }}" class="drawer-menu-item {{ Request::is('chatbot*') ? 'active' : '' }}">🤖 Asisten AI Pelajar</a>
+                        <a href="{{ url('/kontak') }}" class="drawer-menu-item {{ Request::is('kontak*') ? 'active' : '' }}">📩 Kritik, Saran & Aduan</a>
                     </div>
                 </div>
                 @stack('sidebar_left_extra')
@@ -414,21 +454,7 @@
         </div>
 
         <!-- FOOTER -->
-        <footer
-            style="background: #0f172a; color: white; padding: 60px 20px 100px; text-align: center; margin-top: auto;">
-            <img src="{{ asset('images/logo_ipnu.png') }}" style="width: 60px; margin-bottom: 20px;">
-            <h2 style="font-family: 'Outfit'; font-weight: 900; margin-bottom: 10px;">PAC IPNU IPPNU KEMIRI</h2>
-            <p style="color: #94a3b8; font-size: 0.9rem; max-width: 600px; margin: 0 auto 30px;">Berjuang, Belajar, dan
-                Bertaqwa untuk masa depan pelajar Nahdlatul Ulama yang lebih cerah.</p>
-            <div style="display: flex; justify-content: center; gap: 15px; font-size: 1.5rem;">
-                <i class="fa-brands fa-instagram"></i>
-                <i class="fa-brands fa-facebook"></i>
-                <i class="fa-brands fa-youtube"></i>
-                <i class="fa-brands fa-tiktok"></i>
-            </div>
-            <p style="margin-top: 40px; color: #475569; font-size: 0.8rem;">&copy; {{ date('Y') }} PAC IPNU IPPNU
-                Kemiri. All Rights Reserved.</p>
-        </footer>
+        @include('partials.footer')
     </div>
 
     <!-- MOBILE DRAWER -->
@@ -454,13 +480,21 @@
             <a href="{{ url('/profil/visi-misi-pac') }}" class="drawer-menu-item"><i class="fa-solid fa-bullseye"></i>
                 Visi & Misi</a>
             <a href="{{ url('/struktur/bph') }}" class="drawer-menu-item"><i class="fa-solid fa-users"></i> Struktur
-                Organisasi</a>
+                Pengurus</a>
+            <a href="{{ url('/proker') }}" class="drawer-menu-item"><i class="fa-solid fa-list-check"></i> Program Kerja</a>
+            <a href="{{ url('/artikel') }}" class="drawer-menu-item"><i class="fa-solid fa-newspaper"></i> Berita & Opini</a>
+            <a href="{{ url('/galeri') }}" class="drawer-menu-item"><i class="fa-solid fa-images"></i> Galeri Foto Unlimited</a>
+            <a href="{{ url('/dokumen') }}" class="drawer-menu-item"><i class="fa-solid fa-folder-open"></i> Pusat Dokumen</a>
+            <a href="{{ url('/library') }}" class="drawer-menu-item"><i class="fa-solid fa-book-bookmark"></i> IPNU Library</a>
+            <a href="{{ url('/artikel/kirim') }}" class="drawer-menu-item"><i class="fa-solid fa-feather-pointed"></i> Kirim Berita</a>
             <a href="{{ url('/info/statistik') }}" class="drawer-menu-item"><i class="fa-solid fa-chart-pie"></i>
                 Statistik Anggota</a>
             <a href="{{ url('/info/usaha') }}" class="drawer-menu-item"><i class="fa-solid fa-shop"></i> Lapak
                 Pelajar</a>
             <a href="{{ route('voting') }}" class="drawer-menu-item"><i class="fa-solid fa-check-to-slot"></i>
                 E-Voting</a>
+            <a href="{{ url('/chatbot') }}" class="drawer-menu-item"><i class="fa-solid fa-robot"></i>
+                AI Chatbot</a>
             <a href="{{ url('/kontak') }}" class="drawer-menu-item"><i class="fa-solid fa-message"></i> Kritik &
                 Saran</a>
         </div>

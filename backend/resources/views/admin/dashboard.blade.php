@@ -933,6 +933,8 @@
             <!-- Layanan -->
             <div class="nav-group-label">Layanan Pelajar</div>
             <button onclick="switchSection('lapak')"    id="nav-lapak"    class="nav-item"><i class="fa-solid fa-store"></i> Lapak Usaha</button>
+            <button onclick="switchSection('library')"  id="nav-library"  class="nav-item"><i class="fa-solid fa-book-bookmark"></i> IPNU Library</button>
+            <button onclick="switchSection('documents')" id="nav-documents" class="nav-item"><i class="fa-solid fa-folder-open"></i> Dokumen Resmi</button>
             <button onclick="switchSection('feedback')" id="nav-feedback" class="nav-item">
                 <i class="fa-solid fa-inbox"></i> Ruang Lapor
                 @if(isset($unreadFeedbacks) && $unreadFeedbacks > 0)
@@ -953,6 +955,7 @@
             <!-- Settings -->
             <div class="nav-group-label">Pengaturan</div>
             <button onclick="switchSection('settings')" id="nav-settings" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan Portal</button>
+            <button onclick="switchSection('footer')"   id="nav-footer"   class="nav-item"><i class="fa-solid fa-table-columns"></i> Kelola Footer</button>
             <button onclick="switchSection('ads')" id="nav-ads" class="nav-item"><i class="fa-solid fa-bullhorn"></i> Manajemen Iklan</button>
         </nav>
 
@@ -1168,8 +1171,9 @@
                         <form action="{{ route('admin.articles.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-grid">
-                                <div class="form-group"><label class="form-label">Judul Berita *</label><input type="text" name="title" placeholder="Judul berita yang menarik..." required></div>
+                                <div class="form-group full"><label class="form-label">Judul Berita *</label><input type="text" name="title" placeholder="Judul berita yang menarik..." required></div>
                                 <div class="form-group"><label class="form-label">Penulis</label><input type="text" name="author" value="{{ Auth::user()->name }}"></div>
+                                <div class="form-group"><label class="form-label">Tanggal Publikasi</label><input type="datetime-local" name="published_at" value="{{ now()->format('Y-m-d\TH:i') }}"><span style="font-size:0.7rem;color:var(--text-light);margin-top:3px;">Atur tanggal &amp; waktu tayang berita</span></div>
                                 <div class="form-group full"><label class="form-label">Isi Konten *</label><textarea name="content" rows="7" placeholder="Tuliskan isi berita..." required></textarea></div>
                                 <div class="form-group full"><label class="form-label">Gambar (Opsional)</label><input type="file" name="image" accept="image/*"><span style="font-size:0.7rem;color:var(--text-light);margin-top:3px;">JPG, PNG, WebP · maks 4MB</span></div>
                             </div>
@@ -1206,6 +1210,7 @@
                                                 @csrf @method('PATCH')
                                                 <button type="submit" class="btn btn-green btn-sm" onclick="return confirm('Setujui dan tayangkan artikel ini?')" style="padding: 6px 12px; font-weight: 600;"><i class="fa-solid fa-check"></i> Setujui</button>
                                             </form>
+                                            <button type="button" onclick="editArticle({{ json_encode($art) }})" class="btn btn-blue btn-icon btn-sm" title="Edit Artikel & Tanggal"><i class="fa-solid fa-pen"></i></button>
                                             <form action="{{ route('admin.articles.delete',$art->id) }}" method="POST" style="display:inline;">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-icon btn-sm" onclick="return confirm('Tolak dan hapus artikel ini?')"><i class="fa-solid fa-xmark"></i></button>
@@ -2029,6 +2034,369 @@
                         </form>
                     </div>
                 </div>
+
+                <!-- Card: Pengaturan AI Chatbot (Google Gemini API) -->
+                <div class="card" style="margin-top:24px;">
+                    <div class="card-header" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white;">
+                        <div class="card-header-title" style="color: white; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-robot" style="font-size: 1.2rem; color: #facc15;"></i>
+                                <span>Integrasi AI Chatbot (Google Gemini API)</span>
+                            </div>
+                            @if(!empty($settings['gemini_api_key']) || !empty(env('GEMINI_API_KEY')))
+                                <span style="background: #22c55e; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                                    <i class="fa-solid fa-circle-check"></i> Gemini AI Aktif
+                                </span>
+                            @else
+                                <span style="background: rgba(255,255,255,0.25); color: #fef08a; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                                    <i class="fa-solid fa-database"></i> Mode Database Lokal
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px;">
+                            <i class="fa-solid fa-circle-info" style="color: #2563eb; font-size: 1.2rem; margin-top: 2px;"></i>
+                            <div style="font-size: 0.88rem; color: #1e40af; line-height: 1.55;">
+                                <strong>Google Gemini API Gratis:</strong> Hubungkan chatbot asisten portal dengan kecerdasan buatan Google Gemini agar bot mampu menjawab berbagai pertanyaan secara cerdas, luwes, dan solutif. Jika API Key belum diisi atau kuota habis, bot secara otomatis beralih ke <em>Pengetahuan Database Lokal PAC IPNU IPPNU Kemiri</em> tanpa error.
+                            </div>
+                        </div>
+
+                        <form action="{{ route('admin.settings.update') }}" method="POST">
+                            @csrf
+                            <div class="form-grid">
+                                <div class="form-group full">
+                                    <label class="form-label" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                                        <span>Google Gemini API Key</span>
+                                        <a href="https://aistudio.google.com/apikey" target="_blank" style="color: #2563eb; font-weight: 700; text-decoration: underline; font-size: 0.82rem;">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Buat API Key Gratis di Google AI Studio
+                                        </a>
+                                    </label>
+                                    <input type="text" name="gemini_api_key" value="{{ $settings['gemini_api_key'] ?? env('GEMINI_API_KEY', '') }}" placeholder="Tempelkan API Key di sini (contoh: AIzaSy...)" style="width: 100%;">
+                                    <small style="color: #64748b; margin-top: 4px; display: block;">
+                                        API Key 100% gratis dari Google AI Studio. Cukup login dengan akun Google, klik tombol <em>Create API Key</em>, lalu tempelkan di kolom ini.
+                                    </small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Model Gemini yang Digunakan</label>
+                                    <select name="gemini_model" class="form-control" style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px;">
+                                        <option value="gemini-1.5-flash" {{ ($settings['gemini_model'] ?? 'gemini-1.5-flash') == 'gemini-1.5-flash' ? 'selected' : '' }}>Gemini 1.5 Flash (Gratis, Respons Cepat &amp; Rekomendasi)</option>
+                                        <option value="gemini-2.0-flash" {{ ($settings['gemini_model'] ?? '') == 'gemini-2.0-flash' ? 'selected' : '' }}>Gemini 2.0 Flash (Generasi Terbaru &amp; Cerdas)</option>
+                                        <option value="gemini-1.5-pro" {{ ($settings['gemini_model'] ?? '') == 'gemini-1.5-pro' ? 'selected' : '' }}>Gemini 1.5 Pro (Kemampuan Analisis Mendalam)</option>
+                                    </select>
+                                    <small style="color: #64748b;">Model <code>gemini-1.5-flash</code> adalah opsi standar gratis tercepat dari Google.</small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Status Integrasi Saat Ini</label>
+                                    <div style="padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem; color: #334155;">
+                                        @if(!empty($settings['gemini_api_key']) || !empty(env('GEMINI_API_KEY')))
+                                            <span style="color: #16a34a; font-weight: 700;"><i class="fa-solid fa-check-circle"></i> Terhubung ke Google Gemini AI</span>
+                                        @else
+                                            <span style="color: #64748b;"><i class="fa-solid fa-info-circle"></i> Menggunakan Database Pengetahuan Lokal</span>
+                                        @endif
+                                    </div>
+                                    <small style="color: #64748b;">Bot otomatis aktif 24/7 baik menggunakan Gemini maupun Database Lokal.</small>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="margin-top:16px; background: #2563eb; border-color: #2563eb;">
+                                <i class="fa-solid fa-floppy-disk"></i> Simpan Konfigurasi Gemini AI
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 SECTION: IPNU LIBRARY (E-BOOK)
+            =========================================== -->
+            <div id="section-library" class="admin-section">
+                <div class="dash-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+                        <div>
+                            <h2 class="dash-title"><i class="fa-solid fa-book-bookmark" style="color:var(--admin-primary); margin-right:8px;"></i> Manajemen Perpustakaan Digital (E-Book)</h2>
+                            <p style="color:#64748b; font-size:0.875rem; margin-top:4px;">Kelola buku digital, kitab, panduan, dan literatur pelajar.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('modal-add-book')"><i class="fa-solid fa-plus"></i> Tambah E-Book</button>
+                    </div>
+
+                    @if($books->isEmpty())
+                        <div style="text-align:center; padding:40px 20px; color:#94a3b8;">
+                            <i class="fa-solid fa-book-open" style="font-size:2.5rem; margin-bottom:12px; opacity:0.4;"></i>
+                            <p>Belum ada koleksi buku digital. Klik <strong>+ Tambah E-Book</strong> untuk mengunggah.</p>
+                        </div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Judul & Penulis</th>
+                                        <th>Kategori</th>
+                                        <th>Halaman & Bahasa</th>
+                                        <th>Unduhan</th>
+                                        <th>Status</th>
+                                        <th style="width:120px; text-align:right;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($books as $b)
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight:700; color:#1e293b; font-size:0.95rem;">{{ $b->title }}</div>
+                                            <div style="font-size:0.8rem; color:#64748b;">Penulis: {{ $b->author }}</div>
+                                        </td>
+                                        <td><span style="font-size:0.75rem; background:#f1f5f9; color:#475569; padding:3px 8px; border-radius:12px; font-weight:700;">{{ $b->cat_label ?: ucfirst($b->category) }}</span></td>
+                                        <td style="font-size:0.85rem; color:#64748b;">{{ $b->pages ?: '-' }} hlm &bull; {{ $b->language }}</td>
+                                        <td style="font-weight:700; color:#334155;">{{ $b->download_count }}x</td>
+                                        <td>
+                                            <form action="{{ route('admin.books.toggle', $b->id) }}" method="POST" style="display:inline;">
+                                                @csrf @method('PATCH')
+                                                <button type="submit" style="background:none; border:none; cursor:pointer; padding:0;">
+                                                    @if($b->is_active)
+                                                        <span style="background:#dcfce7; color:#166534; padding:3px 8px; border-radius:10px; font-size:0.72rem; font-weight:700;">Aktif</span>
+                                                    @else
+                                                        <span style="background:#fee2e2; color:#991b1b; padding:3px 8px; border-radius:10px; font-size:0.72rem; font-weight:700;">Nonaktif</span>
+                                                    @endif
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <div style="display:flex; gap:6px; justify-content:flex-end;">
+                                                <button type="button" class="btn btn-sm btn-outline" onclick="openEditBookModal({{ $b->id }}, '{{ addslashes($b->title) }}', '{{ addslashes($b->author) }}', '{{ $b->category }}', '{{ addslashes($b->cat_label ?? '') }}', '{{ $b->pages }}', '{{ $b->language }}', '{{ $b->color }}', '{{ addslashes($b->synopsis ?? '') }}')" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                <form action="{{ route('admin.books.delete', $b->id) }}" method="POST" onsubmit="return confirm('Hapus e-book ini?')">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 SECTION: DOKUMEN RESMI MANAGEMENT
+            =========================================== -->
+            <div id="section-documents" class="admin-section">
+                <div class="dash-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+                        <div>
+                            <h2 class="dash-title"><i class="fa-solid fa-folder-open" style="color:var(--admin-primary); margin-right:8px;"></i> Manajemen Dokumen Resmi</h2>
+                            <p style="color:#64748b; font-size:0.875rem; margin-top:4px;">Kelola berkas regulasi, modul kaderisasi, template administrasi surat, dan berkas organisasi.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('modal-add-document')"><i class="fa-solid fa-plus"></i> Tambah Dokumen</button>
+                    </div>
+
+                    <!-- Document Stats -->
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px; margin-bottom:24px;">
+                        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px;">
+                            <div style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b;">Total Dokumen</div>
+                            <div style="font-size:1.6rem; font-weight:800; color:#0f172a; margin-top:4px;">{{ $documents->count() }}</div>
+                        </div>
+                        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:16px;">
+                            <div style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#166534;">Dokumen Aktif</div>
+                            <div style="font-size:1.6rem; font-weight:800; color:#16a34a; margin-top:4px;">{{ $documents->where('is_active', true)->count() }}</div>
+                        </div>
+                        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:16px;">
+                            <div style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#1e40af;">Total Unduhan</div>
+                            <div style="font-size:1.6rem; font-weight:800; color:#2563eb; margin-top:4px;">{{ $documents->sum('download_count') }}</div>
+                        </div>
+                        <div style="background:#fefce8; border:1px solid #fef08a; border-radius:12px; padding:16px;">
+                            <div style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#854d0e;">File Tersedia</div>
+                            <div style="font-size:1.6rem; font-weight:800; color:#ca8a04; margin-top:4px;">{{ $documents->whereNotNull('file_path')->count() }}</div>
+                        </div>
+                    </div>
+
+                    @if($documents->isEmpty())
+                        <div style="text-align:center; padding:40px 20px; color:#94a3b8;">
+                            <i class="fa-solid fa-folder-open" style="font-size:2.5rem; margin-bottom:12px; opacity:0.4;"></i>
+                            <p>Belum ada dokumen resmi. Klik <strong>+ Tambah Dokumen</strong> untuk menambahkan.</p>
+                        </div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:50px;">Format</th>
+                                        <th>Judul Dokumen &amp; Deskripsi</th>
+                                        <th>Kategori</th>
+                                        <th>Ukuran</th>
+                                        <th>Unduhan</th>
+                                        <th>Status</th>
+                                        <th style="width:120px; text-align:right;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($documents as $doc)
+                                    <tr>
+                                        <td>
+                                            <div style="width:38px; height:38px; border-radius:8px; background:rgba(0,0,0,0.04); display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:{{ $doc->color ?: '#dc2626' }};">
+                                                <i class="fa-solid {{ $doc->icon ?: 'fa-file-pdf' }}"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="font-weight:700; color:#1e293b; font-size:0.95rem;">{{ $doc->title }}</div>
+                                            @if($doc->desc)
+                                                <div style="font-size:0.8rem; color:#64748b; margin-top:2px; max-width:380px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ $doc->desc }}</div>
+                                            @endif
+                                            @if($doc->file_path)
+                                                <div style="margin-top:3px;"><span style="font-size:0.72rem; color:#16a34a; font-weight:700;"><i class="fa-solid fa-check-circle"></i> File terunggah</span></div>
+                                            @else
+                                                <div style="margin-top:3px;"><span style="font-size:0.72rem; color:#f59e0b; font-weight:700;"><i class="fa-solid fa-clock"></i> Belum ada berkas fisik</span></div>
+                                            @endif
+                                        </td>
+                                        <td><span style="font-size:0.75rem; background:#f1f5f9; color:#475569; padding:3px 8px; border-radius:12px; font-weight:700;">{{ $doc->cat_label ?: ucfirst($doc->category) }}</span></td>
+                                        <td style="font-size:0.85rem; color:#64748b;">{{ $doc->file_type }} &bull; {{ $doc->file_size ?: '-' }}</td>
+                                        <td style="font-weight:700; color:#334155;">{{ $doc->download_count }}x</td>
+                                        <td>
+                                            <form action="{{ route('admin.documents.toggle', $doc->id) }}" method="POST" style="display:inline;">
+                                                @csrf @method('PATCH')
+                                                <button type="submit" style="background:none; border:none; cursor:pointer; padding:0;">
+                                                    @if($doc->is_active)
+                                                        <span style="background:#dcfce7; color:#166534; padding:3px 8px; border-radius:10px; font-size:0.72rem; font-weight:700;">Aktif</span>
+                                                    @else
+                                                        <span style="background:#fee2e2; color:#991b1b; padding:3px 8px; border-radius:10px; font-size:0.72rem; font-weight:700;">Nonaktif</span>
+                                                    @endif
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <div style="display:flex; gap:6px; justify-content:flex-end;">
+                                                <button type="button" class="btn btn-sm btn-outline" onclick="openEditDocumentModal({{ $doc->id }}, '{{ addslashes($doc->title) }}', '{{ addslashes($doc->desc ?? '') }}', '{{ $doc->category }}', '{{ addslashes($doc->cat_label ?? '') }}', '{{ $doc->file_type }}', '{{ $doc->file_size }}', '{{ $doc->color }}')" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                <form action="{{ route('admin.documents.delete', $doc->id) }}" method="POST" onsubmit="return confirm('Hapus dokumen ini?')">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 SECTION: KELOLA FOOTER WEBSITE
+            =========================================== -->
+            <div id="section-footer" class="admin-section">
+                <!-- Card 1: Pengaturan Teks & Kontak Footer (site_settings) -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <div class="card-header-title">
+                            <i class="fa-solid fa-table-columns"></i> Pengaturan Konten &amp; Kontak Footer
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.settings.update') }}" method="POST">
+                            @csrf
+                            <div class="form-grid">
+                                <!-- Kolom 1 -->
+                                <div class="form-group full"><label class="form-label" style="font-weight:800; color:var(--admin-primary); border-bottom:1px solid #e2e8f0; padding-bottom:6px;"><i class="fa-solid fa-flag"></i> Kolom 1: Profil Organisasi</label></div>
+                                <div class="form-group"><label class="form-label">Nama / Judul Organisasi</label><input type="text" name="org_name" value="{{ $settings['org_name'] ?? 'PAC IPNU IPPNU Kemiri' }}"></div>
+                                <div class="form-group full"><label class="form-label">Deskripsi Singkat (Di Bawah Nama Organisasi)</label><textarea name="footer_desc" rows="2">{{ $settings['footer_desc'] ?? 'Ikatan Pelajar Nahdlatul Ulama & Ikatan Pelajar Putri Nahdlatul Ulama Kecamatan Kemiri. Berkhidmat tanpa batas, berinovasi tiada henti.' }}</textarea></div>
+
+                                <!-- Kolom 3 -->
+                                <div class="form-group full"><label class="form-label" style="font-weight:800; color:var(--admin-primary); border-bottom:1px solid #e2e8f0; padding-bottom:6px; margin-top:10px;"><i class="fa-solid fa-phone"></i> Kolom 3: Hubungi Kami &amp; Sekretariat</label></div>
+                                <div class="form-group"><label class="form-label">Nama Gedung / Kantor</label><input type="text" name="sekre_title" value="{{ $settings['sekre_title'] ?? 'Sekretariat PAC IPNU IPPNU Kemiri' }}"></div>
+                                <div class="form-group"><label class="form-label">Email Kontak Resmi</label><input type="email" name="email" value="{{ $settings['email'] ?? 'info@ipnukemiri.or.id' }}"></div>
+                                <div class="form-group"><label class="form-label">No. WhatsApp / Telepon</label><input type="text" name="whatsapp" value="{{ $settings['whatsapp'] ?? '+62 812 3456 7890' }}"></div>
+                                <div class="form-group"><label class="form-label">Teks Tombol Lapor / Saran</label><input type="text" name="footer_lapor_text" value="{{ $settings['footer_lapor_text'] ?? 'Ruang Lapor & Saran' }}"></div>
+                                <div class="form-group"><label class="form-label">Link Tujuan Lapor / Saran</label><input type="text" name="footer_lapor_url" value="{{ $settings['footer_lapor_url'] ?? '/kontak' }}"></div>
+                                <div class="form-group full"><label class="form-label">Alamat Lengkap Sekretariat</label><textarea name="address" rows="2">{{ $settings['address'] ?? 'Kecamatan Kemiri, Purworejo, Jawa Tengah' }}</textarea></div>
+
+                                <!-- Baris Bawah -->
+                                <div class="form-group full"><label class="form-label" style="font-weight:800; color:var(--admin-primary); border-bottom:1px solid #e2e8f0; padding-bottom:6px; margin-top:10px;"><i class="fa-solid fa-copyright"></i> Baris Bawah: Hak Cipta</label></div>
+                                <div class="form-group full"><label class="form-label">Teks Hak Cipta / Copyright</label><input type="text" name="footer_copyright" value="{{ $settings['footer_copyright'] ?? 'Dikembangkan dengan ❤️ untuk kemajuan Pelajar NU.' }}"></div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-submit" style="margin-top:18px;"><i class="fa-solid fa-floppy-disk"></i> Simpan Konten &amp; Kontak Footer</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Card 2: Kolom 2: Tautan Cepat (footer_links) -->
+                <div class="dash-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+                        <div>
+                            <h2 class="dash-title"><i class="fa-solid fa-link" style="color:var(--admin-primary); margin-right:8px;"></i> Kolom 2: Tautan Cepat (Quick Links)</h2>
+                            <p style="color:#64748b; font-size:0.875rem; margin-top:4px;">Kelola daftar tautan menu yang tampil di bagian tengah footer.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('modal-add-footer-link')"><i class="fa-solid fa-plus"></i> Tambah Tautan Footer</button>
+                    </div>
+
+                    @if($footerLinks->isEmpty())
+                        <div style="text-align:center; padding:40px 20px; color:#94a3b8;">
+                            <i class="fa-solid fa-link-slash" style="font-size:2.5rem; margin-bottom:12px; opacity:0.4;"></i>
+                            <p>Belum ada tautan footer. Klik <strong>+ Tambah Tautan Footer</strong> untuk menambahkan.</p>
+                        </div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:60px;">Urutan</th>
+                                        <th>Judul Tautan</th>
+                                        <th>URL / Link Tujuan</th>
+                                        <th>Target</th>
+                                        <th>Status</th>
+                                        <th style="width:120px; text-align:right;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($footerLinks as $fl)
+                                    <tr>
+                                        <td style="font-weight:700; color:#64748b;">#{{ $fl->order }}</td>
+                                        <td>
+                                            <div style="font-weight:700; color:#1e293b; font-size:0.95rem;">{{ $fl->title }}</div>
+                                        </td>
+                                        <td>
+                                            <code style="background:#f1f5f9; padding:2px 8px; border-radius:4px; font-size:0.85rem; color:#0284c7;">{{ $fl->url }}</code>
+                                        </td>
+                                        <td>
+                                            <span style="font-size:0.8rem; color:#64748b;">{{ $fl->target === '_blank' ? 'Tab Baru (_blank)' : 'Halaman Sama (_self)' }}</span>
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('admin.footer-links.toggle', $fl->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" style="background:none; border:none; cursor:pointer; padding:0;" title="Klik untuk ubah status">
+                                                    @if($fl->is_active)
+                                                        <span style="background:#dcfce7; color:#166534; padding:3px 8px; border-radius:10px; font-size:0.72rem; font-weight:700;">Aktif</span>
+                                                    @else
+                                                        <span style="background:#fee2e2; color:#991b1b; padding:3px 8px; border-radius:10px; font-size:0.72rem; font-weight:700;">Nonaktif</span>
+                                                    @endif
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <div style="display:flex; gap:6px; justify-content:flex-end;">
+                                                <button type="button" class="btn btn-sm btn-outline" onclick="openEditFooterLinkModal({{ $fl->id }}, '{{ addslashes($fl->title) }}', '{{ addslashes($fl->url) }}', '{{ $fl->target }}', {{ $fl->order }})" title="Edit Tautan">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                                <form action="{{ route('admin.footer-links.delete', $fl->id) }}" method="POST" onsubmit="return confirm('Hapus tautan footer ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
             </div>
 
             <!-- ==========================================
@@ -2239,8 +2607,9 @@
             @csrf @method('PUT')
             <div class="modal-body">
                 <div class="form-grid">
-                    <div class="form-group"><label class="form-label">Judul *</label><input type="text" name="title" id="ea-title" required></div>
+                    <div class="form-group full"><label class="form-label">Judul *</label><input type="text" name="title" id="ea-title" required></div>
                     <div class="form-group"><label class="form-label">Penulis</label><input type="text" name="author" id="ea-author"></div>
+                    <div class="form-group"><label class="form-label">Tanggal Publikasi</label><input type="datetime-local" name="published_at" id="ea-published_at"><span style="font-size:0.7rem;color:var(--text-light);margin-top:3px;">Atur tanggal &amp; waktu tayang berita</span></div>
                     <div class="form-group full"><label class="form-label">Konten *</label><textarea name="content" id="ea-content" rows="8" required></textarea></div>
                     <div class="form-group full"><label class="form-label">Ganti Gambar (Opsional)</label><input type="file" name="image" accept="image/*"></div>
                 </div>
@@ -2553,6 +2922,23 @@
         document.getElementById('ea-title').value = a.title||'';
         document.getElementById('ea-author').value = a.author||'';
         document.getElementById('ea-content').value = a.content||'';
+        
+        // Populate published_at (format to YYYY-MM-DDTHH:MM for datetime-local)
+        const dateInput = document.getElementById('ea-published_at');
+        if (dateInput) {
+            if (a.published_at) {
+                const d = new Date(a.published_at);
+                if (!isNaN(d.getTime())) {
+                    const pad = n => String(n).padStart(2, '0');
+                    dateInput.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                } else {
+                    dateInput.value = '';
+                }
+            } else {
+                dateInput.value = '';
+            }
+        }
+
         document.getElementById('edit-article-form').action = `/admin/articles/${a.id}`;
         openModal('modal-edit-article');
     }
@@ -2637,6 +3023,40 @@
         });
     }
 
+    /* ═══════ EDIT MODALS: BOOK / DOCUMENT / FOOTER-LINK ═══════ */
+    function openEditBookModal(id, title, author, category, catLabel, pages, language, color, synopsis) {
+        document.getElementById('edit-book-title').value = title;
+        document.getElementById('edit-book-author').value = author;
+        document.getElementById('edit-book-category').value = category;
+        document.getElementById('edit-book-cat-label').value = catLabel;
+        document.getElementById('edit-book-pages').value = pages;
+        document.getElementById('edit-book-language').value = language;
+        document.getElementById('edit-book-color').value = color || '#15803d';
+        document.getElementById('edit-book-synopsis').value = synopsis;
+        document.getElementById('edit-book-form').action = '/admin/books/' + id;
+        openModal('modal-edit-book');
+    }
+
+    function openEditDocumentModal(id, title, desc, category, catLabel, fileType, fileSize) {
+        document.getElementById('edit-doc-title').value = title;
+        document.getElementById('edit-doc-desc').value = desc;
+        document.getElementById('edit-doc-category').value = category;
+        document.getElementById('edit-doc-cat-label').value = catLabel;
+        document.getElementById('edit-doc-file-type').value = fileType;
+        document.getElementById('edit-doc-file-size').value = fileSize;
+        document.getElementById('edit-document-form').action = '/admin/documents/' + id;
+        openModal('modal-edit-document');
+    }
+
+    function openEditFooterLinkModal(id, title, url, target, order) {
+        document.getElementById('edit-fl-title').value = title;
+        document.getElementById('edit-fl-url').value = url;
+        document.getElementById('edit-fl-target').value = target;
+        document.getElementById('edit-fl-order').value = order;
+        document.getElementById('edit-footer-link-form').action = '/admin/footer-links/' + id;
+        openModal('modal-edit-footer-link');
+    }
+
     /* ═══════ REALTIME VOTING ═══════ */
     let rtCountdown = 5;
     function startRTCountdown() {
@@ -2673,6 +3093,369 @@
     // Init
     startRTCountdown();
 </script>
+<!-- ========================================
+     MODAL: TAMBAH E-BOOK
+======================================== -->
+<div id="modal-add-book" class="modal-overlay">
+    <div class="modal-box modal-box-lg">
+        <div class="modal-header" style="background:linear-gradient(135deg,#15803d,#166534);">
+            <div>
+                <div class="modal-subtitle">Perpustakaan Digital</div>
+                <div class="modal-title">Tambah E-Book Baru</div>
+            </div>
+            <button class="modal-close" onclick="closeModal('modal-add-book')">×</button>
+        </div>
+        <form action="{{ route('admin.books.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Judul E-Book <span style="color:red">*</span></label>
+                        <input type="text" name="title" class="form-control" required placeholder="Contoh: Panduan Kaderisasi IPNU">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Penulis / Author <span style="color:red">*</span></label>
+                        <input type="text" name="author" class="form-control" required placeholder="Nama penulis">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kategori</label>
+                        <select name="category" class="form-control" onchange="syncCatLabel(this,'add-book-cat-label')">
+                            <option value="aswaja">Aswaja</option>
+                            <option value="sejarah">Sejarah</option>
+                            <option value="remaja">Remaja</option>
+                            <option value="kaderisasi">Kaderisasi</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Label Kategori (tampil)</label>
+                        <input type="text" name="cat_label" id="add-book-cat-label" class="form-control" placeholder="Misal: Aswaja & Ke-NU-an">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Halaman</label>
+                        <input type="number" name="pages" class="form-control" min="1" placeholder="120">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Bahasa</label>
+                        <select name="language" class="form-control">
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Arab">Arab</option>
+                            <option value="Inggris">Inggris</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Warna Cover</label>
+                        <input type="color" name="color" class="form-control" value="#15803d" style="height:40px;padding:4px;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">File PDF <span style="color:red">*</span></label>
+                        <input type="file" name="file" class="form-control" accept=".pdf" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Gambar Cover</label>
+                        <input type="file" name="cover" class="form-control" accept="image/*">
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Sinopsis</label>
+                        <textarea name="synopsis" class="form-control" rows="3" placeholder="Deskripsi singkat isi buku..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal('modal-add-book')" class="btn btn-outline">Batal</button>
+                <button type="submit" class="btn btn-primary" style="background:#15803d; border-color:#15803d;">Simpan E-Book</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================
+     MODAL: EDIT E-BOOK
+======================================== -->
+<div id="modal-edit-book" class="modal-overlay">
+    <div class="modal-box modal-box-lg">
+        <div class="modal-header" style="background:linear-gradient(135deg,#15803d,#166534);">
+            <div>
+                <div class="modal-subtitle">Perpustakaan Digital</div>
+                <div class="modal-title">Edit E-Book</div>
+            </div>
+            <button class="modal-close" onclick="closeModal('modal-edit-book')">×</button>
+        </div>
+        <form id="edit-book-form" method="POST" enctype="multipart/form-data">
+            @csrf @method('PUT')
+            <div class="modal-body">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Judul E-Book <span style="color:red">*</span></label>
+                        <input type="text" name="title" id="edit-book-title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Penulis / Author <span style="color:red">*</span></label>
+                        <input type="text" name="author" id="edit-book-author" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kategori</label>
+                        <select name="category" id="edit-book-category" class="form-control">
+                            <option value="aswaja">Aswaja</option>
+                            <option value="sejarah">Sejarah</option>
+                            <option value="remaja">Remaja</option>
+                            <option value="kaderisasi">Kaderisasi</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Label Kategori (tampil)</label>
+                        <input type="text" name="cat_label" id="edit-book-cat-label" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Halaman</label>
+                        <input type="number" name="pages" id="edit-book-pages" class="form-control" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Bahasa</label>
+                        <select name="language" id="edit-book-language" class="form-control">
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Arab">Arab</option>
+                            <option value="Inggris">Inggris</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Warna Cover</label>
+                        <input type="color" name="color" id="edit-book-color" class="form-control" style="height:40px;padding:4px;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ganti File PDF (opsional)</label>
+                        <input type="file" name="file" class="form-control" accept=".pdf">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ganti Cover (opsional)</label>
+                        <input type="file" name="cover" class="form-control" accept="image/*">
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Sinopsis</label>
+                        <textarea name="synopsis" id="edit-book-synopsis" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal('modal-edit-book')" class="btn btn-outline">Batal</button>
+                <button type="submit" class="btn btn-primary" style="background:#15803d; border-color:#15803d;">Update E-Book</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================
+     MODAL: TAMBAH DOKUMEN RESMI
+======================================== -->
+<div id="modal-add-document" class="modal-overlay">
+    <div class="modal-box modal-box-lg">
+        <div class="modal-header" style="background:linear-gradient(135deg,#1e40af,#1e3a8a);">
+            <div>
+                <div class="modal-subtitle">Pusat Dokumen Resmi</div>
+                <div class="modal-title">Tambah Dokumen Baru</div>
+            </div>
+            <button class="modal-close" onclick="closeModal('modal-add-document')">×</button>
+        </div>
+        <form action="{{ route('admin.documents.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Judul Dokumen <span style="color:red">*</span></label>
+                        <input type="text" name="title" class="form-control" required placeholder="Contoh: AD/ART IPNU 2023">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kategori</label>
+                        <select name="category" class="form-control">
+                            <option value="regulasi">Regulasi</option>
+                            <option value="kaderisasi">Kaderisasi</option>
+                            <option value="administrasi">Administrasi</option>
+                            <option value="keuangan">Keuangan</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Label Kategori (tampil)</label>
+                        <input type="text" name="cat_label" class="form-control" placeholder="Misal: Regulasi Nasional">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tipe File (manual)</label>
+                        <input type="text" name="file_type" class="form-control" placeholder="PDF / DOCX / ZIP">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ukuran File (manual)</label>
+                        <input type="text" name="file_size" class="form-control" placeholder="Misal: 2.4 MB">
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">File Dokumen <span style="color:red">*</span></label>
+                        <input type="file" name="file" class="form-control" accept=".pdf,.doc,.docx,.zip,.rar" required>
+                        <small style="color:#64748b;">Format: PDF, DOC, DOCX, ZIP, RAR. Maks 20MB.</small>
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Deskripsi</label>
+                        <textarea name="description" class="form-control" rows="3" placeholder="Deskripsi singkat dokumen..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal('modal-add-document')" class="btn btn-outline">Batal</button>
+                <button type="submit" class="btn btn-primary" style="background:#1e40af; border-color:#1e40af;">Simpan Dokumen</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================
+     MODAL: EDIT DOKUMEN RESMI
+======================================== -->
+<div id="modal-edit-document" class="modal-overlay">
+    <div class="modal-box modal-box-lg">
+        <div class="modal-header" style="background:linear-gradient(135deg,#1e40af,#1e3a8a);">
+            <div>
+                <div class="modal-subtitle">Pusat Dokumen Resmi</div>
+                <div class="modal-title">Edit Dokumen</div>
+            </div>
+            <button class="modal-close" onclick="closeModal('modal-edit-document')">×</button>
+        </div>
+        <form id="edit-document-form" method="POST" enctype="multipart/form-data">
+            @csrf @method('PUT')
+            <div class="modal-body">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Judul Dokumen <span style="color:red">*</span></label>
+                        <input type="text" name="title" id="edit-doc-title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kategori</label>
+                        <select name="category" id="edit-doc-category" class="form-control">
+                            <option value="regulasi">Regulasi</option>
+                            <option value="kaderisasi">Kaderisasi</option>
+                            <option value="administrasi">Administrasi</option>
+                            <option value="keuangan">Keuangan</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Label Kategori (tampil)</label>
+                        <input type="text" name="cat_label" id="edit-doc-cat-label" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tipe File (manual)</label>
+                        <input type="text" name="file_type" id="edit-doc-file-type" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ukuran File (manual)</label>
+                        <input type="text" name="file_size" id="edit-doc-file-size" class="form-control">
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Ganti File Dokumen (opsional)</label>
+                        <input type="file" name="file" class="form-control" accept=".pdf,.doc,.docx,.zip,.rar">
+                    </div>
+                    <div class="form-group" style="grid-column:1/-1;">
+                        <label class="form-label">Deskripsi</label>
+                        <textarea name="description" id="edit-doc-desc" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal('modal-edit-document')" class="btn btn-outline">Batal</button>
+                <button type="submit" class="btn btn-primary" style="background:#1e40af; border-color:#1e40af;">Update Dokumen</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================
+     MODAL: TAMBAH FOOTER LINK
+======================================== -->
+<div id="modal-add-footer-link" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header" style="background:linear-gradient(135deg,#374151,#1f2937);">
+            <div>
+                <div class="modal-subtitle">Kelola Footer</div>
+                <div class="modal-title">Tambah Tautan Cepat</div>
+            </div>
+            <button class="modal-close" onclick="closeModal('modal-add-footer-link')">×</button>
+        </div>
+        <form action="{{ route('admin.footer-links.store') }}" method="POST">
+            @csrf
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Judul Tautan <span style="color:red">*</span></label>
+                    <input type="text" name="title" class="form-control" required placeholder="Contoh: Profil & Sejarah">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL / Alamat <span style="color:red">*</span></label>
+                    <input type="text" name="url" class="form-control" required placeholder="/profil atau https://...">
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="form-group">
+                        <label class="form-label">Target</label>
+                        <select name="target" class="form-control">
+                            <option value="_self">Halaman ini (_self)</option>
+                            <option value="_blank">Tab baru (_blank)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Urutan</label>
+                        <input type="number" name="sort_order" class="form-control" value="0" min="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal('modal-add-footer-link')" class="btn btn-outline">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Tautan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================
+     MODAL: EDIT FOOTER LINK
+======================================== -->
+<div id="modal-edit-footer-link" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header" style="background:linear-gradient(135deg,#374151,#1f2937);">
+            <div>
+                <div class="modal-subtitle">Kelola Footer</div>
+                <div class="modal-title">Edit Tautan Cepat</div>
+            </div>
+            <button class="modal-close" onclick="closeModal('modal-edit-footer-link')">×</button>
+        </div>
+        <form id="edit-footer-link-form" method="POST">
+            @csrf @method('PUT')
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Judul Tautan <span style="color:red">*</span></label>
+                    <input type="text" name="title" id="edit-fl-title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL / Alamat <span style="color:red">*</span></label>
+                    <input type="text" name="url" id="edit-fl-url" class="form-control" required>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="form-group">
+                        <label class="form-label">Target</label>
+                        <select name="target" id="edit-fl-target" class="form-control">
+                            <option value="_self">Halaman ini (_self)</option>
+                            <option value="_blank">Tab baru (_blank)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Urutan</label>
+                        <input type="number" name="sort_order" id="edit-fl-order" class="form-control" min="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal('modal-edit-footer-link')" class="btn btn-outline">Batal</button>
+                <button type="submit" class="btn btn-primary">Update Tautan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script src="{{ asset('js/chat.js') }}"></script>
 </body>
 </html>

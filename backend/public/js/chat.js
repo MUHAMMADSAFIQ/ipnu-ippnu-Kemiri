@@ -25,7 +25,7 @@ async function sendMessage(event) {
     submitBtn.textContent = '...';
     
     // CSRF Token
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
     
     try {
         const response = await fetch('/admin/chat/send', {
@@ -46,12 +46,7 @@ async function sendMessage(event) {
         
         // Append user message
         appendMessage(data.user);
-        
-        // Append bot reply after a small delay for natural feel
-        setTimeout(() => {
-            appendMessage(data.bot);
-            scrollToBottom();
-        }, 500);
+        scrollToBottom();
         
         // Clear input
         input.value = '';
@@ -75,7 +70,7 @@ function appendMessage(msgData) {
     const chatWindow = document.getElementById('chat-window');
     
     const bubble = document.createElement('div');
-    const isBot = msgData.author === 'Bot';
+    const isBot = msgData.author !== 'Admin';
     bubble.className = `chat-bubble ${isBot ? 'bot' : 'user'}`;
     
     const authorStrong = document.createElement('strong');
@@ -107,7 +102,7 @@ async function sendPublicMessage(event) {
     submitBtn.innerHTML = '...';
     
     // CSRF Token
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
     
     try {
         const response = await fetch('/chat/send-public', {
@@ -129,11 +124,12 @@ async function sendPublicMessage(event) {
         // Append user message
         appendPublicMessage(data.user);
         
-        // Append bot reply after a small delay
-        setTimeout(() => {
+        // Append bot reply immediately after
+        if (data.bot) {
             appendPublicMessage(data.bot);
-            if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
-        }, 500);
+        }
+        
+        if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
         
         // Clear input
         input.value = '';
@@ -147,7 +143,6 @@ async function sendPublicMessage(event) {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalText;
         input.focus();
-        if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
     }
     
     return false;
@@ -158,7 +153,7 @@ function appendPublicMessage(msgData) {
     if (!chatWindow) return;
     
     const bubble = document.createElement('div');
-    const isBot = msgData.author === 'Bot';
+    const isBot = msgData.author === 'Bot' || msgData.author === 'Admin';
     bubble.className = `chat-bubble ${isBot ? 'bot' : 'user'}`;
     
     const authorStrong = document.createElement('strong');
@@ -171,3 +166,45 @@ function appendPublicMessage(msgData) {
     
     chatWindow.appendChild(bubble);
 }
+
+// Polling for both chats
+document.addEventListener('DOMContentLoaded', function() {
+    setInterval(async () => {
+        try {
+            const response = await fetch('/chat/messages-public');
+            if (response.ok) {
+                const messages = await response.json();
+                
+                // Update Public Chat
+                const publicChat = document.getElementById('public-chat-window');
+                if (publicChat && publicChat.parentElement.style.display !== 'none') {
+                    const isScrolledToBottom = publicChat.scrollHeight - publicChat.clientHeight <= publicChat.scrollTop + 50;
+                    publicChat.innerHTML = '';
+                    messages.forEach(msg => appendPublicMessage(msg));
+                    if (isScrolledToBottom) publicChat.scrollTop = publicChat.scrollHeight;
+                }
+                
+                // Update Admin Chat
+                const adminChat = document.getElementById('chat-window');
+                if (adminChat) {
+                    const isScrolledToBottom = adminChat.scrollHeight - adminChat.clientHeight <= adminChat.scrollTop + 50;
+                    adminChat.innerHTML = '';
+                    messages.forEach(msg => {
+                        const bubble = document.createElement('div');
+                        const isBot = msg.author !== 'Admin';
+                        bubble.className = `chat-bubble ${isBot ? 'bot' : 'user'}`;
+                        const authorStrong = document.createElement('strong');
+                        authorStrong.textContent = msg.author + ':';
+                        const textNode = document.createTextNode(' ' + msg.content);
+                        bubble.appendChild(authorStrong);
+                        bubble.appendChild(textNode);
+                        adminChat.appendChild(bubble);
+                    });
+                    if (isScrolledToBottom) adminChat.scrollTop = adminChat.scrollHeight;
+                }
+            }
+        } catch (e) {
+            console.error('Polling error', e);
+        }
+    }, 3000);
+});
