@@ -4492,7 +4492,7 @@
             </div>
 
             <!-- Close Button -->
-            <button onclick="event.stopPropagation(); let b = document.getElementById('promo-banner'); b.style.top = '-300px'; setTimeout(() => b.style.display='none', 400);" style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.15); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: background 0.2s;">
+            <button onclick="event.stopPropagation(); let b = document.getElementById('promo-banner'); b.style.top = '-300px'; setTimeout(() => b.style.display='none', 400);" aria-label="Tutup Banner Promosi" style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.15); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: background 0.2s;">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -4533,7 +4533,7 @@
     <div class="top-utility-bar">
         <div class="tub-container">
             <div class="tub-left">
-                <button class="tub-menu-btn" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars"></i></button>
+                <button class="tub-menu-btn" onclick="toggleMobileMenu()" aria-label="Buka Menu Navigasi"><i class="fa-solid fa-bars"></i></button>
                 <svg class="tub-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
@@ -4542,28 +4542,28 @@
             </div>
             <div class="tub-right" style="position: relative;">
                 <a href="{{ route('voting') }}" class="tub-btn"><i class="fa-solid fa-check-to-slot"></i> Voting</a>
-                <button class="tub-icon" title="Pencarian" onclick="toggleSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <button class="tub-icon" id="theme-btn" title="Ubah Tema" onclick="toggleThemeMenu()"><i
+                <button class="tub-icon" title="Pencarian" aria-label="Pencarian" onclick="toggleSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button class="tub-icon" id="theme-btn" title="Ubah Tema" aria-label="Ubah Tema Warna" onclick="toggleThemeMenu()"><i
                         class="fa-solid fa-palette"></i></button>
 
                 <!-- Circular Theme Menu Overlay -->
                 <div id="theme-overlay" class="theme-overlay">
                     <div class="theme-circle-container">
                         <div class="theme-circle-svg"></div>
-                        <button class="theme-center-btn" onclick="toggleThemeMenu()">✕</button>
-                        <button class="theme-option-btn theme-opt-1" onclick="setTheme('theme1')">01</button>
-                        <button class="theme-option-btn theme-opt-2" onclick="setTheme('theme2')">02</button>
-                        <button class="theme-option-btn theme-opt-3" onclick="setTheme('theme3')">03</button>
-                        <button class="theme-option-btn theme-opt-4" onclick="setTheme('theme4')">04</button>
-                        <button class="theme-option-btn theme-opt-5" onclick="setTheme('theme5')">05</button>
-                        <button class="theme-option-btn theme-opt-6" onclick="setTheme('theme6')">06</button>
-                        <button class="theme-option-btn theme-opt-7" onclick="setTheme('theme7')">07</button>
-                        <button class="theme-option-btn theme-opt-8" onclick="setTheme('theme8')">08</button>
+                        <button class="theme-center-btn" onclick="toggleThemeMenu()" aria-label="Tutup Pilihan Tema">✕</button>
+                        <button class="theme-option-btn theme-opt-1" onclick="setTheme('theme1')" aria-label="Tema Hijau Emerald">01</button>
+                        <button class="theme-option-btn theme-opt-2" onclick="setTheme('theme2')" aria-label="Tema Oranye Hangat">02</button>
+                        <button class="theme-option-btn theme-opt-3" onclick="setTheme('theme3')" aria-label="Tema Merah Elegan">03</button>
+                        <button class="theme-option-btn theme-opt-4" onclick="setTheme('theme4')" aria-label="Tema Biru Samudera">04</button>
+                        <button class="theme-option-btn theme-opt-5" onclick="setTheme('theme5')" aria-label="Tema Toska">05</button>
+                        <button class="theme-option-btn theme-opt-6" onclick="setTheme('theme6')" aria-label="Tema Amber Emas">06</button>
+                        <button class="theme-option-btn theme-opt-7" onclick="setTheme('theme7')" aria-label="Tema Merah Cerah">07</button>
+                        <button class="theme-option-btn theme-opt-8" onclick="setTheme('theme8')" aria-label="Tema Ungu Royal">08</button>
                     </div>
                 </div>
 
-                <a href="{{ url('/info/statistik') }}" class="tub-icon" title="Statistik Anggota"><i class="fa-solid fa-signal"></i></a>
-                <a href="{{ route('admin.register') }}" class="tub-icon" title="Login Admin"
+                <a href="{{ url('/info/statistik') }}" class="tub-icon" title="Statistik Anggota" aria-label="Statistik Anggota"><i class="fa-solid fa-signal"></i></a>
+                <a href="{{ route('admin.register') }}" class="tub-icon" title="Login Admin" aria-label="Login Admin"
                     style="display: flex; text-decoration: none;"><i class="fa-solid fa-user-shield"></i></a>
             </div>
         </div>
@@ -4572,8 +4572,8 @@
     <!-- Search Bar Overlay -->
     <div id="search-overlay" style="display:none; position:absolute; top:42px; left:0; width:100%; background:white; padding:10px 20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1000; border-bottom:1px solid #e2e8f0;">
         <form action="{{ url('/') }}" method="GET" style="display:flex; gap:10px; max-width:800px; margin:0 auto; align-items:center;">
-            <input type="text" name="search" id="search-input" value="{{ request('search') }}" placeholder="Cari artikel (ketik lalu tekan enter)..." style="flex:1; padding:8px 16px; border:1px solid #cbd5e1; border-radius:50px; font-size:0.9rem; outline:none; color:#333;">
-            <button type="submit" style="background:var(--primary); color:white; border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <input type="text" name="search" id="search-input" aria-label="Kata kunci pencarian" value="{{ request('search') }}" placeholder="Cari artikel (ketik lalu tekan enter)..." style="flex:1; padding:8px 16px; border:1px solid #cbd5e1; border-radius:50px; font-size:0.9rem; outline:none; color:#333;">
+            <button type="submit" aria-label="Kirim Pencarian" style="background:var(--primary); color:white; border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
     
@@ -5028,7 +5028,7 @@
                         <path d="M10 75 L90 75 L90 80 L10 80 Z" fill="#9ca3af" />
                     </svg>
                     <div class="prayer-title-box">
-                        <h4>JADWAL IMSAK, SHALAT & BERBUKA</h4>
+                        <h2 style="font-size: 1.1rem; margin: 0; color: white;">JADWAL IMSAK, SHALAT & BERBUKA</h2>
                         <div class="prayer-region">Wilayah Kab. Purworejo</div>
                         <div class="prayer-date-text">Jum'at, 1 Mei 2026</div>
                     </div>
@@ -5145,7 +5145,8 @@
                 }
 
                 .hk-badge {
-                    color: var(--accent);
+                    color: #fef08a;
+                    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
                     font-size: 0.78rem;
                     font-weight: 900;
                     letter-spacing: 2px;
@@ -5327,7 +5328,7 @@
             <div class="dr-greeting">
                 <div>
                     <p>Selamat malam dan<br>selamat beristirahat</p>
-                    <a href="javascript:void(0)" onclick="toggleProfil()"
+                    <a href="{{ url('/profil/sejarah') }}" onclick="toggleProfil(); return false;"
                         style="color: var(--accent); font-size: 0.8rem; font-weight: 700; text-decoration: underline; margin-top: 8px; display: inline-block;">Buka
                         Profil Organisasi</a>
                 </div>
@@ -5486,13 +5487,13 @@
                 <div class="dr-widget">
                     <div class="dr-widget-header"><i class="fa-solid fa-mobile-screen"></i> MEDIA SOSIAL</div>
                     <div style="padding: 16px; display: flex; gap: 8px; justify-content: center;">
-                        <a href="https://www.instagram.com/pac_ipnuippnukemiri?igsh=Zm44MGc3Z3p4NmEz" target="_blank"
+                        <a href="https://www.instagram.com/pac_ipnuippnukemiri?igsh=Zm44MGc3Z3p4NmEz" target="_blank" aria-label="Instagram PAC IPNU IPPNU Kemiri"
                             style="background: #e1306c; color: white; width: 40px; height: 40px; border-radius: 4px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"><i
                                 class="fa-brands fa-instagram"></i></a>
-                        <a href="https://www.tiktok.com/@pacipnuippnukemiri?_r=1&_t=ZS-96jKzJUfTsH" target="_blank"
+                        <a href="https://www.tiktok.com/@pacipnuippnukemiri?_r=1&_t=ZS-96jKzJUfTsH" target="_blank" aria-label="TikTok PAC IPNU IPPNU Kemiri"
                             style="background: #000000; color: white; width: 40px; height: 40px; border-radius: 4px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"><i
                                 class="fa-brands fa-tiktok"></i></a>
-                        <a href="https://youtube.com/@pacipnuippnukemiri?si=N8tbisjmz1PQtni-" target="_blank"
+                        <a href="https://youtube.com/@pacipnuippnukemiri?si=N8tbisjmz1PQtni-" target="_blank" aria-label="YouTube Channel PAC IPNU IPPNU Kemiri"
                             style="background: #ff0000; color: white; width: 40px; height: 40px; border-radius: 4px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"><i
                                 class="fa-brands fa-youtube"></i></a>
                     </div>
@@ -5583,6 +5584,7 @@
 
                     <div style="position: relative; width: 100%; min-height: 380px; background: #e2e8f0;">
                         <iframe
+                            title="Peta Lokasi Sekretariat PAC IPNU IPPNU Kemiri"
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15814.734842542488!2d109.9042567890!3d-7.632156890123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a8ca16f5c862d%3A0x4027a765a3717a0!2sKemiri%2C%20Kec.%20Kemiri%2C%20Kabupaten%20Purworejo%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1714630000000!5m2!1sid!2sid"
                             style="width: 100%; height: 100%; min-height: 380px; border: 0;"
                             allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
@@ -5599,7 +5601,7 @@
             }
         </style>
 
-        <a href="#" class="scroll-top-btn"><i class="fa-solid fa-arrow-up"></i></a>
+        <a href="#beranda" class="scroll-top-btn" aria-label="Kembali ke atas"><i class="fa-solid fa-arrow-up"></i></a>
 
 
 
@@ -5988,7 +5990,7 @@
                         style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);vertical-align:middle;margin-right:8px;object-fit:contain;background:#fff;">
                     PAC IPNU IPPNU Kemiri
                 </span>
-                <button onclick="toggleMobileMenu()">✕</button>
+                <button onclick="toggleMobileMenu()" aria-label="Tutup Menu Navigasi">✕</button>
             </div>
             <div class="mobile-nav-body">
                 <div class="mobile-nav-menu-items">
@@ -6079,7 +6081,7 @@
                 <i class="fa-solid fa-calendar-days"></i>
                 <span>Agenda</span>
             </a>
-            <button class="mbn-item mbn-menu-btn" onclick="toggleMobileMenu()" id="mbn-menu">
+            <button class="mbn-item mbn-menu-btn" onclick="toggleMobileMenu()" id="mbn-menu" aria-label="Buka Menu Lengkap">
                 <i class="fa-solid fa-bars"></i>
                 <span>Menu</span>
             </button>
@@ -6091,7 +6093,7 @@
         <div style="background: white; border-radius: 16px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
             <div style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-radius: 16px 16px 0 0; position: sticky; top: 0; z-index: 10;">
                 <h3 style="margin: 0; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;"><i class="fa-solid fa-user-plus"></i> Gabung Sekarang</h3>
-                <button onclick="closeGabungModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;"><i class="fa-solid fa-times"></i></button>
+                <button onclick="closeGabungModal()" aria-label="Tutup Formulir Gabung" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;"><i class="fa-solid fa-times"></i></button>
             </div>
             <div style="padding: 24px;">
                 <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 20px;">Silakan isi formulir di bawah ini untuk bergabung dengan PAC IPNU IPPNU Kemiri.</p>
@@ -6157,7 +6159,7 @@
         <!-- Top bar -->
         <div style="position: absolute; top: 20px; left: 24px; right: 24px; display: flex; justify-content: space-between; align-items: center; z-index: 10;">
             <span id="gallery-viewer-counter" style="background: rgba(255,255,255,0.2); color: white; padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">1 / 1</span>
-            <button onclick="closeGalleryViewer()"
+            <button onclick="closeGalleryViewer()" aria-label="Tutup Penampil Galeri"
                 style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: white; width: 44px; height: 44px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.85)';" onmouseout="this.style.background='rgba(255,255,255,0.15)';">&times;</button>
         </div>
 
@@ -6194,7 +6196,7 @@
                 <h2 style="color: var(--primary-dark); margin: 0; font-family: 'Outfit';"><i
                         class="fa-solid fa-images"></i>
                     SEMUA GALERI FOTO</h2>
-                <button onclick="closeAllGalleries()"
+                <button onclick="closeAllGalleries()" aria-label="Tutup Galeri Foto"
                     style="background: none; border: none; color: var(--text-dark); font-size: 2.5rem; cursor: pointer; line-height: 1;">&times;</button>
             </div>
             <div class="gallery-grid"
