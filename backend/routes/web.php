@@ -68,7 +68,12 @@ Route::get('/', function () {
     $chatMessages = \App\Models\ChatMessage::orderBy('id', 'desc')->take(50)->get()->reverse();
     $agendas = \App\Models\Agenda::orderBy('date', 'asc')->get();
     $programs = \App\Models\Program::all();
-    return view('welcome', compact('articles', 'popularArticles', 'latestArticles', 'headlineArticle', 'recentComments', 'galleries', 'allGalleries', 'officials', 'stats', 'products', 'settings', 'ads', 'chatMessages', 'agendas', 'programs', 'visitorStats'));
+    return view('welcome', compact('articles', 'popularArticles', 'latestArticles', 'headlineArticle', 'recentComments', 'galleries', 'allGalleries', 'officials', 'stats', 'products', 'settings', 'ads', 'chatMessages', 'agendas', 'programs', 'visitorStats'))
+        ->withHeaders([
+            'Cache-Control' => 'no-cache, must-revalidate',
+            'Vary' => 'Accept-Encoding',
+            'X-Content-Type-Options' => 'nosniff',
+        ]);
 });
 
 Route::get('/artikel', function () {

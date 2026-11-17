@@ -4,17 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Resmi IPNU-IPPNU Kemiri</title>
+    <title>Portal Resmi PAC IPNU IPPNU Kemiri | Ikatan Pelajar Nahdlatul Ulama Kecamatan Kemiri</title>
+    <meta name="description" content="Portal resmi PAC IPNU IPPNU Kecamatan Kemiri, Purworejo. Informasi kegiatan, berita, agenda, program kerja, dan layanan anggota Ikatan Pelajar Nahdlatul Ulama.">
+    <meta name="keywords" content="IPNU, IPPNU, Kemiri, Purworejo, Nahdlatul Ulama, pelajar NU, Jawa Tengah">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="PAC IPNU IPPNU Kemiri">
+    <meta property="og:description" content="Portal resmi PAC IPNU IPPNU Kecamatan Kemiri, Purworejo, Jawa Tengah.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=2">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Fonts -->
+    <!-- DNS Prefetch & Preconnect -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
-        rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- LCP Preload: Hero Image -->
+    <link rel="preload" as="image" href="{{ asset('images/alun_alun_kemiri.png') }}">
+    <!-- Fonts: async load to avoid render blocking -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" onload="this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
+    <!-- Font Awesome: defer to avoid render blocking -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onload="this.rel='stylesheet'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="{{ asset('css/chat.css') }}">
+    <!-- Critical CSS: font fallback & font-display -->
+    <style>
+        /* Font display swap for FOUT prevention */
+        @font-face { font-family: 'Inter'; font-display: swap; src: local('Inter'); }
+        @font-face { font-family: 'Outfit'; font-display: swap; src: local('Outfit'); }
+        /* Font icon placeholder while Font Awesome loads */
+        .fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands { font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', sans-serif; }
+    </style>
 
     <style>
         :root {
@@ -4492,7 +4514,8 @@
             <div class="loader-logo-container">
                 <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}"
                     alt="Logo IPNU IPPNU"
-                    class="loader-logo">
+                    class="loader-logo"
+                    loading="eager" width="120" height="120">
                 <div class="loader-bubbles">
                     <span class="loader-bubble b1"></span>
                     <span class="loader-bubble b2"></span>
@@ -4588,23 +4611,23 @@
                     <div class="hero-bg-container">
                         @if(!empty($settings['hero_image']))
                         <div class="hero-slide active">
-                            <img src="{{ asset('storage/' . $settings['hero_image']) }}" alt="Hero Background" class="hero-bg-img">
+                            <img src="{{ asset('storage/' . $settings['hero_image']) }}" alt="Hero Background" class="hero-bg-img" loading="eager" fetchpriority="high" width="400" height="220">
                         </div>
                         @else
                         <div class="hero-slide active">
-                            <img src="{{ asset('images/alun_alun_kemiri.png') }}" alt="Alun Alun Kemiri" class="hero-bg-img">
+                            <img src="{{ asset('images/alun_alun_kemiri.png') }}" alt="Alun Alun Kemiri" class="hero-bg-img" loading="eager" fetchpriority="high" width="400" height="220">
                         </div>
                         <div class="hero-slide">
-                            <img src="{{ asset('images/hero_bg.png') }}" alt="Kegiatan IPNU" class="hero-bg-img">
+                            <img src="{{ asset('images/hero_bg.png') }}" alt="Kegiatan IPNU" class="hero-bg-img" loading="lazy" width="400" height="220">
                         </div>
                         <div class="hero-slide">
-                            <img src="{{ asset('images/students_study.png') }}" alt="Pelajar NU" class="hero-bg-img">
+                            <img src="{{ asset('images/students_study.png') }}" alt="Pelajar NU" class="hero-bg-img" loading="lazy" width="400" height="220">
                         </div>
                         @endif
                         <div class="hero-overlay-dark"></div>
                         <div class="hero-content-center">
                             <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}"
-                                alt="Logo IPNU IPPNU" class="logo-3d">
+                                alt="Logo IPNU IPPNU" class="logo-3d" loading="eager" width="90" height="90">
                             <h1 class="hero-title-center">{{ $settings['hero_title'] ?? 'PAC IPNU IPPNU' }}</h1>
                             <p class="hero-subtitle-center">{{ $settings['hero_subtitle'] ?? 'Kecamatan Kemiri' }}</p>
                         </div>
@@ -4781,23 +4804,23 @@
                 <div class="dc-banner-bottom-tape"></div>
                 <div class="dc-banner-slide active">
                     @if(!empty($settings['banner_image_1']))
-                        <img src="{{ asset('storage/' . $settings['banner_image_1']) }}" alt="Banner 1">
+                        <img src="{{ asset('storage/' . $settings['banner_image_1']) }}" alt="Banner 1" loading="lazy">
                     @else
-                        <img src="{{ asset('images/banner 1.jpeg') }}" alt="Banner 1">
+                        <img src="{{ asset('images/banner 1.jpeg') }}" alt="Banner 1" loading="lazy">
                     @endif
                 </div>
                 <div class="dc-banner-slide">
                     @if(!empty($settings['banner_image_2']))
-                        <img src="{{ asset('storage/' . $settings['banner_image_2']) }}" alt="Banner 2">
+                        <img src="{{ asset('storage/' . $settings['banner_image_2']) }}" alt="Banner 2" loading="lazy">
                     @else
-                        <img src="{{ asset('images/banner 2.jpg') }}" alt="Banner 2">
+                        <img src="{{ asset('images/banner 2.jpg') }}" alt="Banner 2" loading="lazy">
                     @endif
                 </div>
                 <div class="dc-banner-slide">
                     @if(!empty($settings['banner_image_3']))
-                        <img src="{{ asset('storage/' . $settings['banner_image_3']) }}" alt="Banner 3">
+                        <img src="{{ asset('storage/' . $settings['banner_image_3']) }}" alt="Banner 3" loading="lazy">
                     @else
-                        <img src="{{ asset('images/banner 3.jpeg') }}" alt="Banner 3">
+                        <img src="{{ asset('images/banner 3.jpeg') }}" alt="Banner 3" loading="lazy">
                     @endif
                 </div>
             </div>
@@ -4896,9 +4919,9 @@
                 <!-- Logo centered top -->
                 <div class="announce-logo-wrap">
                     @if(!empty($settings['banner_logo']))
-                        <img src="{{ asset('storage/' . $settings['banner_logo']) }}" alt="Logo PAC IPNU IPPNU Kemiri" class="announce-logo">
+                        <img src="{{ asset('storage/' . $settings['banner_logo']) }}" alt="Logo PAC IPNU IPPNU Kemiri" class="announce-logo" loading="lazy">
                     @else
-                        <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" alt="Logo PAC IPNU IPPNU Kemiri" class="announce-logo">
+                        <img src="{{ asset('images/LOGO RESMI IPNUIPPNU by diqies 2.png') }}" alt="Logo PAC IPNU IPPNU Kemiri" class="announce-logo" loading="lazy">
                     @endif
                 </div>
                 <!-- Text content -->
@@ -5063,11 +5086,11 @@
                 <!-- Photo right -->
                 <div class="hk-right">
                     @if($headlineArticle && $headlineArticle->image)
-                        <img src="{{ Str::startsWith($headlineArticle->image, 'images/') ? asset($headlineArticle->image) : asset('storage/' . $headlineArticle->image) }}" alt="{{ $headlineArticle->title }}">
+                        <img src="{{ Str::startsWith($headlineArticle->image, 'images/') ? asset($headlineArticle->image) : asset('storage/' . $headlineArticle->image) }}" alt="{{ $headlineArticle->title }}" loading="lazy">
                     @elseif(!empty($settings['hk_image']))
-                        <img src="{{ asset('storage/' . $settings['hk_image']) }}" alt="Headline">
+                        <img src="{{ asset('storage/' . $settings['hk_image']) }}" alt="Headline" loading="lazy">
                     @else
-                        <img src="{{ asset('images/HEADLINE.jpeg') }}" alt="Headline">
+                        <img src="{{ asset('images/HEADLINE.jpeg') }}" alt="Headline" loading="lazy">
                     @endif
                 </div>
             </a>
@@ -5238,7 +5261,7 @@
                                 <div class="na-img-wrapper">
                                     <i class="fa-solid fa-eye hover-icon"></i>
                                     <img src="{{ $article->image ? (Str::startsWith($article->image, 'images/') ? asset($article->image) : Storage::url($article->image)) : asset('images/hero_bg.png') }}"
-                                        class="na-img">
+                                        class="na-img" loading="lazy" alt="{{ $article->title ?? 'Artikel' }}">
                                     <div class="na-date-badge">
                                         <span
                                             class="na-day">{{ \Carbon\Carbon::parse($article->published_at)->format('d') }}</span>
@@ -5281,7 +5304,7 @@
                         @foreach($homepageAds as $ad)
                         <a href="{{ $ad->link ?: '#' }}" target="{{ $ad->link ? '_blank' : '_self' }}" style="display:block; text-decoration:none; margin-bottom:15px; position:relative; border-radius:12px; overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); background:linear-gradient(135deg, #f43f5e 0%, #f97316 100%); color:white;">
                             @if($ad->image)
-                                <img src="{{ asset('storage/' . $ad->image) }}" alt="{{ $ad->title }}" style="width:100%; height:auto; display:block;">
+                                <img src="{{ asset('storage/' . $ad->image) }}" alt="{{ $ad->title }}" style="width:100%; height:auto; display:block;" loading="lazy">
                             @else
                                 <div style="padding:24px; text-align:center;">
                                     <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.6rem; margin-bottom:4px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">{{ $ad->title }}</h3>
@@ -5325,7 +5348,7 @@
                     @forelse($popularArticles as $article)
                         <a href="{{ route('artikel.show', $article->slug) }}" class="arsip-item">
                             <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}"
-                                class="arsip-thumb" onerror="this.src='{{ asset('images/hero_bg.png') }}'">
+                                class="arsip-thumb" loading="lazy" onerror="this.src='{{ asset('images/hero_bg.png') }}'">
                             <div class="arsip-text">
                                 <span class="arsip-views">{{ number_format($article->views_count, 0, ',', '.') }} Kali
                                     dibuka</span>
@@ -5343,7 +5366,7 @@
                     @forelse($latestArticles as $article)
                         <a href="{{ route('artikel.show', $article->slug) }}" class="arsip-item">
                             <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}"
-                                class="arsip-thumb" onerror="this.src='{{ asset('images/hero_bg.png') }}'">
+                                class="arsip-thumb" loading="lazy" onerror="this.src='{{ asset('images/hero_bg.png') }}'">
                             <div class="arsip-text">
                                 <span
                                     class="arsip-views">{{ $article->published_at ? \Carbon\Carbon::parse($article->published_at)->diffForHumans() : 'Baru saja' }}</span>
@@ -5959,6 +5982,9 @@
             <div class="mobile-nav-header">
                 <span>
                     <img src="{{ asset('favicon.png') }}"
+                        alt="Logo Kemiri"
+                        loading="lazy"
+                        width="28" height="28"
                         style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);vertical-align:middle;margin-right:8px;object-fit:contain;background:#fff;">
                     PAC IPNU IPPNU Kemiri
                 </span>
@@ -6180,6 +6206,7 @@
                     <div class="gallery-item"
                         onclick="openGalleryViewer('{{ $galUrl }}', '{{ addslashes($gallery->title) }}')">
                         <img src="{{ $galUrl }}" alt="{{ $gallery->title }}"
+                            loading="lazy"
                             onerror="this.src='{{ asset('images/alun_alun_kemiri.png') }}'">
                         <div class="gallery-overlay">
                             <h4 class="gallery-title">{{ $gallery->title }}</h4>
@@ -6363,7 +6390,7 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/chat.js') }}"></script>
+    <script src="{{ asset('js/chat.js') }}" defer></script>
 </body>
 
 </html>
