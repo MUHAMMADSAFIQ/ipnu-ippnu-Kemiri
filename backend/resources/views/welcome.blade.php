@@ -4926,9 +4926,9 @@
                 </div>
                 <!-- Text content -->
                 <div class="announce-body">
-                    <div class="announce-subtitle">PAC IPNU IPPNU Kemiri mengucapkan,</div>
-                    <div class="announce-title">{{ $settings['banner_thanks_title'] ?? 'Terima Kasih Atas Doa dan Dukungannya' }}</div>
-                    <div class="announce-desc">{{ $settings['banner_thanks'] ?? 'PAC IPNU IPPNU Kemiri Terpilih Sebagai Organisasi Pelajar Digital Unggulan Tingkat Kabupaten Purworejo Tahun 2026' }}</div>
+                    <div class="announce-subtitle">{{ !empty($settings['banner_thanks_subtitle']) ? $settings['banner_thanks_subtitle'] : 'PAC IPNU IPPNU Kemiri mengucapkan,' }}</div>
+                    <div class="announce-title">{{ !empty($settings['banner_thanks_title']) ? $settings['banner_thanks_title'] : 'Terima Kasih Atas Doa dan Dukungannya' }}</div>
+                    <div class="announce-desc">{{ !empty($settings['banner_thanks']) ? $settings['banner_thanks'] : 'PAC IPNU IPPNU Kemiri Terpilih Sebagai Organisasi Pelajar Digital Unggulan Tingkat Kabupaten Purworejo Tahun 2026' }}</div>
                 </div>
             </div>
 
